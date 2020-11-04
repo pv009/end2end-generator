@@ -1,0 +1,80 @@
+// Available color palettes: https://material.io/design/color/
+$edecy-blue: ( 
+  50 : #e0f5fb,
+  100 : #b3e6f5,
+  200 : #80d5ee,
+  300 : #4dc4e7,
+  400 : #26b7e2,
+  500 : var(--edecy-blue),
+  600 : #00a3d9,
+  700 : #0099d4,
+  800 : #0090cf,
+  900 : #007fc7,
+  A100 : #eff8ff,
+  A200 : #bce4ff,
+  A400 : #89cfff,
+  A700 : #6fc4ff,
+  contrast: (
+    50 : #000000,
+    100 : #000000,
+    200 : #000000,
+    300 : #000000,
+    400 : #000000,
+    500 : #ffffff,
+    600 : #ffffff,
+    700 : #ffffff,
+    800 : #ffffff,
+    900 : #ffffff,
+    A100 : #000000,
+    A200 : #000000,
+    A400 : #000000,
+    A700 : #000000,
+  )
+);
+
+$edecy-red: (
+  50 : #fceae9,
+  100 : #f9cbc9,
+  200 : #f5a8a5,
+  300 : #f08581,
+  400 : #ed6a66,
+  500 : var(--edecy-red),
+  600 : #e74944,
+  700 : #e4403b,
+  800 : #e13733,
+  900 : #db2723,
+  A100 : #ffffff,
+  A200 : #ffe3e2,
+  A400 : #ffb0af,
+  A700 : #ff9796,
+  contrast: (
+      50 : #000000,
+      100 : #000000,
+      200 : #000000,
+      300 : #000000,
+      400 : #000000,
+      500 : #ffffff,
+      600 : #ffffff,
+      700 : #ffffff,
+      800 : #ffffff,
+      900 : #ffffff,
+      A100 : #000000,
+      A200 : #000000,
+      A400 : #000000,
+      A700 : #000000,
+  )
+);
+
+.mat-expansion-panel, .mat-expansion-panel-header {
+  background: transparent !important;
+}
+
+$edecy-theme-primary: mat-palette($edecy-blue);
+$edecy-theme-accent: mat-palette($edecy-red);
+$edecy-theme-warn: mat-palette($mat-pink);
+$edecy-theme-background: white;
+$edecy-theme: mat-light-theme($edecy-theme-primary, $edecy-theme-accent, $edecy-theme-warn);
+
+$background: map-get($edecy-theme, background);
+$background: map_merge($background, (background: $edecy-theme-background));
+$edecy-theme: map_merge($edecy-theme, (background: $background));
