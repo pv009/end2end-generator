@@ -1,0 +1,46 @@
+<div class="story-card border-round shadowed-short" fxLayout="column" fxLayoutAlign="center start">
+    <h2>
+        Als
+        <span class="heading-underlined">{{ storyToDisplay.userRole }}</span>
+        möchte ich
+        <span class="heading-underlined">{{ storyToDisplay.goal }}</span>
+        ,
+        <span class="heading-underlined">{{ storyToDisplay.reason }}</span>
+    </h2>
+    <div class="context-flag">
+        <h3>{{ storyToDisplay.mainContext }}: {{ storyToDisplay.subContext }}</h3>
+    </div>
+    <div class="action-buttons" fxLayout="row" fxLayoutGap="10px">
+        <div fxLayout="column" fxLayoutAlign="center center">
+            <mat-icon (click)="editStory()" class="edit-icon">
+                edit
+            </mat-icon>
+        </div>
+        <div fxLayout="column" fxLayoutAlign="center center">
+            <mat-icon *ngIf="opened" (click)="hideStory()">
+                keyboard_arrow_up
+            </mat-icon>
+            <mat-icon *ngIf="!opened" (click)="showStory()">
+                keyboard_arrow_down
+            </mat-icon>
+        </div>
+    </div>
+
+    <div class="detail-infos" *ngIf="opened">
+        <h2>Details:</h2>
+        <p>Kontext: {{ storyToDisplay.mainContext }}</p>
+        <p>Sub-Kontext: {{ storyToDisplay.subContext }}</p>
+        <p>Nutzerrolle: {{ storyToDisplay.userRole }}</p>
+        <p>Ziel des Nutzers: {{ storyToDisplay.goal }}</p>
+        <p>Grund für das Ziel: {{ storyToDisplay.reason }}</p>
+        <div class="acceptance-criteria">
+            <p>
+                <strong>Akzeptanzkriterien:</strong>
+            </p>
+            <p *ngFor="let criteria of storyToDisplay.acceptenceCriteria" fxLayout="row">
+                <mat-icon>check_circle_outline</mat-icon>
+                {{ criteria }}
+            </p>
+        </div>
+    </div>
+</div>

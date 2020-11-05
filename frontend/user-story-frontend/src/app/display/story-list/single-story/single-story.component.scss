@@ -1,0 +1,75 @@
+.story-card {
+    h2 {
+        font-weight: 300 !important;
+    }
+    .heading-underlined {
+        font-weight: 500 !important;
+    }
+
+    .context-flag {
+        position: absolute;
+        right: 20px;
+        top: 0px;
+        background-color: var(--edecy-blue);
+        padding: 10px;
+        width: 300px;
+        border-radius: 0px 0px 10px 10px;
+        -moz-border-radius: 0px 0px 10px 10px;
+        -webkit-border-radius: 0px 0px 10px 10px;
+
+        h3 {
+            color: white;
+            margin: 0px !important;
+            text-align: center;
+        }
+    }
+
+    .action-buttons {
+        position: absolute;
+        right: 20px;
+        bottom: 20px;
+
+        > div {
+            border-radius: 100%;
+            -moz-border-radius: 100%;
+            -webkit-border-radius: 100%;
+            background-color: var(--edecy-blue);
+            color: white;
+            width: 35px;
+            height: 35px;
+
+            &:hover {
+                cursor: pointer;
+            }
+
+            mat-icon {
+                width: 30px;
+                height: 30px;
+                font-size: 30px;
+            }
+
+            .edit-icon {
+                width: 20px;
+                height: 20px;
+                font-size: 20px;
+            }
+        }
+    }
+
+    .detail-infos {
+        margin-top: 40px;
+
+        h2 {
+            margin-bottom: 20px !important;
+            font-weight: 500 !important;
+        }
+
+        .acceptance-criteria {
+            margin-top: 20px;
+
+            mat-icon {
+                margin-right: 5px;
+            }
+        }
+    }
+}

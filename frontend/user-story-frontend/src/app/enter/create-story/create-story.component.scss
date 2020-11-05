@@ -1,0 +1,23 @@
+.main-container {
+    form {
+        .form-section {
+            margin-bottom: 30px;
+        }
+
+        .mat-select {
+            font-size: 16px;
+            border: 1px solid #cccccc;
+            line-height: 20px;
+            padding: 10px;
+            width: calc(100% - 20px);
+            margin-bottom: 15px;
+            border-radius: 5px 5px 5px 5px;
+            -moz-border-radius: 5px 5px 5px 5px;
+            -webkit-border-radius: 5px 5px 5px 5px;
+        }
+
+        mat-form-field {
+            width: 100%;
+        }
+    }
+}

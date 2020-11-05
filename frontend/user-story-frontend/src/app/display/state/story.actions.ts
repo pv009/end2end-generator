@@ -1,9 +1,12 @@
+import { UserStory } from 'src/app/shared/model/user-story.model';
+
 export class LoadAllStories {
     static type = '[State] Loading all Stories';
 }
 
 export class LoadAllStoriesSuccess {
     static type = '[State] Loaded all stories successfully';
+    constructor(public readonly payload: Array<UserStory>) {}
 }
 
 export class LoadAllStoriesFailed {
@@ -13,15 +16,28 @@ export class LoadAllStoriesFailed {
 
 export class LoadStory {
     static type = '[State] Loading specific Story';
+    constructor(public readonly id: string) {}
 }
 
 export class LoadStorySuccess {
     static type = '[State] Loaded specific story successfully';
+    constructor(public readonly payload: UserStory) {}
 }
 
 export class LoadStoryFailed {
     static type = '[State] Loading specific story failed';
 }
+
+export class CreateStory {
+    static type = '[State] Saving new story';
+    constructor(public readonly story: UserStory) {}
+}
+
+export class UpdateStory {
+    static type = '[State] Saving story';
+    constructor(public readonly story: UserStory) {}
+}
+
 
 export type StoryActions =
     | LoadAllStories
@@ -29,4 +45,6 @@ export type StoryActions =
     | LoadAllStoriesSuccess
     | LoadStory
     | LoadStorySuccess
-    | LoadStoryFailed;
+    | LoadStoryFailed
+    | UpdateStory
+    | CreateStory;

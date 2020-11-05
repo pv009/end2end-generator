@@ -3,15 +3,19 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin/src/devtools.module';
-import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin/src/logger.module';
-import { NgxsModule } from '@ngxs/store/src/module';
+import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
+import { NgxsModule } from '@ngxs/store';
 import { environment } from 'src/environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { DisplayModule } from './display/display.module';
 import { StoryState } from './display/state/story.state';
+import { EnterModule } from './enter/enter.module';
 import { SharedModule } from './shared/shared.module';
 
+export const ngxsForRoot = NgxsModule.forRoot([StoryState], {
+  developmentMode: !environment.production
+});
 
 @NgModule({
   declarations: [
@@ -24,16 +28,16 @@ import { SharedModule } from './shared/shared.module';
     LayoutModule,
     HttpClientModule,
     SharedModule,
-    NgxsModule.forRoot([StoryState], {
-      developmentMode: !environment.production
-    }),
+    ngxsForRoot,
     NgxsLoggerPluginModule.forRoot({
       disabled: environment.production
     }),
-    NgxsReduxDevtoolsPluginModule.forRoot({
+    EnterModule,
+    DisplayModule
+    /* NgxsReduxDevtoolsPluginModule.forRoot({
       name: 'Edecy-portal',
       disabled: environment.production
-    }),
+    }), */
   ],
   providers: [],
   bootstrap: [AppComponent]

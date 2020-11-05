@@ -1,1 +1,7 @@
-<p>story-list works!</p>
+<div class="mat-typography main-container shadowed-short" fxLayout="column" fxLayoutGap="30px">
+    <h1>Alle eingetragenen User Stories:</h1>
+    <ng-container *ngFor="let story of (loadedStories$ | async)">
+        <app-single-story [storyToDisplay]="story"></app-single-story>
+    </ng-container>
+    
+</div>
