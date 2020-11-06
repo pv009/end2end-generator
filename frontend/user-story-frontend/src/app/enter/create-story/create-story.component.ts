@@ -71,7 +71,9 @@ export class CreateStoryComponent implements OnInit, OnDestroy {
       userRole: ['', Validators.required],
       goal: ['', Validators.required],
       reason: ['', Validators.required],
-      acceptanceCriteria: [[], Validators.minLength(1)],
+      acceptanceCriteria: [[],
+      // Validators.minLength(1)
+      ],
     });
   }
 
@@ -111,15 +113,17 @@ export class CreateStoryComponent implements OnInit, OnDestroy {
     this.newStory = this.storyForm.value;
     if (this.editMode) {
       this.updateStory();
+    } else {
+      this.createStory();
     }
   }
 
-  updateStory(): void {
+  private updateStory(): void {
     this.store.dispatch(new storeActions.UpdateStory(this.newStory));
     this.router.navigate(['/all-stories']);
   }
 
-  createStory(): void {
+  private createStory(): void {
     this.store.dispatch(new storeActions.CreateStory(this.newStory));
     this.router.navigate(['/create-story']);
   }
@@ -142,17 +146,11 @@ export class CreateStoryComponent implements OnInit, OnDestroy {
   }
 
   filterUserRoles(): void {
-    console.log(this.alluserRoles);
-    const selectedContext: Context = {
-      mainContext: this.storyForm.value.mainContext,
-      subContext: this.storyForm.value.subContext
-    };
-    console.log(selectedContext);
-    const filteredUserRoles = this.alluserRoles.filter(role => {
-      return role.correspondingContexts.includes(selectedContext);
-    });
-    console.log(this.alluserRoles[0].correspondingContexts.includes(selectedContext));
-    console.log(filteredUserRoles);
+    const selectedContext: Context = this.allContexts.filter(context =>
+      context.mainContext === this.storyForm.value.mainContext && context.subContext === this.storyForm.value.subContext)[0];
+    const filteredUserRoles = this.alluserRoles.filter(role =>
+      role.correspondingContexts.indexOf(selectedContext) > -1
+    );
     this.filteredUserRoles = filteredUserRoles;
   }
 

@@ -67,7 +67,9 @@ const storyStateDefaults: StoryStateModel = {
     loaded: false,
     loading: false,
     loadedStories: [],
-    selectedStory: null
+    selectedStory: null,
+    filter: null,
+    filteredStories: []
 };
 
 @Injectable()
@@ -83,7 +85,7 @@ export class StoryState {
 
     @Selector()
     static allStories(state: StoryStateModel): Array<UserStory> {
-        return state.loadedStories;
+        return state.filteredStories;
     }
 
     @Selector()
@@ -113,7 +115,8 @@ export class StoryState {
         ctx.patchState({
             loading: false,
             loaded: true,
-            loadedStories: payload
+            loadedStories: payload,
+            filteredStories: payload
         });
     }
 
@@ -190,6 +193,43 @@ export class StoryState {
             loaded: false
         });
         ctx.dispatch(new storyActions.LoadStorySuccess(story));
+    }
+
+    @Action(storyActions.ChangeFilter)
+    changeFilter(
+        ctx: StateContext<StoryStateModel>,
+        { filter }: storyActions.ChangeFilter
+    ): void {
+        const allStories = ctx.getState().loadedStories;
+        let filteredStories: Array<UserStory>;
+        if (filter.mainContext !== '') {
+            if (filter.subContext === '') {
+                filteredStories = allStories.filter(story => story.mainContext === filter.mainContext);
+            } else {
+                filteredStories = allStories.filter(story =>
+                    story.mainContext === filter.mainContext && story.subContext === filter.subContext
+                );
+            }
+        } else if (filter.subContext !== '') {
+            filteredStories = allStories.filter(story => story.subContext === filter.subContext);
+        } else {
+            filteredStories = allStories;
+        }
+        ctx.patchState({
+            filter,
+            filteredStories
+        });
+    }
+
+    @Action(storyActions.ClearFilter)
+    clearFilter(
+        ctx: StateContext<StoryStateModel>,
+    ): void {
+        const allStories = ctx.getState().loadedStories;
+        ctx.patchState({
+            filter: null,
+            filteredStories: allStories
+        });
     }
 
 }

@@ -9,6 +9,7 @@ import { UserStory } from 'src/app/shared/model/user-story.model';
 })
 export class SingleStoryComponent implements OnInit {
   @Input() storyToDisplay: UserStory;
+  @Input() preview = false;
   opened = false;
 
   constructor(

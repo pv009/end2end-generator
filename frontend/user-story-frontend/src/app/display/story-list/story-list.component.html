@@ -1,7 +1,28 @@
 <div class="mat-typography main-container shadowed-short" fxLayout="column" fxLayoutGap="30px">
-    <h1>Alle eingetragenen User Stories:</h1>
+    <div fxLayout="row" fxLayoutAlign="space-between center">
+        <h1>Alle eingetragenen User Stories:</h1>
+        <div class="filters" fxLayout="column" fxLayoutAlign="start center">
+            <div fxLayout="row" fxLayoutGap="10px">
+                <h3 style="margin-bottom: 5px !important;">Filter:</h3>
+                <mat-select [(ngModel)]="selectedFilter.mainContext" (selectionChange)="filterSubContexts()"
+                    placeholder="Kontext">
+                    <mat-option *ngFor="let context of mainContexts;" [value]="context">
+                        {{ context }}
+                    </mat-option>
+                </mat-select>
+                <mat-select [(ngModel)]="selectedFilter.subContext" placeholder="Subkontext"
+                    (selectionChange)="applyFilter()">
+                    <mat-option *ngFor="let subContext of subContexts;" [value]="subContext">
+                        {{ subContext }}
+                    </mat-option>
+                </mat-select>
+            </div>
+            <a (click)="clearFilter()">Filter entfernen</a>
+        </div>
+    </div>
+
     <ng-container *ngFor="let story of (loadedStories$ | async)">
         <app-single-story [storyToDisplay]="story"></app-single-story>
     </ng-container>
-    
+
 </div>

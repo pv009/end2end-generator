@@ -1,4 +1,5 @@
 import { UserStory } from 'src/app/shared/model/user-story.model';
+import { StoryFilter } from '../model/filter.model';
 
 export class LoadAllStories {
     static type = '[State] Loading all Stories';
@@ -38,6 +39,14 @@ export class UpdateStory {
     constructor(public readonly story: UserStory) {}
 }
 
+export class ChangeFilter {
+    static type = '[State] Changing filter';
+    constructor(public readonly filter: StoryFilter) {}
+}
+
+export class ClearFilter {
+    static type = '[State] Clearing filter';
+}
 
 export type StoryActions =
     | LoadAllStories
@@ -47,4 +56,6 @@ export type StoryActions =
     | LoadStorySuccess
     | LoadStoryFailed
     | UpdateStory
-    | CreateStory;
+    | CreateStory
+    | ChangeFilter
+    | ClearFilter;

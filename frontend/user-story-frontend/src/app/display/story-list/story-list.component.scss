@@ -1,0 +1,26 @@
+.filters {
+    h3 {
+        margin-bottom: 0px !important;
+        margin-top: 10px !important;
+    }
+
+    a {
+        color: var(--edecy-blue);
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    .mat-select {
+        font-size: 16px;
+        border: 1px solid #cccccc;
+        line-height: 20px;
+        padding: 10px;
+        width: 200px;
+        margin-bottom: 15px;
+        border-radius: 5px 5px 5px 5px;
+        -moz-border-radius: 5px 5px 5px 5px;
+        -webkit-border-radius: 5px 5px 5px 5px;
+    }
+}

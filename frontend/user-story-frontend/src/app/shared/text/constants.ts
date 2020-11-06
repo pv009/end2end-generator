@@ -4,7 +4,11 @@ import { UserRole } from '../model/user-roles.model';
 export let contexts: Array<Context> = [
     { // 0
         mainContext: 'User-Verwaltung',
-        subContext: 'Registrierung'
+        subContext: 'Registrierung',
+        acceptanceCriteria: [
+            'Der Nutzer kann einen Account auf der Plattform anlegen',
+            'Der Nutzer kann bei seiner Registrierung folgende persönliche Daten angeben',
+        ]
     },
     { // 1
         mainContext: 'User-Verwaltung',
