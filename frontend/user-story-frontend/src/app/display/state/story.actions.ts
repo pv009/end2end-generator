@@ -48,6 +48,11 @@ export class ClearFilter {
     static type = '[State] Clearing filter';
 }
 
+export class DeleteStory {
+    static type = '[State] Deleting Story';
+    constructor(public readonly id: string) {}
+}
+
 export type StoryActions =
     | LoadAllStories
     | LoadAllStoriesFailed
@@ -58,4 +63,5 @@ export type StoryActions =
     | UpdateStory
     | CreateStory
     | ChangeFilter
-    | ClearFilter;
+    | ClearFilter
+    | DeleteStory;

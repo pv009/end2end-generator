@@ -1,5 +1,7 @@
 export interface UserStory {
-    objectId?: string;
+    _id?: {
+        $oid: string;
+    };
     createdAt?: string;
     updatedAt?: string;
     mainContext: string;

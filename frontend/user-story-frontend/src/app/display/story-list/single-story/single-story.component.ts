@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Store } from '@ngxs/store';
 import { UserStory } from 'src/app/shared/model/user-story.model';
+import * as fromStore from '../../state/story.actions';
 
 @Component({
   selector: 'app-single-story',
@@ -13,7 +15,8 @@ export class SingleStoryComponent implements OnInit {
   opened = false;
 
   constructor(
-    private router: Router
+    private router: Router,
+    private store: Store
   ) { }
 
   ngOnInit(): void {
@@ -32,7 +35,11 @@ export class SingleStoryComponent implements OnInit {
   }
 
   editStory(): void {
-    this.router.navigate(['/edit-story/' + this.storyToDisplay.objectId]);
+    this.router.navigate(['/edit-story/' + this.storyToDisplay._id.$oid]);
+  }
+
+  deleteStory(): void {
+    this.store.dispatch(new fromStore.DeleteStory(this.storyToDisplay._id.$oid));
   }
 
 }

@@ -45,6 +45,7 @@ export class CreateStoryComponent implements OnInit, OnDestroy {
   subContexts: Array<string> = [];
   filteredUserRoles: Array<UserRole>;
 
+
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
@@ -72,7 +73,7 @@ export class CreateStoryComponent implements OnInit, OnDestroy {
       goal: ['', Validators.required],
       reason: ['', Validators.required],
       acceptanceCriteria: [[],
-      // Validators.minLength(1)
+        // Validators.minLength(1)
       ],
     });
   }
@@ -98,20 +99,35 @@ export class CreateStoryComponent implements OnInit, OnDestroy {
 
   private loadStory(): void {
     this.selectedStory$.pipe(takeUntil(this.destroy$)).subscribe(story => {
-      this.storyForm.patchValue({
-        mainContext: story.mainContext,
-        subContext: story.subContext,
-        userRole: story.userRole,
-        goal: story.goal,
-        reason: story.reason,
-        acceptanceCriteria: story.acceptenceCriteria
-      });
+      if (story) {
+        this.filterSubContexts(story.mainContext);
+        this.filterUserRoles({
+          mainContext: story.mainContext,
+          subContext: story.subContext
+        });
+        this.storyForm.patchValue({
+          mainContext: story.mainContext,
+          subContext: story.subContext,
+          userRole: story.userRole,
+          goal: story.goal,
+          reason: story.reason,
+          acceptanceCriteria: story.acceptenceCriteria
+        });
+      }
+
     });
   }
 
   submitStoryForm(): void {
     this.newStory = this.storyForm.value;
     if (this.editMode) {
+      this.newStory = {
+        ...this.newStory,
+        acceptenceCriteria: [], // TODO: Implement with correct ac
+        _id: {
+          $oid: this.storyId
+        }
+      };
       this.updateStory();
     } else {
       this.createStory();
@@ -126,13 +142,25 @@ export class CreateStoryComponent implements OnInit, OnDestroy {
   private createStory(): void {
     this.store.dispatch(new storeActions.CreateStory(this.newStory));
     this.router.navigate(['/create-story']);
+    this.clearForm();
   }
 
-  filterSubContexts(): void {
+  private clearForm(): void {
+    this.storyForm.patchValue({
+      mainContext: '',
+      subContext: '',
+      userRole: '',
+      goal: '',
+      reason: '',
+      acceptenceCriteria: []
+    });
+  }
+
+  filterSubContexts(storyMainContext?: string): void {
     const filteredSubContexts: Array<string> = [];
     let selectedMainContext: string;
-    if (this.editMode) {
-      selectedMainContext = this.storyToEdit.mainContext;
+    if (storyMainContext) {
+      selectedMainContext = storyMainContext;
     } else {
       selectedMainContext = this.storyForm.value.mainContext;
     }
@@ -145,9 +173,15 @@ export class CreateStoryComponent implements OnInit, OnDestroy {
     this.subContexts = filteredSubContexts;
   }
 
-  filterUserRoles(): void {
-    const selectedContext: Context = this.allContexts.filter(context =>
-      context.mainContext === this.storyForm.value.mainContext && context.subContext === this.storyForm.value.subContext)[0];
+  filterUserRoles(storyContext?: Context): void {
+    let selectedContext: Context;
+    if (storyContext) {
+      selectedContext = this.allContexts.filter(context =>
+        context.mainContext === storyContext.mainContext && context.subContext === storyContext.subContext)[0];
+    } else {
+      selectedContext = this.allContexts.filter(context =>
+        context.mainContext === this.storyForm.value.mainContext && context.subContext === this.storyForm.value.subContext)[0];
+    }
     const filteredUserRoles = this.alluserRoles.filter(role =>
       role.correspondingContexts.indexOf(selectedContext) > -1
     );

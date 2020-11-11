@@ -16,6 +16,11 @@
                 edit
             </mat-icon>
         </div>
+        <div fxLayout="column" fxLayoutAlign="center center" *ngIf="!preview">
+            <mat-icon (click)="deleteStory()" class="edit-icon">
+                delete
+            </mat-icon>
+        </div>
         <div fxLayout="column" fxLayoutAlign="center center">
             <mat-icon *ngIf="opened" (click)="hideStory()">
                 keyboard_arrow_up

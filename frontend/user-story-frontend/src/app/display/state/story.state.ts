@@ -3,65 +3,8 @@ import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { SaveService } from 'src/app/enter/service/save.service';
 import { UserStory } from 'src/app/shared/model/user-story.model';
 import { StoryStateModel } from '../model/state.model';
+import { FetchService } from '../service/fetch.service';
 import * as storyActions from './story.actions';
-
-const exampleStories: Array<UserStory> = [
-    {
-        objectId: '85xb4y7f32',
-        mainContext: 'User-Verwaltung',
-        subContext: 'Registrierung',
-        userRole: 'Nutzer',
-        goal: 'mich auf der Plattform registrieren können',
-        reason: 'damit ich persönliche Daten dauerhaft speichern kann.',
-        acceptenceCriteria: [
-            'Der Nutzer kann einen Account auf der Plattform anlegen',
-            'Der Nutzer kann bei seiner Registrierung folgende persönliche Daten angeben',
-            'Der Nutzer erhält eine Erfolgsmeldung'
-        ]
-    },
-    {
-        objectId: 'uk3ir1o0rt',
-        mainContext: 'User-Verwaltung',
-        subContext: 'Login',
-        userRole: 'Nutzer',
-        goal: 'mich auf der Plattform einloggen können',
-        reason: 'damit ich Zugriff auf Funktionen habe, die nur eingeloggten Nutzern zur Verfügung stehen.',
-        acceptenceCriteria: [
-            'Der Nutzer kann sich mit korrekten Login-Daten einloggen',
-            'Der Nutzer erhält bei falschen Login-Daten eine Fehlermeldung, dass Username oder E-Mail nicht korrekt sind',
-            'Der Nutzer wird auf die Startseite weitergeleitet'
-        ]
-    },
-    {
-        objectId: 'b31xa8n3ko',
-        mainContext: 'Gesuche',
-        subContext: 'Übersicht',
-        userRole: 'Desktopnutzer',
-        goal: 'ich eine Übersicht aller Gesuche auf der Plattform haben',
-        reason: 'damit sehen kann, welche möglichen Partnerschaften entstehen könnten.',
-        acceptenceCriteria: [
-            'Der Nutzer kann ein Einzelgesuch ausklappen, um alle Daten zu sehen',
-            'Der Nutzer kann Filter einstellen',
-            'Es werden pro Seite 30 Gesuche gezeigt',
-            'Ein Einzelgesuch enthält folgende Daten…',
-            'Der Nutzer kann ein Gesuch anklicken und kommt auf die Detailseite',
-            'Der Nutzer kann nach Gesuchen suchen'
-        ]
-    },
-    {
-        objectId: 'ltv6klszvg',
-        mainContext: 'Profile',
-        subContext: 'Detailansicht',
-        userRole: 'Forschungsinteressierter',
-        goal: 'mir Profile in einer Detailansicht ansehen können',
-        reason: 'damit ich möglichst viele spezifische Informationen über ein Profil erhalten kann.',
-        acceptenceCriteria: [
-            'Der Nutzer kann mit dem Profil Kontakt aufnehmen',
-            'Der Nutzer sieht folgende Daten des Profils in der Detailansicht…',
-            'Der Nutzer sieht folgende Daten des Profils in der Detailansicht…'
-        ]
-    },
-];
 
 const storyStateDefaults: StoryStateModel = {
     loaded: false,
@@ -80,7 +23,8 @@ const storyStateDefaults: StoryStateModel = {
 export class StoryState {
 
     constructor(
-        private storyService: SaveService
+        private saveService: SaveService,
+        private fetchService: FetchService
     ) { }
 
     @Selector()
@@ -97,14 +41,25 @@ export class StoryState {
     loadAllStories(
         ctx: StateContext<StoryStateModel>,
     ): void {
-        const loadedStories = exampleStories;
-        // TODO: Implement with service + api
         ctx.patchState({
             loading: true,
             loaded: false
         });
-        ctx.dispatch(new storyActions.LoadAllStoriesSuccess(loadedStories));
 
+        const loadedStories: Array<UserStory> = [];
+        this.fetchService.fetchAllStories()
+            .then((result: Array<UserStory>) => {
+                if (result.length > 0) {
+                    result.forEach(story => {
+                        loadedStories.push(story);
+                    });
+                }
+                ctx.dispatch(new storyActions.LoadAllStoriesSuccess(loadedStories));
+            })
+            .catch(error => {
+                console.error('Error fetching all stories', error);
+                ctx.dispatch(new storyActions.LoadAllStoriesFailed());
+            });
     }
 
     @Action(storyActions.LoadAllStoriesSuccess)
@@ -136,14 +91,18 @@ export class StoryState {
         ctx: StateContext<StoryStateModel>,
         { id }: storyActions.LoadStory
     ): void {
-        // TODO: Implement with service & API
-        const allStories = ctx.getState().loadedStories;
-        const filteredStories = allStories.filter(item => item.objectId === id);
-        if (allStories.length > 0 && filteredStories.length > 0) {
-            ctx.dispatch(new storyActions.LoadStorySuccess(filteredStories[0]));
-        } else {
-            ctx.dispatch(new storyActions.LoadStoryFailed());
-        }
+        ctx.patchState({
+            loading: true,
+            loaded: false
+        });
+        this.fetchService.fetchStory(id)
+            .then((result: Array<UserStory>) => {
+                ctx.dispatch(new storyActions.LoadStorySuccess(result[0]));
+            })
+            .catch(error => {
+                console.error('Error fetching story ', error);
+                ctx.dispatch(new storyActions.LoadStoryFailed());
+            });
     }
 
     @Action(storyActions.LoadStorySuccess)
@@ -174,12 +133,17 @@ export class StoryState {
         ctx: StateContext<StoryStateModel>,
         { story }: storyActions.CreateStory
     ): void {
-        this.storyService.createStory(story);
         ctx.patchState({
             loading: true,
             loaded: false
         });
-        ctx.dispatch(new storyActions.LoadStorySuccess(story));
+        this.saveService.createStory(story)
+            .then((result: UserStory) => {
+                ctx.dispatch(new storyActions.LoadStorySuccess(result));
+            })
+            .catch(error => {
+                console.error('Error creating story', error);
+            });
     }
 
     @Action(storyActions.UpdateStory)
@@ -187,12 +151,17 @@ export class StoryState {
         ctx: StateContext<StoryStateModel>,
         { story }: storyActions.CreateStory
     ): void {
-        this.storyService.updateStory(story);
         ctx.patchState({
             loading: true,
             loaded: false
         });
-        ctx.dispatch(new storyActions.LoadStorySuccess(story));
+        this.saveService.updateStory(story)
+            .then((result: UserStory) => {
+                ctx.dispatch(new storyActions.LoadStorySuccess(result));
+            })
+            .catch(error => {
+                console.error('Error creating story', error);
+            });
     }
 
     @Action(storyActions.ChangeFilter)
@@ -230,6 +199,20 @@ export class StoryState {
             filter: null,
             filteredStories: allStories
         });
+    }
+
+    @Action(storyActions.DeleteStory)
+    deleteStory(
+        ctx: StateContext<StoryStateModel>,
+        { id }: storyActions.DeleteStory
+    ): void {
+        this.saveService.deleteStory(id)
+            .then((result: any) => {
+                ctx.dispatch(new storyActions.LoadAllStories());
+            })
+            .catch(error => {
+                console.error('Error deleting story', error);
+            });
     }
 
 }
