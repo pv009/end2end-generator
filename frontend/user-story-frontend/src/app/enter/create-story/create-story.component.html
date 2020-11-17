@@ -26,8 +26,7 @@
         <div class="form-section">
             <h2>Nutzerrolle</h2>
             <p>Bitte wählen Sie die passende Rolle des Nutzers:</p>
-            <mat-select formControlName="userRole"
-                placeholder="Nutzerrolle*">
+            <mat-select formControlName="userRole" placeholder="Nutzerrolle*">
                 <mat-option *ngFor="let role of filteredUserRoles;" [value]="role.name">
                     {{ role.name }}
                 </mat-option>
@@ -39,27 +38,50 @@
             <p>Bitte geben Sie das Ziel des Nutzers ein:</p>
             <mat-form-field>
                 <input matInput placeholder="Ziel des Nutzers*" formControlName="goal">
-              </mat-form-field>
+            </mat-form-field>
         </div>
 
         <div class="form-section">
             <h2>Grund für das Ziel</h2>
             <p>Bitte geben Sie den Grund für das Ziel ein:</p>
             <mat-form-field>
-                <input matInput placeholder="Grund* (startet überlicherweise mit 'damit' oder 'um')"  formControlName="reason">
-              </mat-form-field>
+                <input matInput placeholder="Grund* (startet überlicherweise mit 'damit' oder 'um')"
+                    formControlName="reason">
+            </mat-form-field>
         </div>
-
-        <div class="form-section">
-            <h2>Akzeptanzkriterien</h2>
-            <p>Bitte wählen Sie passende Akzeptanzkriterien oder fügen Sie selbst welche hinzu:</p>
-        </div>
-
-        <div class="form-section">
-            <h2>Vorschau der Story</h2>
-            <app-single-story [storyToDisplay]="storyForm.value" [preview]="true"></app-single-story>
-        </div>
-
-        <button mat-raised-button class="save-button" (click)="submitStoryForm()">Speichern</button>
     </form>
+
+    <div class="form-section" fxLayout="column">
+        <h2>Akzeptanzkriterien</h2>
+        <p>Bitte wählen Sie passende Akzeptanzkriterien oder fügen Sie selbst welche hinzu:</p>
+        <mat-checkbox class="wordwrap" *ngFor="let criteria of recommendedCriteria; let i = index"
+            [checked]="selectedCriteria.indexOf(criteria) > -1" (change)="selectCheckbox($event)" [value]="criteria">
+            {{ criteria }}</mat-checkbox>
+        <form [formGroup]="criteriaForm">
+            <mat-form-field>
+                <input matInput placeholder="Zusatzkriterium 1" formControlName="criteria1">
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput placeholder="Zusatzkriterium 2" formControlName="criteria2">
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput placeholder="Zusatzkriterium 3" formControlName="criteria3">
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput placeholder="Zusatzkriterium 4" formControlName="criteria4">
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput placeholder="Zusatzkriterium 5" formControlName="criteria5">
+            </mat-form-field>
+        </form>
+
+    </div>
+
+    <div class="form-section">
+        <h2>Vorschau der Story</h2>
+        <app-single-story [storyToDisplay]="storyForm.value" [preview]="true"></app-single-story>
+    </div>
+
+    <button mat-raised-button class="save-button" (click)="submitStoryForm()">Speichern</button>
+
 </div>

@@ -25,6 +25,7 @@ export class CreateStoryComponent implements OnInit, OnDestroy {
   storyId: '';
 
   storyForm: FormGroup;
+  criteriaForm: FormGroup;
 
   storyToEdit: UserStory;
 
@@ -45,6 +46,9 @@ export class CreateStoryComponent implements OnInit, OnDestroy {
   subContexts: Array<string> = [];
   filteredUserRoles: Array<UserRole>;
 
+  recommendedCriteria: Array<string> = [];
+  selectedCriteria: Array<string> = [];
+
 
   constructor(
     private fb: FormBuilder,
@@ -56,6 +60,7 @@ export class CreateStoryComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.buildForm();
+    this.buildCriteriaForm();
     this.getMainContexts();
     this.checkIfEditMode();
   }
@@ -72,9 +77,19 @@ export class CreateStoryComponent implements OnInit, OnDestroy {
       userRole: ['', Validators.required],
       goal: ['', Validators.required],
       reason: ['', Validators.required],
-      acceptanceCriteria: [[],
+      acceptanceCriteria: [this.selectedCriteria,
         // Validators.minLength(1)
-      ],
+      ]
+    });
+  }
+
+  private buildCriteriaForm(): void {
+    this.criteriaForm = this.fb.group({
+      criteria1: '',
+      criteria2: '',
+      criteria3: '',
+      criteria4: '',
+      criteria5: '',
     });
   }
 
@@ -113,17 +128,18 @@ export class CreateStoryComponent implements OnInit, OnDestroy {
           reason: story.reason,
           acceptanceCriteria: story.acceptenceCriteria
         });
+        this.selectedCriteria = story.acceptenceCriteria;
       }
 
     });
   }
 
   submitStoryForm(): void {
+    this.addAcceptenceCriteria();
     this.newStory = this.storyForm.value;
     if (this.editMode) {
       this.newStory = {
         ...this.newStory,
-        acceptenceCriteria: [], // TODO: Implement with correct ac
         _id: {
           $oid: this.storyId
         }
@@ -131,6 +147,24 @@ export class CreateStoryComponent implements OnInit, OnDestroy {
       this.updateStory();
     } else {
       this.createStory();
+    }
+  }
+
+  addAcceptenceCriteria(): void {
+    if (this.criteriaForm.value.criteria1 !== '') {
+      this.selectedCriteria.push(this.criteriaForm.value.criteria1);
+    }
+    if (this.criteriaForm.value.criteri2 !== '') {
+      this.selectedCriteria.push(this.criteriaForm.value.criteria2);
+    }
+    if (this.criteriaForm.value.criteria3 !== '') {
+      this.selectedCriteria.push(this.criteriaForm.value.criteria3);
+    }
+    if (this.criteriaForm.value.criteria4 !== '') {
+      this.selectedCriteria.push(this.criteriaForm.value.criteria4);
+    }
+    if (this.criteriaForm.value.criteria5 !== '') {
+      this.selectedCriteria.push(this.criteriaForm.value.criteria5);
     }
   }
 
@@ -154,6 +188,8 @@ export class CreateStoryComponent implements OnInit, OnDestroy {
       reason: '',
       acceptenceCriteria: []
     });
+    this.selectedCriteria = [];
+    this.recommendedCriteria = [];
   }
 
   filterSubContexts(storyMainContext?: string): void {
@@ -182,10 +218,27 @@ export class CreateStoryComponent implements OnInit, OnDestroy {
       selectedContext = this.allContexts.filter(context =>
         context.mainContext === this.storyForm.value.mainContext && context.subContext === this.storyForm.value.subContext)[0];
     }
+    this.filterAcceptanceCriteria(selectedContext);
     const filteredUserRoles = this.alluserRoles.filter(role =>
       role.correspondingContexts.indexOf(selectedContext) > -1
     );
     this.filteredUserRoles = filteredUserRoles;
+  }
+
+  private filterAcceptanceCriteria(context: Context): void {
+    this.recommendedCriteria = context.acceptanceCriteria;
+  }
+
+  selectCheckbox(event): void {
+    if (event.checked) {
+      this.selectedCriteria.push(event.source.value);
+    } else {
+      this.selectedCriteria.forEach((item, index) => {
+        if (item === event.source.value) {
+          this.selectedCriteria.splice(index, 1);
+        }
+      });
+    }
   }
 
 }

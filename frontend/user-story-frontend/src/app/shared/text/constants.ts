@@ -6,81 +6,202 @@ export let contexts: Array<Context> = [
         mainContext: 'User-Verwaltung',
         subContext: 'Registrierung',
         acceptanceCriteria: [
-            'Der Nutzer kann einen Account auf der Plattform anlegen',
-            'Der Nutzer kann bei seiner Registrierung folgende persönliche Daten angeben',
+            'Der Nutzer erhält ein Formular',
+            'Der Nutzer kann das Formular absenden',
+            'Der Nutzer erhält eine Erfolgsmeldung',
+            'Der Nutzer erhält eine Bestätigungs-Mail',
+            'Formular-Absendung führt zur Erstellung eines Nutzer-Accounts'
         ]
     },
     { // 1
         mainContext: 'User-Verwaltung',
-        subContext: 'Login'
+        subContext: 'Login',
+        acceptanceCriteria: [
+            'Der Nutzer erhält ein Formular',
+            'Der Nutzer kann das Formular absenden',
+            'Der Nutzer erhält eine Erfolgsmeldung',
+            'Formular-Absendung führt zu Login des Nutzers'
+        ]
     },
     { // 2
         mainContext: 'User-Verwaltung',
-        subContext: 'Passwort vergessen'
+        subContext: 'Passwort vergessen',
+        acceptanceCriteria: [
+            'Der Nutzer erhält ein Formular',
+            'Der Nutzer kann das Formular absenden',
+            'Der Nutzer erhält eine Erfolgsmeldung',
+            'Der Login-Bereich erhält einen Passwort vergessen Link',
+            'Der Nutzer erhält eine E-Mail zum zurücksetzen des Passworts'
+        ]
     },
     { // 3
         mainContext: 'User-Verwaltung',
-        subContext: 'Passwort ändern'
+        subContext: 'Passwort ändern',
+        acceptanceCriteria: [
+            'Der Nutzer erhält ein Formular',
+            'Der Nutzer kann das Formular absenden',
+            'Der Nutzer erhält eine Erfolgsmeldung',
+            'Der Nutzer-Bereich erhält einen Passwort ändern Link',
+            'Der Nutzer erhält eine E-Mail zum zurücksetzen des Passworts'
+        ]
     },
     { // 4
         mainContext: 'User-Verwaltung',
-        subContext: 'Nutzerdaten ändern'
+        subContext: 'Nutzerdaten ändern',
+        acceptanceCriteria: [
+            'Der Nutzer erhält ein Formular',
+            'Der Nutzer kann das Formular absenden',
+            'Der Nutzer erhält eine Erfolgsmeldung',
+            'Der Nutzer-Bereich erhält einen Link zum Formular',
+            'Die Daten des Nutzers aktualisieren sich nach Formular-Absendung'
+        ]
     },
     { // 5
         mainContext: 'Gesuche',
-        subContext: 'Übersicht'
+        subContext: 'Übersicht',
+        acceptanceCriteria: [
+            'Der Nutzer kann ein Einzelgesuch ausklappen, um alle Daten zu sehen',
+            'Der Nutzer kann Filter einstellen',
+            'Es werden pro Seite 30 Ergebnisse gezeigt',
+            'Ein Ergebnis enthält mindestens den Titel',
+            'Der Nutzer kann ein Ergebnis anklicken und kommt auf die Detailseite',
+            'Der Nutzer erhält ein Suchformular',
+            'Der Nutzer kann zwischen den Seiten navigieren'
+        ]
     },
     { // 6
         mainContext: 'Gesuche',
-        subContext: 'Detailansicht'
+        subContext: 'Detailansicht',
+        acceptanceCriteria: [
+            'Der Nutzer kann mit dem Gesuch Kontakt aufnehmen',
+            'Der Nutzer sieht folgende Daten des Gesuchs in der Detailansicht…',
+            'Der Nutzer kann zurück zur Übersicht springen'
+        ]
     },
     { // 7
         mainContext: 'Gesuche',
-        subContext: 'Anlage'
+        subContext: 'Anlage',
+        acceptanceCriteria: [
+            'Der Nutzer erhält ein Formular',
+            'Der Nutzer kann das Formular absenden',
+            'Der Nutzer erhält eine Erfolgsmeldung',
+            'Absendung des Formulars führt zur Anlage des Gesuchs',
+            'Der Nutzer kann Tags eingeben',
+            'Der Nutzer erhält eine Vorschau',
+            'Der Nutzer kann das Gesuch veröffentlichen',
+            'Der Nutzer kann das Gesuch speichern'
+        ]
     },
     { // 8
         mainContext: 'Gesuche',
-        subContext: 'Bearbeitung'
+        subContext: 'Bearbeitung',
+        acceptanceCriteria: [
+            'Der Nutzer erhält ein Formular',
+            'Der Nutzer kann das Formular absenden',
+            'Der Nutzer erhält eine Erfolgsmeldung'
+        ]
     },
     { // 9
         mainContext: 'Gesuche',
-        subContext: 'Filter'
+        subContext: 'Filter',
+        acceptanceCriteria: [
+            'Der Nutzer kann nach Fachrichtung filtern',
+            'Der Nutzer kann nach Disziplin filtern',
+            'Der Nutzer kann nach Spezialisierung filtern'
+        ]
     },
     { // 10
         mainContext: 'Profile',
-        subContext: 'Übersicht'
+        subContext: 'Übersicht',
+        acceptanceCriteria: [
+            'Der Nutzer kann Filter einstellen',
+            'Es werden pro Seite 30 Ergebnisse gezeigt',
+            'Ein Ergebnis enthält mindestens den Titel',
+            'Der Nutzer kann ein Ergebnis anklicken und kommt auf die Detailseite',
+            'Der Nutzer erhält ein Suchformular',
+            'Der Nutzer kann zwischen den Seiten navigieren'
+        ]
     },
     { // 11
         mainContext: 'Profile',
-        subContext: 'Detailansicht'
+        subContext: 'Detailansicht',
+        acceptanceCriteria: [
+            'Der Nutzer kann mit dem Profil Kontakt aufnehmen',
+            'Der Nutzer sieht folgende Daten des Gesuchs in der Detailansicht…',
+            'Der Nutzer kann zurück zur Übersicht springen'
+        ]
     },
     { // 12
         mainContext: 'Profile',
-        subContext: 'Anlage'
+        subContext: 'Anlage',
+        acceptanceCriteria: [
+            'Der Nutzer erhält ein Formular',
+            'Der Nutzer kann das Formular absenden',
+            'Der Nutzer erhält eine Erfolgsmeldung',
+            'Absendung des Formulars führt zur Anlage des Profils',
+            'Der Nutzer kann Tags eingeben',
+            'Der Nutzer erhält eine Vorschau',
+            'Der Nutzer kann das Profil veröffentlichen',
+            'Der Nutzer kann das Profil speichern'
+        ]
     },
     { // 13
         mainContext: 'Profile',
-        subContext: 'Bearbeitung'
+        subContext: 'Bearbeitung',
+        acceptanceCriteria: [
+            'Der Nutzer erhält ein Formular',
+            'Der Nutzer kann das Formular absenden',
+            'Der Nutzer erhält eine Erfolgsmeldung'
+        ]
     },
     { // 14
         mainContext: 'Profile',
-        subContext: 'Forschungsreferenzen'
+        subContext: 'Forschungsreferenzen',
+        acceptanceCriteria: [
+            'Der Nutzer kann eine Forschungsreferenz (Projekt, Publikation oder Schwerpunkt) hinzufügen',
+            'Der Nutzer kann eine Forschungsreferenz (Projekt, Publikation oder Schwerpunkt) bearbeiten',
+            'Der Nutzer kann eine Forschungsreferenz (Projekt, Publikation oder Schwerpunkt) löschen',
+            'Der Nutzer erhält ein Formular',
+            'Der Nutzer kann das Formular absenden',
+            'Der Nutzer erhält eine Erfolgsmeldung',
+        ]
     },
     { // 15
         mainContext: 'Chat',
-        subContext: 'Übersicht'
+        subContext: 'Übersicht',
+        acceptanceCriteria: [
+            'Der Nutzer sieht seine vorhandenen Chats mit Bild, Namen und letzter Nachricht',
+            'Der Nutzer kann einen Chat auswählen',
+            'Der Chat wird im Einzelchat-Bereich angezeigt',
+        ]
     },
     { // 16
         mainContext: 'Chat',
-        subContext: 'Einzelchat'
+        subContext: 'Einzelchat',
+        acceptanceCriteria: [
+            'Der Nutzer sieht bisherige Chatnachrichten',
+            'Der Nutzer kann eine neue Nachricht eintippen',
+            'Der Nutzer kann die Nachricht absenden',
+            'Die neue Nachricht wird im Chat angezeigt',
+        ]
     },
     { // 17
         mainContext: 'Kontakt',
-        subContext: 'Support'
+        subContext: 'Support',
+        acceptanceCriteria: [
+            'Der Nutzer erhält ein Formular',
+            'Der Nutzer kann das Formular absenden',
+            'Der Nutzer erhält eine Erfolgsmeldung'
+        ]
     },
     { // 18
         mainContext: 'Kontakt',
-        subContext: 'Feedback'
+        subContext: 'Feedback',
+        acceptanceCriteria: [
+            'Der Nutzer erhält ein Formular',
+            'Der Nutzer kann das Formular absenden',
+            'Der Nutzer erhält eine Erfolgsmeldung'
+        ]
     }
 ];
 
