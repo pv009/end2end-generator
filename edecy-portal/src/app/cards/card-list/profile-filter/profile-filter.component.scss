@@ -1,0 +1,14 @@
+.categoryfilter {
+    .mat-form-field {
+        margin-bottom: 0px !important;
+    }
+}
+
+.removePublicFilter {
+    margin-top: 10px;
+    color: var(--edecy-blue);
+
+    &:hover {
+        cursor: pointer;
+    }
+}

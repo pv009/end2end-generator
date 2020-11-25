@@ -1,0 +1,7 @@
+<div class="mat-typography" fxLayout.lt-md="column" fxLayout.gt-sm="row" fxLayoutAlign="center center"
+    (click)="createCard()" id="createCard" class="shadowed-short">
+    <mat-icon>add_circle</mat-icon>
+    <h3>Neues Gesuch erstellen</h3>
+</div>
+<p *ngIf="showMsg" style="text-align: center;">Sie haben die maximale Anzahl an Anzeigen erreicht. <a
+        [routerLink]="['/prices']">Hier</a> finden Sie weitere Informationen zu unseren Tarifen.</p>

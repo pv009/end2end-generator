@@ -1,0 +1,104 @@
+.mat-form-field {
+    margin-bottom: 0px;
+}
+
+#userLogo {
+    width: 120px;
+    height: 120px;
+    position: relative;
+    margin-left: calc(50% - 60px);
+    margin-bottom: 20px;
+}
+
+#userLogo img {
+    width: 100px;
+    border-radius: 100%;
+    -moz-border-radius: 100%;
+    -webkit-border-radius: 100%;
+}
+
+#userLogo button {
+    width: 30px;
+    height: 30px;
+    background-color: white;
+    border-radius: 200px 200px 200px 200px;
+    -moz-border-radius: 200px 200px 200px 200px;
+    -webkit-border-radius: 200px 200px 200px 200px;
+    position: absolute;
+    right: 15px;
+    bottom: 15px;
+}
+
+#userLogo mat-icon {
+    font-size: 15px;
+    margin-bottom: 10px;
+}
+
+#imageInput mat-icon {
+    font-size: 30px;
+}
+
+.inputfile {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+
+    max-width: 800px;
+}
+
+.inputfile + label {
+    width: 100%;
+    border: 0.5px solid #979797;
+    height: 150px;
+
+    padding-top: 20px;
+}
+
+.inputfile + label mat-icon {
+    font-size: 35px !important;
+    margin-bottom: 10px;
+}
+
+#croppedImage {
+    width: 100px;
+    border-radius: 100%;
+    -moz-border-radius: 100%;
+    -webkit-border-radius: 100%;
+    margin-left: calc(50% - 50px);
+    margin-bottom: 20px;
+}
+
+h2 {
+    margin-bottom: 10px !important;
+}
+
+h3 {
+    text-align: center;
+}
+
+.delete-account {
+    color: var(--edecy-blue) !important;
+    cursor: pointer;
+}
+
+.authButton {
+    margin-bottom: 60px;
+}
+
+#close-button {
+    float: right;
+}
+
+#close-button {
+    button {
+        background-color: white;
+        color: black;
+    }
+}
+
+.mat-dialog-content {
+    max-height: none;
+}

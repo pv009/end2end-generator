@@ -1,0 +1,137 @@
+<app-currentpage [currentPage]="currentPage" fxHide.gt-sm></app-currentpage>
+
+<div id="content-container" class="mat-typography" fxLayout="row">
+    <div id="content-start"fxHide.lt-md>
+        <div class="edecy-card shadowed-short">
+            <div id="conversation-container" fxLayout="column" fxLayoutAlign="start stretch">
+                <div id="topBar" fxLayout="column" fxLayoutAlign="center start">
+                    <h1>Nachrichten</h1>
+                </div>
+                <div class="searchBar">
+                    <form [formGroup]="searchForm" (ngSubmit)="submitSearch()">
+                        <mat-form-field appearance="outline">
+                            <input matInput placeholder="Nachrichten durchsuchen" formControlName="keyword">
+                            <mat-icon matPrefix>search</mat-icon>
+                            <mat-icon *ngIf="searchForm.value.keyword" matSuffix (click)="clearSearch()">cancel</mat-icon>
+                        </mat-form-field>
+    
+    
+                        <div *ngIf="(userChats$ | async)">
+                            <p class="searchError" *ngIf="(userChats$ | async).length < 1 && searched === true">Ihre Suche
+                                ergab leider keine Treffer.</p>
+                        </div>
+    
+                    </form>
+                </div>
+                <div id="conversations" *ngIf="(userChats$ | async).length > 0; else noChats">
+                    <div *ngIf="(currentUser$ | async)">
+                        <div *ngFor="let chat of (userChats$ | async)" class="singleChat" fxLayout="row"
+                            (click)="openChat(chat)">
+                            <div class="partnerLogo" fxFlex="23">
+                                <ng-container *ngFor="let logo of (chatLogos$ | async)">
+                                    <img *ngIf="logo.projectId === chat.projectId && logo.logoURL !== ''" class="chatLogo shadowed-short"
+                                        width="45px" height="45px" src="{{ logo.logoURL }}" alt="Profilbild" />
+                                    <img *ngIf="logo.projectId === chat.projectId && logo.logoURL === ''" class="chatLogo shadowed-short"
+                                        width="45px" height="45px" src="../../../assets/icons/chatLogo.png" alt="Profilbild" />
+    
+                                </ng-container>
+                            </div>
+                            <div class="chatDetails">
+                                <p class="chatTitle"><strong>{{ chat.subject }}</strong></p>
+                                <div *ngIf="chat.messages.length > 0; else no_message">
+                                    <div *ngFor="let message of chat.messages; last as last">
+                                        <p *ngIf="last" class="lastMessage">{{ message.message | deletehtml }} </p>
+                                    </div>
+                                </div>
+                                <ng-template #no_message>
+                                    <p class="lastMessage">Noch keine Nachrichten...</p>
+                                </ng-template>
+                            </div>
+                        </div>
+                    </div>
+    
+                </div>
+    
+                <ng-template #noChats>
+                    <div *ngIf="(chatsLoaded$ | async) === false">
+                        <mat-spinner></mat-spinner>
+                    </div>
+                    <div *ngIf="(chatsLoaded$ | async) && searched === false">
+                        <h3>Sie haben noch keine Nachrichten. Starten Sie eine Konversation bezüglich einer Anzeige, um
+                            diese hier
+                            zu sehen.</h3>
+                    </div>
+                </ng-template>
+            </div>
+        </div>
+        
+    </div>
+    <div id="content-center" class="edecy-card shadowed-short">
+        <div class="app-container container-full-width" fxHide.gt-sm>
+            <div class="searchBar">
+                <form [formGroup]="searchForm" (ngSubmit)="submitSearch()">
+                    <mat-form-field appearance="outline">
+                        <input matInput placeholder="Suchen" formControlName="keyword">
+                        <mat-icon matPrefix>search</mat-icon>
+                        <mat-icon *ngIf="searchForm.value.keyword" matSuffix (click)="clearSearch()">cancel</mat-icon>
+                        <mat-icon matSuffix>tune</mat-icon>
+                    </mat-form-field>
+
+
+                    <div *ngIf="(userChats$ | async)">
+                        <p class="searchError" *ngIf="(userChats$ | async).length < 1 && searched === true">Ihre Suche
+                            ergab leider keine Treffer.</p>
+                    </div>
+
+                </form>
+            </div>
+
+            <div id="userChats" *ngIf="(userChats$ | async).length > 0; else noChats">
+                <div *ngIf="(currentUser$ | async)">
+                    <div *ngFor="let chat of (userChats$ | async)" class="singleChat" fxLayout="row"
+                        (click)="openChat(chat)">
+                        <div class="chatDetails" fxFlex="70">
+                            <p><strong>{{ chat.subject }}</strong></p>
+                            <p *ngIf="chat.partner1.uid !== (currentUser$ | async).id">
+                                <span *ngIf="chat.partner1.firstName !== ''">{{ chat.partner1.firstName }} </span>
+                                <span *ngIf="chat.partner1.lastName !== ''">{{ chat.partner1.lastName }}</span>
+                            </p>
+
+                            <p *ngIf="chat.partner2.uid !== (currentUser$ | async).id">
+                                <span *ngIf="chat.partner2.firstName !== ''">{{ chat.partner2.firstName }} </span>
+                                <span *ngIf="chat.partner2.lastName !== ''">{{ chat.partner2.lastName }}</span>
+                            </p>
+                        </div>
+
+                        <div *ngFor="let message of chat.messages; last as isLast" class="chatDate" fxFlex="30">
+                            <p *ngIf="isLast">{{ message.date }}</p>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <ng-template #noChats>
+                <div *ngIf="(chatsLoaded$ | async) === false">
+                    <mat-spinner></mat-spinner>
+                </div>
+                <div *ngIf="(chatsLoaded$ | async) && searched === false">
+                    <h3>Sie haben noch keine Nachrichten. Starten Sie eine Konversation bezüglich einer Anzeige, um
+                        diese hier
+                        zu sehen.</h3>
+                </div>
+            </ng-template>
+        </div>
+
+        <div id="desktopChat" fxHide.lt-md>
+            <app-singlechat [selectedChat$]="selectedChat$" *ngIf="chatSelected"></app-singlechat>
+            <h2 *ngIf="!chatSelected">Bitte wählen Sie einen Ihrer Chats</h2>
+        </div>
+
+    </div>
+    <div id="content-end" fxHide.lt-md>
+        <app-profile-overview></app-profile-overview>
+        <app-my-cards [embeddedMode]="true"></app-my-cards>
+    </div>
+</div>

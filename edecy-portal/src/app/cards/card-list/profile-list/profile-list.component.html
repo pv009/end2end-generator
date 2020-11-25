@@ -1,0 +1,94 @@
+<div class="mat-typography" id="profileList">
+    <div class="filterContainer" *ngIf="showFilter$ | async" fxHide.gt-sm>
+        <app-profile-filter></app-profile-filter>
+        <button mat-stroked-button color="primary" class="authButton" (click)="applyFilter()" class="searchButton">
+            Suchen
+        </button>
+    </div>
+    <div class="view-button" fxLayout="row" fxLayoutAlign="end center" fxHide.lt-md fxLayoutGap="5px">
+        <h3>Ansicht:</h3>
+        <mat-icon svgIcon="listview" [ngClass]="{'active': (listView$ | async) === true}" (click)="changeView(true)">
+        </mat-icon>
+        <mat-icon svgIcon="columnview" [ngClass]="{'active': (listView$ | async) === false}"
+            (click)="changeView(false)"></mat-icon>
+    </div>
+    <div fxLayout="column" fxLayoutAlign="center center" class="spinnerContainer"
+        *ngIf="((isLoaded$ | async) === false) && (showFilter$ | async) === false">
+        <mat-spinner></mat-spinner>
+    </div>
+
+    <div fxLayout.gt-sm="row wrap" fxLayout.lt-md="column" *ngIf="(showFilter$ | async) === false">
+        <ng-container *ngFor="let item of data">
+            <app-single-profile-es [profileToDisplay]="item" class="singleProfileContainer" [ngClass]="{'list': (listView$ | async) === true}"
+                *ngIf="(item._source.loginRequired === true && (currentUser$ | async)) || item._source.loginRequired === false || item._source.loginRequired ===''">
+            </app-single-profile-es>
+        </ng-container>
+    </div>
+
+    <div class="pagination" fxLayout="row" fxLayoutAlign="center start" fxLayoutGap="4px"
+        *ngIf="(searchKeywords$ | async).length === 0 && (categoryFilter$ | async) === null && (showFilter$ | async) === false && (cityFilter$ | async) === null">
+        <button mat-stroked-button [disabled]="(currentPage$ | async) === 1" (click)="lastPage()">
+            <mat-icon>arrow_left</mat-icon>
+            <span fxHide.lt-md>Zurück</span>
+        </button>
+
+        <button mat-stroked-button *ngIf="(currentPage$ | async) === 1" class="activePage pageNumber">1</button>
+        <button mat-stroked-button *ngIf="(currentPage$ | async) !== 1" class="pageNumber"
+            (click)="goToPage(1)">1</button>
+        <div class="spacer" *ngIf="(currentPage$ | async) > 2">
+            <h2>...</h2>
+        </div>
+        <button mat-stroked-button *ngIf="(currentPage$ | async) > 3" class="pageNumber" (click)="changePage(-2)"
+            fxHide.lt-md>{{ (currentPage$ | async) - 2 }}</button>
+        <button mat-stroked-button *ngIf="(currentPage$ | async) > 3" class="pageNumber" (click)="changePage(-1)"
+            fxHide.lt-md>{{ (currentPage$ | async) - 1 }}</button>
+
+        <button mat-stroked-button *ngIf="(currentPage$ | async) !== 1"
+            class="activePage">{{ (currentPage$ | async) }}</button>
+
+        <button mat-stroked-button *ngIf="pageNumber - (currentPage$ | async) > 1" class="pageNumber"
+            (click)="changePage(1)" fxHide.lt-md>{{ (currentPage$ | async) + 1 }}</button>
+        <button mat-stroked-button *ngIf="pageNumber - (currentPage$ | async) > 2" class="pageNumber"
+            (click)="changePage(2)" fxHide.lt-md>{{ (currentPage$ | async) + 2 }}</button>
+
+        <div class="spacer" *ngIf="pageNumber - (currentPage$ | async) > 2">
+            <h2>...</h2>
+        </div>
+
+        <button mat-stroked-button (click)="goToPage(pageNumber)" *ngIf="(currentPage$ | async) !== pageNumber"
+            fxHide.lt-md>{{ pageNumber }}</button>
+
+        <button mat-stroked-button [disabled]="(currentPage$ | async) === pageNumber" (click)="nextPage()">
+            <span fxHide.lt-md>Weiter</span>
+            <mat-icon>arrow_right</mat-icon>
+        </button>
+    </div>
+
+    <div class="paginationSearch"
+        *ngIf="((searchKeywords$ | async).length > 0 || (categoryFilter$ | async) || (cityFilter$ | async)) && (showFilter$ | async) === false"
+        fxLayout="row" fxLayoutAlign="center start" fxLayoutGap="4px">
+        <button mat-stroked-button [disabled]="(currentPage$ | async) === 1" (click)="lastPage()">
+            <mat-icon>arrow_left</mat-icon>
+            <span fxHide.lt-md>Zurück</span>
+        </button>
+
+        <button mat-stroked-button *ngIf="(currentPage$ | async) === 1" class="activePage pageNumber">1</button>
+        <button mat-stroked-button *ngIf="(currentPage$ | async) !== 1" class="pageNumber"
+            (click)="goToPage(1)">1</button>
+
+        <div class="spacer" *ngIf="(currentPage$ | async) > 2">
+            <h2>...</h2>
+        </div>
+
+        <button mat-stroked-button *ngIf="(currentPage$ | async) !== 1"
+            class="activePage">{{ (currentPage$ | async) }}</button>
+
+
+        <button mat-stroked-button
+            [disabled]="(currentPage$ | async) === pageNumber || (loadedProfiles$ | async).length < chosenSize || (profilesLoaded$ | async) === false"
+            (click)="nextPage()">
+            <span fxHide.lt-md>Weiter</span>
+            <mat-icon>arrow_right</mat-icon>
+        </button>
+    </div>
+</div>

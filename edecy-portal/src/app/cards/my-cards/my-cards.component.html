@@ -1,0 +1,160 @@
+<div class="mat-typography" id="cardHeader">
+    <div id="content-container" fxLayout="row">
+        <div id="content-start" fxHide.lt-md *ngIf="!embeddedMode">
+            <app-blog></app-blog>
+        </div>
+        <div id="content-center" [style.max-width.%]="centerWidth" [style.min-width.%]="centerWidth">
+            <div id="selection-tabs">
+
+                <div *ngIf="!inEditorView" id="tabButtons" class="shadowed-short" fxLayout="row">
+                    <div class="tabButton" [style.font-size]="fontSize" (click)="showTab('profile')"
+                        *ngIf="tabShown !== 'profile'" fxLayout="row" fxLayoutAlign="center center">
+                        Mein Profil
+                    </div>
+
+                    <div class="tabButton tabActive" [style.font-size]="fontSize" (click)="showTab('profile')"
+                        *ngIf="tabShown === 'profile'" fxLayout="row" fxLayoutAlign="center center">
+                        Mein Profil
+                    </div>
+
+                    <div class="midButton tabButton" [style.font-size]="fontSize" (click)="showTab('request')"
+                        *ngIf="tabShown !== 'request'" fxLayout="row" fxLayoutAlign="center center">
+                        Meine Gesuche
+                    </div>
+
+                    <div class="midButton tabButton  tabActive" [style.font-size]="fontSize"
+                        (click)="showTab('request')" *ngIf="tabShown === 'request'" fxLayout="row"
+                        fxLayoutAlign="center center">
+                        Meine Gesuche
+                    </div>
+                </div>
+
+                <div>
+                    <div *ngIf="(currentUser$ | async).attributes.profileId === '' && tabShown === 'profile'"
+                        [routerLink]="['/profiles/create-profile']" id="create-profile-button"  class="shadowed-short" fxLayout="column" fxLayout.gt-sm="row"
+                        fxLayoutAlign="center center">
+                        <mat-icon id="add-profile-icon">
+                            add_circle
+                        </mat-icon>
+                        <br>
+                        <h2>
+                            Profil anlegen
+                        </h2>
+                    </div>
+                    <app-profile id="profileTab" *ngIf="tabShown === 'profile'"
+                        (showColumnNavigation)="togglColumnNavigation($event)" [embedded]="showEmbedded"></app-profile>
+                </div>
+
+                <div id="requestsTab" *ngIf="tabShown === 'request'">
+                    <div class="listHeader">
+                        <div class="searchBar">
+                            <form [formGroup]="searchForm" (ngSubmit)="submitSearch()" fxHide.gt-sm>
+                                <mat-form-field appearance="outline">
+                                    <input matInput placeholder="Ihre Anzeigen durchsuchen" formControlName="keyword">
+                                    <mat-icon matPrefix>search</mat-icon>
+                                    <mat-icon *ngIf="searchForm.value.keyword" matSuffix (click)="clearSearch()">cancel
+                                    </mat-icon>
+                                </mat-form-field>
+
+                                <div *ngIf="(userCards$ | async)">
+                                    <p class="searchError" *ngIf="(userCards$ | async).length < 1 && searched === true">
+                                        Ihre
+                                        Suche ergab leider keine Treffer.
+                                    </p>
+                                </div>
+
+                            </form>
+
+
+                            <div *ngIf="(userCards$ | async)">
+                                <div class="subTabGroup shadowed-short" *ngIf="(userCards$ | async).length > 0">
+                                    <div fxLayout="row" class="subTabContainer">
+
+
+                                        <div class="subTabButton" [style.font-size.px]="fontSize"
+                                            (click)="showPublished = true" *ngIf="!showPublished" fxLayout="row"
+                                            fxLayoutAlign="center center" fxFlex="43">
+                                            Veröffentlicht
+                                        </div>
+                                        <div class="subTabButton subTabActive" (click)="showPublished = true"
+                                            *ngIf="showPublished" [style.font-size.px]="fontSize" fxLayout="row"
+                                            fxLayoutAlign="center center" fxFlex="43">
+                                            Veröffentlicht
+                                        </div>
+                                        <div class="subTabButton" [style.font-size.px]="fontSize"
+                                            (click)="showPublished = false" *ngIf="showPublished" fxLayout="row"
+                                            fxLayoutAlign="center center" fxFlex="43">
+                                            Gespeichert
+                                        </div>
+                                        <div class="subTabButton subTabActive" [style.font-size.px]="fontSize"
+                                            (click)="showPublished = false" *ngIf="!showPublished" fxLayout="row"
+                                            fxLayoutAlign="center center" fxFlex="43">
+                                            Gespeichert
+                                        </div>
+
+                                        <div fxLayout="column" fxLayoutAlign="center center" class="viewButton">
+                                            <button mat-icon-button color="secondary" *ngIf="!viewList"
+                                                (click)="changeView()">
+                                                <mat-icon>reorder</mat-icon>
+                                            </button>
+                                            <button mat-icon-button color="secondary" *ngIf="viewList"
+                                                (click)="changeView()">
+                                                <mat-icon>view_agenda</mat-icon>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div *ngIf="showPublished">
+                                    <app-new-card [cardType]="requestType" *ngIf="(userCards$ | async).length > 0"></app-new-card>
+                                    <div *ngFor="let request of userCards$ | async" class="list-item"
+                                        fxLayout.gt-sm="row wrap" fxLayout.lt-md="column">
+                                        <div class="singleMyCardContainer"
+                                            *ngIf="request.adType === 'request' && request.status === 'published' && !viewList">
+                                            <app-single-card [cardToDisplay]="request" [userCard]="userCard">
+                                            </app-single-card>
+                                        </div>
+                                        <app-card-list-item
+                                            *ngIf="request.adType === 'request' && request.status === 'published' && viewList"
+                                            [cardToDisplay]="request"></app-card-list-item>
+                                    </div>
+                                </div>
+
+                                <div *ngIf="!showPublished">
+                                    <app-new-card [cardType]="requestType" *ngIf="(userCards$ | async).length > 0"></app-new-card>
+                                    <div *ngFor="let request of userCards$ | async" fxLayout.gt-sm="row wrap"
+                                        fxLayout.lt-md="column" class="list-item">
+                                        <div class="singleMyCardContainer"
+                                            *ngIf="request.adType === 'request' && request.status === 'saved' && !viewList">
+                                            <app-single-card [cardToDisplay]="request" [userCard]="userCard">
+                                            </app-single-card>
+                                        </div>
+
+                                        <app-card-list-item
+                                            *ngIf="request.adType === 'request' && request.status === 'saved' && viewList"
+                                            [cardToDisplay]="request"></app-card-list-item>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <div *ngIf="(userCards$ | async)">
+                                <div *ngIf="(userCards$ | async).length < 1 && !searched">
+                                    <h2 id="noMessages">Sie haben noch keine Anzeigen erstellt. Erstellen Sie eine, um
+                                        Sie hier zu sehen:
+                                    </h2>
+                                    <app-new-card [cardType]="requestType"></app-new-card>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div id="content-end" fxHide.lt-md *ngIf="!embeddedMode">
+            </div>
+        </div>
+
+    </div>

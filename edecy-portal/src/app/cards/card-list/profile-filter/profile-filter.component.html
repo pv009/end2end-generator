@@ -1,0 +1,52 @@
+<div class="filter-card edecy-card categoryfilter">
+    <h3>Fachliche Zuordnung</h3>
+    
+    <form>
+        <mat-form-field>
+          <mat-label>Kategorie</mat-label>
+          <input type="text" matInput [formControl]="categoryField" [matAutocomplete]="autoCategory">
+          <mat-icon matSuffix (click)="clearCategory()" *ngIf="categoryFilter$ | async">clear</mat-icon>
+          <mat-autocomplete autoActiveFirstOption #autoCategory="matAutocomplete" (optionSelected)="setCategory()">
+            <mat-option *ngFor="let category of filteredCategories | async" [value]="category">
+              {{category}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </form>
+</div>
+
+<div class="filter-card edecy-card categoryfilter">
+  <h3>Stadt / Ort</h3>
+  
+  <form>
+      <mat-form-field>
+        <mat-label>Stadt</mat-label>
+        <input type="text" matInput [formControl]="cityField" [matAutocomplete]="autoCity">
+        <mat-icon matSuffix (click)="clearCity()" *ngIf="cityFilter$ | async">clear</mat-icon>
+        <mat-autocomplete autoActiveFirstOption #autoCity="matAutocomplete" (optionSelected)="setCity()">
+          <mat-option *ngFor="let city of filteredCities | async" [value]="city">
+            {{city}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </form>
+</div>
+
+
+<div class="filter-card edecy-card">
+    <h3>Typ der Einrichtung</h3>
+    <mat-radio-group fxLayout="column" [(ngModel)]="filteredPublic" >
+        <mat-radio-button [value]="true" (change)="applyFilter('public')">
+            Öffentliche Einrichtung
+        </mat-radio-button>
+        <mat-radio-button [value]="false" (change)="applyFilter('private')">
+            Private Einrichtung
+        </mat-radio-button>
+    </mat-radio-group>
+
+    <p class="removePublicFilter" (click)="resetPublicFilter()">Filter entfernen</p>
+</div>
+
+<div class="remove-filter" *ngIf="categoryFilter$ | async">
+    <p (click)="resetFilter()">Alle Filter entfernen</p>
+</div>

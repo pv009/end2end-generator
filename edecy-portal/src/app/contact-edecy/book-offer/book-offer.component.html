@@ -1,0 +1,269 @@
+<app-currentpage [currentPage]="currentPage" fxHide.gt-sm></app-currentpage>
+
+<div fxLayout="row" fxLayoutAlign="center start">
+    <div fxFlex="50" fxFlex.lt-md="98" class="mat-typography half-screen-container top-container" fxLayout="column"
+        fxLayoutGap="20px" fxLayoutAlign="space-evenly stretch">
+        <form [formGroup]="bookingForm" fxLayout="column" fxLayoutGap="15px" fxLayoutAlign="space-evenly stretch">
+
+            <mat-card fxLayout="column">
+                <mat-card-title fxHide.lt-md>Bestellformular</mat-card-title>
+                <mat-card-subtitle>Wir freuen uns auf die Zusammenarbeit. Sollten Sie noch Fragen haben, stehen wir
+                    Ihnen gerne zur Verfügung.</mat-card-subtitle>
+                <mat-form-field fxFlex="50" fxFlex.lt-md="100"> 
+                    <mat-label><strong>Auswahl des Grundtarifs</strong></mat-label>
+                    <mat-select [(value)]="offer" (selectionChange)="changedOffer($event)">
+                        <mat-option value="Edecy Basic">Edecy Basic</mat-option>
+                        <mat-option value="Edecy Premium">Edecy Premium</mat-option>
+                        <mat-option value="Edecy Premium+">Edecy Premium+</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <h2 *ngIf="offer !== ''" class="offerHeading">Tarifbeschreibung:</h2>
+                <p class="offerDescription" *ngIf="offer === 'Edecy Basic'">
+                    Plattformnutzung & einmaliger Kooperationspartner-match
+                </p>
+                <p class="offerDescription" *ngIf="offer === 'Edecy Premium'">
+                    Dauerhaft automatisierte Matches & Kick-Off-Workshop
+                </p>
+                <p class="offerDescription" *ngIf="offer === 'Edecy Premium+'">
+                    Unbegrenzte Partnersuche & Projektbegleitung
+                </p>
+
+
+                <button mat-flat-button color="primary" (click)="showVoucher = !showVoucher">Haben Sie einen
+                    Rabattcode?</button>
+                <mat-form-field *ngIf="showVoucher">
+                    <input matInput placeholder="Bitte Rabattcode eingeben" formControlName="promocode">
+                    <mat-icon *ngIf="promocodeCorrect" matSuffix class="promoCheck">check</mat-icon>
+                </mat-form-field>
+            </mat-card>
+
+            <mat-card>
+                <h2>Rechnungsdetails</h2>
+                <mat-form-field>
+                    <input matInput placeholder="Vor- und Nachname*" formControlName="partner">
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput placeholder="E-Mail*" formControlName="email">
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput placeholder="Organisationsname*" formControlName="organisation">
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput placeholder="Branche" formControlName="branche">
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput placeholder="Telefon" formControlName="telephone">
+                </mat-form-field>
+
+                <div class="adressData">
+                    <div fxLayout.gt-sm="row" fxLayout.lt-md="column">
+                        <mat-form-field>
+                            <input matInput placeholder="Straße*" formControlName="street">
+                        </mat-form-field>
+                        <mat-form-field style="width: 150px">
+                            <input matInput placeholder="Hausnummer*" formControlName="streetNo">
+                        </mat-form-field>
+                    </div>
+                    <div fxLayout.gt-sm="row" fxLayout.lt-md="column">
+                        <mat-form-field style="width: 150px">
+                            <input matInput placeholder="PLZ*" formControlName="plz">
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input matInput placeholder="Ort*" formControlName="city">
+                        </mat-form-field>
+                    </div>
+                </div>
+
+
+            </mat-card>
+            <mat-card fxLayout="column" fxLayoutAlign=" start">
+                <h2>Wie sind Sie auf Edecy aufmerksam geworden (optional)?</h2>
+
+                <mat-checkbox class="wordwrap" *ngFor="let item of waysToFindEdecy; let i = index"
+                    [checked]="foundEdecy.indexOf(item) > -1" (change)="changeCheckbox($event)" [value]="item">
+                    {{ item }}
+                </mat-checkbox>
+                <div fxLayout="row">
+                    <mat-checkbox style="padding-top: 10px"></mat-checkbox>
+
+                    <mat-form-field style="width: 200px; margin-top: -5px; margin-left: 10px">
+                        <input matInput placeholder="Sonstiges" formControlName="foundEdecyOther">
+                    </mat-form-field>
+                </div>
+            </mat-card>
+            <mat-card fxLayout="column" fxLayoutGap="15px" fxLayoutAlign="space-between start">
+                <mat-radio-group aria-label="Select how you want to pay for the service">
+                    <mat-radio-button [checked]="true">Bestellung auf Rechnung</mat-radio-button>
+                </mat-radio-group>
+
+                <mat-checkbox [checked]="acceptedTos" (change)="acceptedTos = !acceptedTos">
+                    Mit meiner Buchung akzeptiere ich die Nutzungsbedingungen.
+                </mat-checkbox>
+                <a class="blue" [routerLink]="['/terms-of-use']" target="_blank">Nutzungsbedingungen aurufen</a>
+            </mat-card>
+
+            <mat-card fxHide.gt-sm *ngIf="netSum || offer">
+                <mat-card-title>Ihre Auswahl</mat-card-title>
+                <mat-card-subtitle>Zusammenfassung</mat-card-subtitle>
+                <table style="width: 100%;">
+                    <tr *ngIf="offer">
+                        <td>
+                            <p>{{offer}}</p>
+                        </td>
+                        <td>
+                            <p class="textRight">{{ basicOfferPrice | currency: 'EUR': 'symbol': '1.2-2': 'de' }}</p>
+                        </td>
+                    </tr>
+                    <tr *ngIf="promocodeCorrect">
+                        <td>
+                            <p>abzgl. Rabattcode</p>
+                        </td>
+                        <td>
+                            <p class="textRight">-{{ discount | currency: 'EUR': 'symbol': '1.2-2': 'de' }} €</p>
+                        </td>
+                    </tr>
+                    <tr *ngIf="promocodeCorrect">
+                        <td>
+                            <p>Summe Netto</p>
+                        </td>
+                        <td>
+                            <p class="textRight">{{ offerSum - discount  | currency: 'EUR': 'symbol': '1.2-2': 'de' }}
+                            </p>
+                        </td>
+                    </tr>
+                    <tr *ngIf="!promocodeCorrect">
+                        <td>
+                            <p>Summe Netto</p>
+                        </td>
+                        <td>
+                            <p class="textRight">{{ offerSum | currency: 'EUR': 'symbol': '1.2-2': 'de' }}</p>
+                        </td>
+                    </tr>
+                    <tr *ngIf="promocodeCorrect">
+                        <td>
+                            <p>Umsatzsteuer 16%</p>
+                        </td>
+                        <td>
+                            <p class="textRight">{{ (netSum * 0.16) | currency: 'EUR': 'symbol': '1.2-2': 'de' }}</p>
+                        </td>
+                    </tr>
+                    <tr *ngIf="!promocodeCorrect">
+                        <td>
+                            <p>Umsatzsteuer 16%</p>
+                        </td>
+                        <td>
+                            <p class="textRight">{{ (offerSum * 0.16) | currency: 'EUR': 'symbol': '1.2-2': 'de' }}</p>
+                        </td>
+                    </tr>
+                    <tr *ngIf="promocodeCorrect">
+                        <td>
+                            <p><strong>Rechnungsbetrag</strong></p>
+                        </td>
+                        <td>
+                            <p class="textRight">
+                                <strong>{{ (netSum * 1.16) | currency: 'EUR': 'symbol': '1.2-2': 'de' }}</strong></p>
+                        </td>
+                    </tr>
+                    <tr *ngIf="!promocodeCorrect">
+                        <td>
+                            <p><strong>Rechnungsbetrag</strong></p>
+                        </td>
+                        <td>
+                            <p class="textRight">
+                                <strong>{{ (offerSum * 1.16) | currency: 'EUR': 'symbol': '1.2-2': 'de' }}</strong></p>
+                        </td>
+                    </tr>
+                </table>
+            </mat-card>
+
+            <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="end none">
+                <button mat-flat-button color="primary" (click)="bookOffer()"
+                    [disabled]="bookingForm.invalid || !acceptedTos">
+                    Jetzt buchen
+                </button>
+            </div>
+            <p class="mandatoryFields">Die mit * gekennzeichneten Felder sind Pflichtfelder.</p>
+
+        </form>
+
+
+    </div>
+
+    <div fxHide.lt-md class="topContainer summaryContainer" *ngIf="netSum || offer">
+        <mat-card>
+            <mat-card-title>Ihre Auswahl</mat-card-title>
+            <mat-card-subtitle>Zusammenfassung</mat-card-subtitle>
+            <table style="width: 100%;">
+                <tr *ngIf="offer">
+                    <td>
+                        <p>{{offer}}</p>
+                    </td>
+                    <td>
+                        <p class="textRight">{{ basicOfferPrice | currency: 'EUR': 'symbol': '1.2-2': 'de' }}</p>
+                    </td>
+                </tr>
+                <tr *ngIf="promocodeCorrect">
+                    <td>
+                        <p>abzgl. Rabattcode</p>
+                    </td>
+                    <td>
+                        <p class="textRight">-{{ discount | currency: 'EUR': 'symbol': '1.2-2': 'de' }} €</p>
+                    </td>
+                </tr>
+                <tr *ngIf="promocodeCorrect">
+                    <td>
+                        <p>Summe Netto</p>
+                    </td>
+                    <td>
+                        <p class="textRight">{{ offerSum - discount  | currency: 'EUR': 'symbol': '1.2-2': 'de' }}</p>
+                    </td>
+                </tr>
+                <tr *ngIf="!promocodeCorrect">
+                    <td>
+                        <p>Summe Netto</p>
+                    </td>
+                    <td>
+                        <p class="textRight">{{ offerSum | currency: 'EUR': 'symbol': '1.2-2': 'de' }}</p>
+                    </td>
+                </tr>
+                <tr *ngIf="promocodeCorrect">
+                    <td>
+                        <p>Umsatzsteuer 16%</p>
+                    </td>
+                    <td>
+                        <p class="textRight">{{ (netSum * 0.16) | currency: 'EUR': 'symbol': '1.2-2': 'de' }}</p>
+                    </td>
+                </tr>
+                <tr *ngIf="!promocodeCorrect">
+                    <td>
+                        <p>Umsatzsteuer 16%</p>
+                    </td>
+                    <td>
+                        <p class="textRight">{{ (offerSum * 0.16) | currency: 'EUR': 'symbol': '1.2-2': 'de' }}</p>
+                    </td>
+                </tr>
+                <tr *ngIf="promocodeCorrect">
+                    <td>
+                        <p><strong>Rechnungsbetrag</strong></p>
+                    </td>
+                    <td>
+                        <p class="textRight">
+                            <strong>{{ (netSum * 1.16) | currency: 'EUR': 'symbol': '1.2-2': 'de' }}</strong></p>
+                    </td>
+                </tr>
+                <tr *ngIf="!promocodeCorrect">
+                    <td>
+                        <p><strong>Rechnungsbetrag</strong></p>
+                    </td>
+                    <td>
+                        <p class="textRight">
+                            <strong>{{ (offerSum * 1.16) | currency: 'EUR': 'symbol': '1.2-2': 'de' }}</strong></p>
+                    </td>
+                </tr>
+            </table>
+        </mat-card>
+
+    </div>
+
+
+</div>

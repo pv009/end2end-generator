@@ -1,0 +1,327 @@
+<app-currentpage [currentPage]="currentPage" fxHide.gt-sm></app-currentpage>
+
+<div class="mat-typography" fxLayout="row" fxLayoutAlign="center start">
+    <div class="main-container" fxFlex.lt-md="100" fxFlex.gt-sm="65">
+        <div class="introText limited-characters" fxLayout="column" fxLayoutAlign="start center">
+            <h1 fxHide.lt-md>Preise</h1>
+
+            <h2 class="slogan">Edecy – Gemeinsam für Fortschritt & Innovation</h2>
+
+            <p>
+                In einer komplexen und interdisziplinären Welt ist kooperative Forschung der Schlüssel zu Fortschritt
+                und
+                Innovation. Edecy möchte diese Erkenntnis konsequent in die Forschungspraxis umsetzen. Finden Sie jetzt
+                Ihren idealen Forschungspartner!
+            </p>
+
+        </div>
+
+        <div class="tab-navigation">
+            <div id="tabButtons" class="shadowed-short" fxLayout="row">
+                <div class="tabButton" (click)="showTab('Basic')" *ngIf="categoryShown !== 'Basic'" fxLayout="column"
+                    fxLayoutAlign="center center">
+                    <p>
+                        Basic
+                    </p>
+                </div>
+
+                <div class="tabButton tabActive" *ngIf="categoryShown === 'Basic'" fxLayout="column"
+                    fxLayoutAlign="center center" style="border-top: 2px solid #00aadd">
+                    <p style="color: #00aadd">
+                        Basic
+                    </p>
+                </div>
+
+                <div class="tabButton" (click)="showTab('Premium')" *ngIf="categoryShown !== 'Premium'"
+                    fxLayout="column" fxLayoutAlign="center center">
+                    <p>
+                        Premium
+                    </p>
+                </div>
+
+                <div class="tabButton tabActive" *ngIf="categoryShown === 'Premium'" fxLayout="column"
+                    fxLayoutAlign="center center" style="border-top: 2px solid #ea504b">
+                    <p style="color: #ea504b">
+                        Premium
+                    </p>
+                </div>
+                <div class="tabButton" (click)="showTab('Premium+')" *ngIf="categoryShown !== 'Premium+'"
+                    fxLayout="column" fxLayoutAlign="center center">
+                    <p>
+                        Premium+
+                    </p>
+                </div>
+
+                <div class="tabButton tabActive" *ngIf="categoryShown === 'Premium+'" fxLayout="column"
+                    fxLayoutAlign="center center" style="border-top: 2px solid #f8b133">
+                    <p style="color: #f8b133">
+                        Premium+
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="package-infos shadowed-short">
+            <div class="basic-infos" fxLayout.gt-sm="row" fxLayout.lt-md="column-reverse"
+                *ngIf="categoryShown === 'Basic'">
+                <div class="overview" fxLayout="column" fxLayoutAlign="space-around center" fxFlex.gt-sm="33"
+                    fxHide.lt-md>
+                    <mat-icon svgIcon="basic"></mat-icon>
+                    <h2>BASIC</h2>
+                    <h3>Plattformnutzung & einmaliger <br> Kooperationspartner-Match</h3>
+                    <h1>459€</h1>
+                    <h3>einmalig</h3>
+                    <button mat-raised-button color="accent" [routerLink]="['/book-offer/basic']">Buchen</button>
+                    <a [routerLink]="['/prices']" fragment="faq-heading"><button mat-raised-button>Fragen?</button></a>
+                </div>
+
+                <div class="overview" fxLayout="column" fxLayoutAlign="space-around start" fxHide.gt-sm>
+                    <h2>BASIC</h2>
+                    <div fxLayout="row">
+                        <span>
+                            <p>Plattformnutzung & einmaliger <br> Kooperationspartner-Match</p>
+                            <span fxLayout="row">
+                                <h1>459€</h1>
+                                <h3>einmalig</h3>
+                            </span>
+                        </span>
+                        <mat-icon svgIcon="basic" fxFlex="33"></mat-icon>
+                    </div>
+                    <div fxLayout="row" class="buttons">
+                        <button mat-raised-button color="accent" [routerLink]="['/book-offer/basic']">Buchen</button>
+                        <a [routerLink]="['/prices']" fragment="faq-heading"><button
+                                mat-raised-button>Fragen?</button></a>
+                    </div>
+                </div>
+
+                <div class="details" fxLayout="column" fxLayoutAlign="space-around start">
+                    <div fxLayout="row" fxLayoutAlign="space-around center" class="single-feature">
+                        <mat-icon svgIcon="profil"></mat-icon>
+                        <span>
+                            <p>Profileinrichtung & Projektgesuch</p>
+                            <p>Spezialisierung, Entwicklungsschwerpunkte, Publikationen und weitere Bereiche</p>
+                        </span>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="space-around center" class="single-feature">
+                        <mat-icon svgIcon="erfolgsberichte"></mat-icon>
+                        <span>
+                            <p>Monatliche Erfolgsberichte</p>
+                            <p>Profilansichten, Gesuchsansprachen und Übersicht ‚in der Suche gefunden‘</p>
+                        </span>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="space-around center" class="single-feature">
+                        <mat-icon svgIcon="profilsichtbarkeit"></mat-icon>
+                        <span>
+                            <p>Optimierte Profilsichtbarkeit</p>
+                            <p>Spezialisierung, Entwicklungsschwerpunkte, Publikationen und weitere Bereiche</p>
+                        </span>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="space-around center" class="single-feature manual-basic">
+                        <mat-icon svgIcon="match-partner"></mat-icon>
+                        <span>
+                            <p>Match & Qualifizierung eines Partners</p>
+                            <p>Edecy begleitet Sie von der Erstellung Ihres individuellen Kooperationsprofils über die
+                                Vorqualifizierung fachlich geeigneter Partner bis hin zur Organisation eines
+                                Kennlerntermins zwischen Ihnen und Ihrem Kooperationspartner.</p>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="premium-infos" fxLayout.gt-sm="row" fxLayout.lt-md="column-reverse"
+                *ngIf="categoryShown === 'Premium'">
+                <div class="overview" fxLayout="column" fxLayoutAlign="space-around center" fxFlex.gt-sm="33"
+                    fxHide.lt-md>
+                    <mat-icon svgIcon="premium"></mat-icon>
+                    <h2>PREMIUM</h2>
+                    <h3>Dauerhaft automatisierte Matches &<br> & Kick-Off-Workshop</h3>
+                    <span fxLayout="row">
+                        <h1>799€</h1>
+                        <h3>/ Jahr</h3>
+                    </span>
+                    <h3>oder 66,58€ / Monat</h3>
+                    <button mat-raised-button color="primary" [routerLink]="['/book-offer/premium']">Buchen</button>
+                    <a [routerLink]="['/prices']" fragment="faq-heading"><button mat-raised-button>Fragen?</button></a>
+                </div>
+
+                <div class="overview" fxLayout="column" fxLayoutAlign="space-around start" fxHide.gt-sm>
+                    <h2>PREMIUM</h2>
+                    <div fxLayout="row">
+                        <span>
+                            <p>Dauerhaft automatisierte Matches &<br> & Kick-Off-Workshop</p>
+                            <span fxLayout="row">
+                                <h1>799€</h1>
+                                <h3>/ Jahr</h3>
+                            </span>
+                            <h4>oder 66,58€ / Monat</h4>
+                        </span>
+                        <mat-icon svgIcon="premium" fxFlex="33"></mat-icon>
+                    </div>
+                    <div fxLayout="row" class="buttons">
+                        <button mat-raised-button color="primary" [routerLink]="['/book-offer/premium']">Buchen</button>
+                        <a [routerLink]="['/prices']" fragment="faq-heading"><button
+                                mat-raised-button>Fragen?</button></a>
+                    </div>
+                </div>
+
+                <div class="details" fxLayout="column" fxLayoutAlign="space-around start">
+                    <div fxLayout="row" fxLayoutAlign="space-around center" class="single-feature">
+                        <mat-icon svgIcon="basic"></mat-icon>
+                        <span>
+                            <p>inkl. BASIC</p>
+                            <p>Profileinrichtung & Projektgesuch, Monatliche Erfolgsberichte, Optimierte
+                                Profilsichtbarkeit, Match & Qualifizierung eines Partners</p>
+                        </span>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="space-around center" class="single-feature">
+                        <mat-icon svgIcon="beratung"></mat-icon>
+                        <span>
+                            <p>Persönlicher Kooperationsberater</p>
+                            <p>Fester Ansprechpartner und regelmäßige Abstimmung</p>
+                        </span>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="space-around center" class="single-feature">
+                        <mat-icon svgIcon="automatisierte_empfehlungen"></mat-icon>
+                        <span>
+                            <p>Automatisierte Empfehlungen</p>
+                            <p>Regelmäßige, passende Vorschläge für Partner und Projekte</p>
+                        </span>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="space-around center" class="single-feature">
+                        <mat-icon svgIcon="projektgesuche"></mat-icon>
+                        <span>
+                            <p>Bis zu drei Projektgesuche</p>
+                            <p>Bis zu drei Gesuche, die automatisch passenden Partnern vorgeschlagen werden</p>
+                        </span>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="space-around center" class="single-feature manual-premium">
+                        <mat-icon svgIcon="kickoff-workshop"></mat-icon>
+                        <span>
+                            <p>Kontaktqualifizierung & Kick-Off- Workshop</p>
+                            <p>Organisation und Moderation des Kennlerntreffens sowie eines Kickoff Workshops für das
+                                Projekt. Anschließend erfolgt die Entwicklung einer Kooperations-Roadmap und Edecy
+                                bleibt als fester Ansprechpartner bestehen.</p>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="premium-plus-infos" fxLayout.gt-sm="row" fxLayout.lt-md="column-reverse"
+                *ngIf="categoryShown === 'Premium+'">
+                <div class="overview" fxLayout="column" fxLayoutAlign="space-around center" fxFlex.gt-sm="33"
+                    fxHide.lt-md>
+                    <mat-icon svgIcon="premiumplus"></mat-icon>
+                    <h2>PREMIUM+</h2>
+                    <h3>Unbegrenzte Partnersuche &<br>Projektbegleitung</h3>
+                    <span fxLayout="row">
+                        <p style="margin-top: 80px; margin-right: 5px">ab</p><h1>1799€</h1>
+                        <h3>/ Jahr</h3>
+                    </span>
+                    <h3>oder ab 149,92€ / Monat</h3>
+                    <button mat-raised-button color="accent" [routerLink]="['/book-offer/premium-plus']">Buchen</button>
+                    <a [routerLink]="['/prices']" fragment="faq-heading"><button mat-raised-button>Fragen?</button></a>
+                </div>
+
+                <div class="overview" fxLayout="column" fxLayoutAlign="space-around start" fxHide.gt-sm>
+                    <h2>PREMIUM+</h2>
+                    <div fxLayout="row">
+                        <span>
+                            <p>Unbegrenzte Partnersuche &<br>Projektbegleitung</p>
+                            <span fxLayout="row">
+                                <p style="margin-top: 27px; margin-right: 5px">ab</p><h1>1799€</h1>
+                                <h3>/ Jahr</h3>
+                            </span>
+                            <h4>oder 149,92€ / Monat</h4>
+                        </span>
+                        <mat-icon svgIcon="premiumplus" fxFlex="33"></mat-icon>
+                    </div>
+                    <div fxLayout="row" class="buttons">
+                        <button mat-raised-button color="accent"
+                            [routerLink]="['/book-offer/premium-plus']">Buchen</button>
+                        <a [routerLink]="['/prices']" fragment="faq-heading"><button
+                                mat-raised-button>Fragen?</button></a>
+                    </div>
+                </div>
+
+                <div class="details" fxLayout="column" fxLayoutAlign="space-around start">
+                    <div fxLayout="row" fxLayoutAlign="space-around center" class="single-feature">
+                        <mat-icon svgIcon="basic"></mat-icon>
+                        <span>
+                            <p>inkl. BASIC</p>
+                            <p>Profileinrichtung & Projektgesuch, Monatliche Erfolgsberichte, Optimierte
+                                Profilsichtbarkeit, Match & Qualifizierung eines Partners</p>
+                        </span>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="space-around center" class="single-feature">
+                        <mat-icon svgIcon="premium"></mat-icon>
+                        <span>
+                            <p>inkl. PREMIUM</p>
+                            <p>Persönlicher Kooperationsberater, Automatisierte Empfehlungen, Bis zu drei
+                                Projektgesuche, Kontaktqualifizierung und Kick-Off-Workshop</p>
+                        </span>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="space-around center" class="single-feature">
+                        <mat-icon svgIcon="managed-by"></mat-icon>
+                        <span>
+                            <p>Managed-by-Edecy Service</p>
+                            <p>Wir stellen auf Wunsch Gesuche ein, pflegen diese sowie Ihr Profil und übernehmen die
+                                Partnerkommunikation</p>
+                        </span>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="space-around center" class="single-feature">
+                        <mat-icon svgIcon="fordermittel-matches"></mat-icon>
+                        <span>
+                            <p>Fördermittel-Matches</p>
+                            <p>Regelmäßige Vorschläge passender Förderprogramme</p>
+                        </span>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="space-around center" class="single-feature">
+                        <mat-icon svgIcon="projektgesuche-unlimited"></mat-icon>
+                        <span>
+                            <p>Unbegrenzte Projektgesuche</p>
+                            <p>Unbegrenzt Gesuche einstellen, die automatisch passenden Partnern vorgeschlagen werden
+                            </p>
+                        </span>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="space-around center" class="single-feature manual-premium-plus">
+                        <mat-icon svgIcon="projektbegleitung"></mat-icon>
+                        <span>
+                            <p>Projektbegleitung</p>
+                            <p>Vollständige Projektbegleitung einer unbegrenzten Anzahl von Matches und Kooperationen
+                                durch Ihren persönlichen Innovationsberater. Außerdem erfolgt die Evaluation geeigneter
+                                Förderinstrumente inkl. der Aufbereitung des Antragsprozesses bei dem Projektträger.</p>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="register" fxLayout="column" fxLayoutAlign="center start">
+            <h2>Kostenlos registrieren & ausprobieren!</h2>
+            <h3>Sie wollen die Plattform zunächst besser kennenlernen? <br>
+                <strong>Edecy bietet kostenlosen Zugriff auf alle aktiven Kooperationsgesuche!</strong>
+                <br><br>
+                Auch die Nutzung der Suchfunktionen, die Kontaktaufnahme über die Plattform sowie die Anlage eines
+                Forschungsprofils sind kostenlos.
+            </h3>
+            <button mat-raised-button color="primary" (click)="navigateToRegister()">Jetzt kostenlos
+                registrieren</button>
+        </div>
+
+        <h1 id="faq-heading">Wie findet Edecy Ihren idealen Kooperationspartner?</h1>
+        <div class="faq">
+            <app-faq-template [faqTitle]="faqTitle"></app-faq-template>
+        </div>
+
+
+        <div class="beratung" fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutAlign.gt-sm="start center"
+            fxLayoutAlign.lt-md="center center" fxLayoutGap="8%">
+            <h2 fxFlex.gt-sm="46">Weitere Fragen? <br fxHide.gt-sm><span fxHide.lt-md>-</span> Wir beraten Sie gerne!
+            </h2>
+            <a href="https://www.edecy.de/beratung" target="_blank" fxFlex.gt-sm="46">
+                <button mat-raised-button color="primary">Jetzt unverbindliches<br fxHide.gt-sm> Beratungsgespräch
+                    buchen!</button>
+            </a>
+        </div>
+    </div>
+</div>

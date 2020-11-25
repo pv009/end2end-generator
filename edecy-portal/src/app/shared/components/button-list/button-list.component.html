@@ -1,0 +1,8 @@
+<mat-action-list fxLayout="column" fxLayoutAlign="space-between center" class="mat-typography">
+  <button mat-list-item [ngClass]="{'buttonOpened': opened || subButton}">
+    <span class="mat-typography menuButton" [ngClass]="{'subMenuButton' : subButton }"fxFlex="80" fxLayoutAlign="start center">{{ text }}</span>
+    <mat-icon *ngIf="showArrow && opened" class="arrow" fxFlex="20" fxLayoutAlign="end center">keyboard_arrow_down</mat-icon>
+    <mat-icon *ngIf="showArrow && !opened" class="arrow" fxFlex="20" fxLayoutAlign="end center">keyboard_arrow_right</mat-icon>
+    <mat-divider></mat-divider>
+  </button>
+</mat-action-list>

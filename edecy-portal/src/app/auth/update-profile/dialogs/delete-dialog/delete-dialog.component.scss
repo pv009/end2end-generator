@@ -1,0 +1,18 @@
+.dialog__container {
+  margin: 60px 0px;
+
+  h1 {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  button {
+    color: var(--edecy-darkblue);
+  }
+
+  @media screen and (min-width: 960px) {
+    br {
+      display: none;
+    }
+  }
+}

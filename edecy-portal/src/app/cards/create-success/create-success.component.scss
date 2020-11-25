@@ -1,0 +1,49 @@
+create-success-view {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+h1 {
+    margin-bottom: 50px;
+    font-size: 29px;
+}
+
+.link-button {
+    border: 1px solid #979797;
+    border-radius: 5px 5px 5px 5px;
+    border-style: solid;
+    -moz-border-radius: 5px 5px 5px 5px;
+    -webkit-border-radius: 5px 5px 5px 5px;
+    background-color: white;
+    padding: 10px;
+    margin: 5px;
+}
+
+.link-button:hover {
+    cursor: pointer;
+}
+
+.actionButton:first-of-type {
+    margin-right: 20px;
+}
+
+mat-card {
+    padding: 80px 20px 80px 20px;
+    text-align: center;
+}
+
+mat-icon {
+    font-size: 35px;
+    height: 40px;
+    width: 40px;
+}
+
+h2 {
+    font-size: 16px;
+}
+
+p {
+    font-size: 14px;
+}

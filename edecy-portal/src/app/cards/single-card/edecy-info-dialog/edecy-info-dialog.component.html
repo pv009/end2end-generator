@@ -1,0 +1,10 @@
+<div mat-dialog-content id="edecy-info-dialog" class="mat-typography" fxLayout="column" fxLayoutAlign="center center">
+    <button mat-icon-button mat-dialog-close (click)="closeDialog()" id="closeButton">
+        <mat-icon>close</mat-icon>
+    </button>
+    <p id="edecy-info">
+        Wenn Sie möchten, suchen wir auch aktiv für Sie nach Projektpartnern.
+        <br>
+        Mehr Informationen <a [routerLink]="['/prices']">hier</a>.
+    </p>
+</div>

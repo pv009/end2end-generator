@@ -1,0 +1,63 @@
+#tabButtons {
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.tabButton {
+    width: 33.33%;
+    color: black;
+    height: 50px;
+
+    h1 {
+        margin: 0 !important;
+    }
+}
+
+.tabButton:hover {
+    cursor: pointer;
+}
+
+#content-center {
+    max-width: 50%;
+    min-width: 50%;
+}
+
+#content-start, #content-end {
+    min-width: 23%;
+    width: 23%;
+}
+
+.tabButton {
+    background-color: white;
+}
+
+.tabActive {
+    border-top: 2px solid var(--edecy-blue);
+}
+
+.legalContent {
+    padding: 20px 30px 20px 30px;
+    border-top: none;
+
+    h1 {
+        color: var(--edecy-darkblue);
+        margin-block-start: 0px;
+        margin-block-end: 30px;
+    }
+
+    h2 {
+        color: var(--edecy-blue);
+        margin-block-start: 30px;
+        margin-block-end: 10px;
+    }
+
+    h3 {
+        color: var(--edecy-darkblue);
+        margin-block-start: 10px;
+        margin-block-end: 0px;
+    }
+
+    p {
+        color: black;
+    }
+}

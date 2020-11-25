@@ -1,0 +1,108 @@
+<div class="mat-typography singleProfile" fxLayout="{{ (listView$ | async) ? 'row' : 'column' }}"
+    fxLayoutAlign="start center" (click)="openProfile()"
+    (mouseleave)="switchingTags = false" [ngClass]="{'list-view': (listView$ | async) === true}">
+    <div class="rate-flag" *ngIf="userRate !== ''"
+        [ngClass]="{'blue': userRate === 'basic', 'red': userRate === 'premium', 'gold': userRate === 'premium-plus'}"
+        fxLayout="column" fxLayoutAlign="center center">
+        <p *ngIf="userRate === 'basic'">Basic</p>
+        <p *ngIf="userRate === 'premium'">Premium</p>
+        <p *ngIf="userRate === 'premium-plus'">Premium Plus</p>
+    </div>
+    <div class="profilePic" *ngIf="profileToDisplay._source.logo_url !== ''">
+        <img src="{{profileToDisplay._source.logo_url}}" alt="Logo der Organisation oder Einrichtung" />
+    </div>
+    <div class="profilePic" *ngIf="profileToDisplay._source.status === 'external'">
+        <img src="../../../../../assets/images/crawled_profile.png" alt="Logo der Organisation oder Einrichtung"
+            class="dummypic" />
+    </div>
+
+    <div fxLayout="column" class="list-container">
+        <h3>{{ profileToDisplay._source.institute_name }}</h3>
+        <h3 class="organization">{{ profileToDisplay._source.organization }}</h3>
+    </div>
+
+    <div fxLayout="column" class="list-container">
+        <div class="specialtyImage" [ngClass]="{'mobile-hidden': profileToDisplay._source.status === 'external'}">
+            <mat-icon svgIcon="interdiz"
+                *ngIf="profileToDisplay._source.subject_areas.indexOf('Interdisziplinäres') > -1">
+            </mat-icon>
+            <mat-icon svgIcon="rechtswissenschaften"
+                *ngIf="profileToDisplay._source.subject_areas.indexOf('Rechtswissenschaften, Jurisprudenz') > -1">
+            </mat-icon>
+            <mat-icon svgIcon="wirtschaft"
+                *ngIf="profileToDisplay._source.subject_areas.indexOf('Wirtschaftswissenschaften') > -1"></mat-icon>
+            <mat-icon svgIcon="naturwissenschaften"
+                *ngIf="profileToDisplay._source.subject_areas.indexOf('Naturwissenschaften') > -1"></mat-icon>
+            <mat-icon svgIcon="informationsw-mathe"
+                *ngIf="profileToDisplay._source.subject_areas.indexOf('Informationswissenschaften und Mathematik') > -1">
+            </mat-icon>
+            <mat-icon svgIcon="medizintechnik"
+                *ngIf="profileToDisplay._source.subject_areas.indexOf('Medizintechnik') > -1"></mat-icon>
+            <mat-icon svgIcon="ingenieur"
+                *ngIf="profileToDisplay._source.subject_areas.indexOf('Ingenieurswissenschaften') > -1"></mat-icon>
+        </div>
+        <div class="specialtyTitle" [ngClass]="{'mobile-hidden': profileToDisplay._source.status === 'external'}">
+            <h3 *ngIf="profileToDisplay._source.subject_areas.indexOf('Interdisziplinäres') > -1">Interdisziplinäres
+            </h3>
+            <h3 *ngIf="profileToDisplay._source.subject_areas.indexOf('Rechtswissenschaften, Jurisprudenz') > -1">
+                Rechtswissenschaften, Jurisprudenz</h3>
+            <h3 *ngIf="profileToDisplay._source.subject_areas.indexOf('Wirtschaftswissenschaften') > -1">
+                Wirtschaftswissenschaften</h3>
+            <h3 *ngIf="profileToDisplay._source.subject_areas.indexOf('Naturwissenschaften') > -1">Naturwissenschaften
+            </h3>
+            <h3
+                *ngIf="profileToDisplay._source.subject_areas.indexOf('Informationswissenschaften und Mathematik') > -1">
+                Informationswissenschaften und Mathematik</h3>
+            <h3 *ngIf="profileToDisplay._source.subject_areas.indexOf('Medizintechnik') > -1">Medizintechnik</h3>
+            <h3 *ngIf="profileToDisplay._source.subject_areas.indexOf('Ingenieurswissenschaften') > -1">
+                Ingenieurswissenschaften</h3>
+        </div>
+    </div>
+
+    <div fxLayout="column" class="list-container">
+        <div class="profileTagList" [ngClass]="{'mobile-hidden': profileToDisplay._source.tags.length < 1}">
+            <mat-chip-list fxLaoyut="column">
+                <ng-container *ngFor="let tag of profileToDisplay._source.tags; let i=index">
+                    <mat-chip (click)="searchTag(tag)" *ngIf="i <= tagLimitHigh && i >= tagLimitLow"
+                        [ngClass]="{'lightblue': i > 2}">
+                        {{ tag }}
+                    </mat-chip>
+                </ng-container>
+
+            </mat-chip-list>
+        </div>
+
+        <div class="metaInfos" fxLayout="row" fxLayoutAlign="center start" fxLayoutGap="5px">
+            <div *ngIf="profileToDisplay._source.public === true || profileToDisplay._source.status === 'external'">
+                <mat-icon svgIcon="school"></mat-icon>
+            </div>
+            <div *ngIf="profileToDisplay._source.public === false">
+                <mat-icon svgIcon="domain"></mat-icon>
+            </div>
+            <div *ngIf="profileToDisplay._source.orgSize !== ''" fxLayout="column" fxLayoutAlign="center center">
+                <h3>{{ profileToDisplay._source.orgSize }}</h3>
+            </div>
+        </div>
+
+        <div class="profileType" *ngIf="(listView$ | async) === false">
+            <div *ngIf="profileToDisplay._source.company_type !== ''" fxLayout="column" fxLayoutAlign="center center">
+                <h3>{{ profileToDisplay._source.company_type }}</h3>
+            </div>
+            <div *ngIf="profileToDisplay._source.institute_type !== ''" fxLayout="column" fxLayoutAlign="center center">
+                <h3>{{ profileToDisplay._source.institute_type }}</h3>
+            </div>
+        </div>
+    </div>
+
+    <div fxLayout="column" class="list-container">
+        <div class="cardCounter" [ngClass]="{'mobile-hidden': profileToDisplay._source.status === 'external'}">
+            <div *ngIf="profileToDisplay._source.source === 'edecy_mongodb' && cardRequests > 0" fxLayout="row">
+                <mat-icon svgIcon="gesuch"></mat-icon>
+                <h3>{{ cardRequests }} Gesuch<span *ngIf="cardRequests > 1">e</span></h3>
+            </div>
+        </div>
+        <div class="profileCity">
+            <h3 *ngIf="profileToDisplay._source.city !== ''">Standort: {{ profileToDisplay._source.city }}</h3>
+        </div>
+    </div>
+</div>

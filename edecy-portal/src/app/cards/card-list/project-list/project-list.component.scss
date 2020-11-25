@@ -1,0 +1,12 @@
+#filters {
+    margin-bottom: 50px;
+}
+
+::ng-deep .searchBar {
+    padding-bottom: 0px !important;
+}
+
+#search-button {
+    background-color: var(--edecy-blue);
+    color: white;
+}

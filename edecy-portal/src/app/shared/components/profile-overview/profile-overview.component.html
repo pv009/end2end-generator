@@ -1,0 +1,33 @@
+<div *ngIf="currentUser$ | async" id="user-infos" fxLayout="column" class="shadowed-short">
+    <div id="basic-infos" fxLayout="column" class="edecy-card">
+        <img *ngIf="(currentUser$ | async).attributes.orgLogo" src="{{ (currentUser$ | async).attributes.orgLogo }}"
+            width="96px" class="organisationLogo" alt="Logo der Organisation oder Einrichtung" />
+        <button id="edit-profile-button" mat-icon-button (click)="editProfile()" matTooltip="Bearbeiten" class="shadowed-short">
+            <mat-icon id="edit-profile-icon" color="secondary">edit</mat-icon>
+        </button>
+        <div fxLayout="row">
+            <div id="user-basics" fxLayout="column">
+                <h3 *ngIf="(currentUser$ | async).attributes.title">
+                    <strong>{{ (currentUser$ | async).attributes.title }}</strong></h3>
+                <span fxLayout="row">
+                    <h3 *ngIf="(currentUser$ | async).attributes.firstName">
+                        {{ (currentUser$ | async).attributes.firstName }}
+                    </h3>
+                    <h3 *ngIf="(currentUser$ | async).attributes.lastName">
+                        {{ (currentUser$ | async).attributes.lastName }}</h3>
+                </span>
+
+                <br>
+                <h3 *ngIf="(currentUser$ | async).attributes.organisation">
+                    <strong>{{ (currentUser$ | async).attributes.organisation }}</strong>
+                </h3>
+                <p *ngIf="(currentUser$ | async).attributes.orgPlz && (currentUser$ | async).attributes.orgCity">
+                    {{ (currentUser$ | async).attributes.orgPlz }} {{ (currentUser$ | async).attributes.orgCity }}
+                </p>
+
+                <p>Gebuchter Tarif: <strong>{{ currentRate }}</strong></p>
+                <button mat-flat-button [routerLink]="['/prices']" color="primary">Upgrade?</button>
+            </div>
+        </div>
+    </div>
+</div>

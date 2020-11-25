@@ -1,0 +1,15 @@
+<app-currentpage [currentPage]="currentPage" fxHide.gt-sm></app-currentpage>
+
+<div class="mat-typography app-container max-width-container">
+    <h1>Häufig gestellte Fragen</h1>
+    <app-faq-template [faqTitle]="faqTitle"></app-faq-template>
+    <div class="beratung" fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutAlign.gt-sm="start center"
+        fxLayoutAlign.lt-md="center center" fxLayoutGap="8%">
+        <h2 fxFlex.gt-sm="46">Weitere Fragen? <br fxHide.gt-sm><span fxHide.lt-md>-</span> Wir beraten Sie gerne!
+        </h2>
+        <a href="https://www.edecy.de/beratung" target="_blank" fxFlex.gt-sm="46">
+            <button mat-raised-button color="primary">Jetzt unverbindliches<br fxHide.gt-sm> Beratungsgespräch
+                buchen!</button>
+        </a>
+    </div>
+</div>

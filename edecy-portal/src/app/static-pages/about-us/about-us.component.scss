@@ -1,0 +1,32 @@
+#das-sind-wir {
+    left: 0;
+
+    h1 {
+        margin-bottom: 10px !important;
+    }
+
+    h2 {
+        margin-bottom: 6px !important;
+    }
+}
+
+h1 {
+    margin-bottom: 10px !important;
+    margin-top: 30px !important;
+}
+
+img {
+    max-width: 100%;
+    margin-top: 18px;
+    margin-bottom: 12px;
+    margin-left: 10%;
+    width: 80%;
+}
+
+p.blue {
+    color: rgb(28, 169, 227);
+}
+
+h1, h2, p, img {
+    text-align: center;
+}

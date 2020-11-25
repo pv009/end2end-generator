@@ -6,7 +6,7 @@ from bson.json_util import dumps, loads, ObjectId
 class DatabaseConnector:
     def __init__(self, data):
         self.client = MongoClient(
-            "mongodb+srv://paul:37z66aih8AwZFL@generator.m40f2.mongodb.net/e2e-generator")
+            "mongodb+srv://paul:37z66aih8AwZFL@generator.m40f2.mongodb.net/e2e-generator?ssl=true&ssl_cert_reqs=CERT_NONE")
 
         database = data['database']
         collection = data['collection']

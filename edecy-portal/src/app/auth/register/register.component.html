@@ -1,0 +1,224 @@
+<mat-dialog-content>
+  <div *ngIf="!desktopDialog" class="current-page mat-typography" fxLayout fxLayoutAlign="space-between center">
+
+    <div fxFlex="20" fxLayoutAlign="center">
+      <button mat-icon-button color="primary" (click)="lastStep()">
+        <mat-icon>arrow_back_ios</mat-icon>
+      </button>
+    </div>
+
+    <h1 fxFlex="60" fxLayoutAlign="center">Registrieren</h1>
+
+    <div fxFlex="20"></div>
+  </div>
+
+  <mat-dialog-actions id="close-button">
+    <button mat-mini-fab class="mat-elevation-z0" color="white" id="close-button" [mat-dialog-close]="true">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-dialog-actions>
+
+  <div class="app-container mat-typography">
+    <div *ngIf="registerPage == 1 || (desktopDialog && !succesfulRegistration)" class="register-block" id="emailField">
+      <h2>Wie lautet Ihre E-Mail-Adresse?</h2>
+      <form [formGroup]="registrationStep1" (ngSubmit)="goToStep2()">
+        <mat-form-field>
+          <input matInput placeholder="E-Mail" formControlName="email" required>
+          <mat-error>Bitte geben Sie Ihre E-Mail-Adresse ein.</mat-error>
+        </mat-form-field>
+
+        <p class="searchError" *ngIf="alreadyRegistered">Es gibt bereits einen Nutzer mit dieser E-Mail-Adresse</p>
+
+        <p>Diese E-Mail-Adresse ist nur für Sie sichtbar. Mit Ihr können Sie sich anmelden
+          und Ihr Passwort zurück
+          setzen.
+        </p>
+
+        <div class="phone">
+          <h3><strong>Gerne beraten wir Sie persönlich, klären ihre Fragen und erläutern Ihnen wie Edecy
+              funktioniert:</strong></h3>
+
+          <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap="15px">
+            <mat-form-field>
+              <input matInput placeholder="Telefon" formControlName="telephone">
+              <mat-error>Bitte verwenden Sie nur Zahlen und "+".</mat-error>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Wunschzeit" formControlName="phoneAvailable">
+              <mat-icon matPrefix style="margin-right: 10px">access_alarm</mat-icon>
+            </mat-form-field>
+          </div>
+          <p>Wir freuen uns über Ihr Interesse und melden uns zu Ihrem Wunschtermin bei Ihnen.</p>
+        </div>
+
+        <mat-dialog-actions>
+          <button *ngIf="!desktopDialog" mat-stroked-button color="primary" type="submit" class="authButton"
+            [disabled]="registrationStep1.invalid">
+            Weiter
+          </button>
+        </mat-dialog-actions>
+      </form>
+    </div>
+
+    <div *ngIf="(registerPage == 2 || desktopDialog) && !succesfulRegistration" class="register-block" id="nameField">
+      <h2>Wer sind Sie?</h2>
+      <form [formGroup]="registrationStep2" (ngSubmit)="goToStep3()">
+        <mat-form-field>
+          <input matInput placeholder="Anrede" formControlName="gender">
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput placeholder="Titel" formControlName="title">
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput placeholder="Vorname*" formControlName="firstName">
+          <mat-error>Bitte geben Sie Ihren Vornamen ein.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput placeholder="Nachname*" formControlName="lastName">
+          <mat-error>Bitte geben Sie Ihren Nachnamen ein.</mat-error>
+        </mat-form-field>
+
+        <mat-dialog-actions>
+          <button *ngIf="!desktopDialog" mat-stroked-button color="primary" type="submit" class="authButton"
+            [disabled]="registrationStep2.invalid">
+            Weiter
+          </button>
+        </mat-dialog-actions>
+      </form>
+    </div>
+
+
+    <div *ngIf="registerPage == 3 || (desktopDialog && !succesfulRegistration)" class="register-block"
+      id="organisationField">
+      <h2>Wo sind Sie tätig?</h2>
+      <form [formGroup]="registrationStep3" (ngSubmit)="goToStep4()">
+        <mat-form-field>
+          <input matInput placeholder="Organisation*" formControlName="organisation">
+          <mat-error>Bitte geben Sie Ihre Organisation an.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput placeholder="Straße & Hausnummer" formControlName="orgStreetNo">
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput placeholder="PLZ" formControlName="orgPlz">
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput placeholder="Ort" formControlName="orgCity">
+        </mat-form-field>
+
+        <p>Geben Sie hier die Organisation ein, die in Ihrem Profil angezeigt werden soll.</p>
+
+        <mat-dialog-actions>
+          <button *ngIf="!desktopDialog" mat-stroked-button color="primary" type="submit" class="authButton"
+            [disabled]="registrationStep3.invalid">
+            Weiter
+          </button>
+        </mat-dialog-actions>
+      </form>
+    </div>
+
+    <div *ngIf="registerPage == 4 || (desktopDialog && !succesfulRegistration)" class="register-block" id="imageField">
+      <h2>Bitte laden Sie das Logo Ihrer Organisation hoch. (optional)</h2>
+      <div id="imageInput" *ngIf="logoURL === ''">
+
+        <input type="file" name="picture" id="pictureInput" class="inputfile" (change)="fileChangeEvent($event)"
+          accept="image/*" />
+        <label for="pictureInput" fxLayout="column" fxLayoutAlign="center center">
+          <mat-icon color="secondary">add_circle</mat-icon>
+          <h2 *ngIf="croppedImage === ''">Logo hinzufügen</h2>
+          <h2 *ngIf="croppedImage !== ''">Logo ändern</h2>
+        </label>
+
+        <image-cropper *ngIf="logoURL === ''" [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true"
+          [aspectRatio]="1 / 1" [resizeToWidth]="300" format="png" (imageCropped)="imageCropped($event)"
+          (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()" [roundCropper]="true"
+          (loadImageFailed)="loadImageFailed()" style="margin-top: 10px;">
+        </image-cropper>
+
+        <h2 *ngIf="logoURL === '' && croppedImage !== ''">Vorschau:</h2>
+        <img *ngIf="logoURL === '' && croppedImage !== ''" [src]="croppedImage" id="croppedImage" alt="Vorschaubild" />
+
+
+        <mat-dialog-actions>
+          <button mat-stroked-button color="primary" class="authButton uploadButton" [disabled]="croppedImage === ''"
+            (click)="uploadPicture()" style="margin-bottom: 20px">
+            Hochladen
+          </button>
+        </mat-dialog-actions>
+      </div>
+
+      <div *ngIf="logoURL !== ''">
+        <img id="addedPicture" src="{{logoURL}}" alt="hinzugefügtes Bild" />
+        <button mat-stroked-button color="primary" class="authButton" (click)="changePicture()"
+          style="margin-bottom: 20px">
+          Bild ändern
+        </button>
+      </div>
+
+      <p>Laden Sie hier das Logo Ihrer Organisation hoch. Ob dieses in Ihren Anzeigen angezeigt werden soll, können Sie
+        flexibel entscheiden. Ihr Logo darf eine maximale Größe von 10MB besitzen.</p>
+
+      <button *ngIf="!desktopDialog" mat-stroked-button color="primary" (click)="goToStep5()" class="authButton">
+        Weiter
+      </button>
+    </div>
+
+    <div *ngIf="registerPage == 5 || (desktopDialog && !succesfulRegistration)" class="register-block"
+      id="passwordField">
+      <h2>Bitte wählen Sie ein Passwort.</h2>
+      <form [formGroup]="registrationStep4" (ngSubmit)="registerUser(false)">
+        <mat-form-field>
+          <input matInput type="password" placeholder="Passwort" formControlName="password"
+            [type]="hide ? 'password' : 'text'" required>
+          <mat-icon matSuffix (click)="hide = !hide">{{ hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+          <mat-error>Bitte geben Sie ein Passwort mit mind. 6 Zeichen ein</mat-error>
+        </mat-form-field>
+
+        <p style="margin-bottom: 30px">Ein starkes Passwort beinhaltet sowohl Groß- als auch Kleinbuchstabe,
+          Sonderzeichen
+          und Zahlen.
+          Außerdem sollte es aus mehr als 10 Zeichen bestehen.</p>
+
+
+        <mat-slide-toggle formControlName="receiveChatNewsletter" style="margin-bottom: 20px">Benachrichtigen Sie mich
+          via E-Mail<br *ngIf="!desktopDialog"> über neue
+          Chat-Nachrichten</mat-slide-toggle><br>
+
+
+        <mat-checkbox [checked]="acceptedPrivacy" (change)="acceptedPrivacy = !acceptedPrivacy"> </mat-checkbox>
+        <span class="checkbox-label">Mit meiner Registrierung akzeptiere ich die
+          <a class="blue" (click)="openPrivacyDialog()">Datenschutzrichtlinien </a> und <a class="blue"
+            (click)="openTOS()">Nutzungsbedingungen</a>.
+        </span>
+
+        <mat-dialog-actions>
+          <button mat-stroked-button color="primary" type="submit" class="authButton" (click)="registerOnDesktop()"
+            [disabled]="registrationStep1.invalid || registrationStep2.invalid || registrationStep3.invalid || registrationStep4.invalid || !acceptedPrivacy"
+            style="margin-top: 20px">
+            Los geht's
+          </button>
+        </mat-dialog-actions>
+      </form>
+    </div>
+
+    <div *ngIf="registerPage == 6 || (desktopDialog && succesfulRegistration)" class="register-block">
+      <img height="1" width="1" style="display:none;" alt=""
+        src="https://px.ads.linkedin.com/collect/?pid=2215513&conversionId=2718242&fmt=gif" />
+      <h2>Sie haben es fast geschafft! <br><br>
+        Wir haben gerade eine E-Mail an {{ newUser.email }} geschickt. <br>
+        Bitte bestätigen Sie Ihre E-Mail-Adresse.</h2>
+      <p>
+        Bitte prüfen Sie für die Aktivierungsmail auch Ihren Spam-Ordner.<br>
+        Sollten Sie keine Mail erhalten oder andere Probleme mit der Registrierung haben, wenden Sie sich bitte an
+        unseren Support.
+      </p>
+      <img src="../../../assets/logo/edecy_logo.svg" alt="Edecy Logo" />
+    </div>
+  </div>
+</mat-dialog-content>

@@ -1,0 +1,42 @@
+<div class="mat-typography shadowed-short" id="chatBar" *ngIf="router.url.indexOf('chat') < 0">
+    <div fxLayout="row" fxLayoutAlign="space-between center" id="chatTopBar" (click)="toggleChat()">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <div class="profileImage">
+                <img *ngIf="(currentUser$ | async)?.attributes?.orgLogo as userOrgLogo" src="{{userOrgLogo}}" width="100%" height="100%" alt="Ihr Profilbild" />
+            </div>
+            <h2>Nachrichten</h2>
+        </div>
+        <mat-icon>
+            question_answer
+        </mat-icon>
+
+    </div>
+
+    <div id="conversations" *ngIf="(userChats$ | async).length > 0 && (barOpened$ | async)">
+        <div *ngIf="(currentUser$ | async)">
+            <div *ngFor="let chat of (userChats$ | async)" class="singleChat" fxLayout="row" (click)="openChat(chat)">
+                <div class="partnerLogo" fxFlex="23">
+                    <ng-container *ngFor="let logo of (chatLogos$ | async)">
+                        <img *ngIf="logo.projectId === chat.projectId && logo.logoURL !== ''" class="chatLogo shadowed-short"
+                            width="45px" height="45px" src="{{ logo.logoURL }}" alt="Profilbild" />
+                        <img *ngIf="logo.projectId === chat.projectId && logo.logoURL === ''" class="chatLogo shadowed-short"
+                            width="45px" height="45px" src="../../../assets/icons/chatLogo.png" alt="Profilbild" />
+
+                    </ng-container>
+                </div>
+                <div class="chatDetails">
+                    <p class="chatTitle"><strong>{{ chat.subject }}</strong></p>
+                    <div *ngIf="chat.messages.length > 0; else no_message">
+                        <div *ngFor="let message of chat.messages; last as last">
+                            <p *ngIf="last" class="lastMessage">{{ message.message | deletehtml }} </p>
+                        </div>
+                    </div>
+                    <ng-template #no_message>
+                        <p class="lastMessage">Noch keine Nachrichten...</p>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

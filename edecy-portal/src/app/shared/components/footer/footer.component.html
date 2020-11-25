@@ -1,0 +1,92 @@
+<div class="footer" id="footer-desktop" fxHide.lt-md fxLayout="row" fxLayoutAlign="space-evenly center">
+    <div class="footer-data" fxLayout="column">
+        <p>
+            Firmensitz: Chausseestr. 88, <br>
+            10115 Berlin, Deutschland
+            <br>
+            <br>
+            <span>
+                <mat-icon>call</mat-icon> +49-(0) 30 8632151 80
+            </span>
+            <br>
+            <br>
+            <span>
+                <mat-icon>mail</mat-icon><a href="mailto:info@edecy.de">info@edecy.de</a>
+            </span>
+        </p>
+
+        <div fxLayout="row" fxLayoutAlign="space-between end" class="social-icons">
+            <a href="https://de-de.facebook.com/Edecy-257308741880773/" target="_blank" title="Edecy Facebook"><img
+                    src="../../../../assets/icons/footer/facebook.png" alt="Edecy Facebook" /></a>
+            <a href="https://www.xing.com/companies/edecyug" target="_blank" title="Edecy Xing"><img
+                    src="../../../../assets/icons/footer/xing.svg" alt="Edecy Xing" /></a>
+            <a href="https://www.linkedin.com/company/edecy" target="_blank" title="Edecy Linkedin"><img
+                    src="../../../../assets/icons/footer/linkedin.png" alt="Edecy Linkedin" /></a>
+        </div>
+
+    </div>
+
+    <div class="footer-logo">
+        <img src="../../../../assets/icons/footer/edecy_logo_white_web.svg" alt="Edecy Logo" height="190px" />
+    </div>
+
+    <div class="footer-links" fxLayout="column">
+        <div class="bmwi">
+            <img src="../../../../assets/images/bmwi_gefoerdert.png" />
+        </div>
+
+        <p fxLayout="column" fxLayoutGap="15px">
+            <a (click)="openPrivacy()">Datenschutzerklärung</a>
+            <a (click)="openImprint()">Impressum</a>
+            <a (click)="openTOS()">Nutzungsbedindungen</a>
+            <a (click)="openCookieSettings()">Cookieeinstellungen</a>
+        </p>
+
+    </div>
+</div>
+
+<div class="footer" id="footer-mobile" fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="45px" fxHide.gt-sm>
+    <div class="footer-logo">
+        <img src="../../../../assets/icons/footer/edecy_logo_white_web.svg" alt="Edecy Logo" height="105px" />
+    </div>
+
+    <div class="footer-data" fxLayout="column">
+        <p>
+            Firmensitz: Chausseestr. 88, <br>
+            10115 Berlin, Deutschland
+            <br>
+            <br>
+            <span>
+                <mat-icon>call</mat-icon> +49-(0) 30 8632151 80
+            </span>
+            <br>
+            <br>
+            <span>
+                <mat-icon>mail</mat-icon><a href="mailto:info@edecy.de">info@edecy.de</a>
+            </span>
+        </p>
+
+        <div fxLayout="row" fxLayoutAlign="space-between end" class="social-icons" fxLayoutGap="35px">
+            <a href="https://de-de.facebook.com/Edecy-257308741880773/" target="_blank" title="Edecy Facebook"><img
+                    src="../../../../assets/icons/footer/facebook.png" alt="Edecy Facebook" /></a>
+            <a href="https://www.xing.com/companies/edecyug" target="_blank" title="Edecy Xing"><img
+                    src="../../../../assets/icons/footer/xing.svg" alt="Edecy Xing" /></a>
+            <a href="https://www.linkedin.com/company/edecy" target="_blank" title="Edecy Linkedin"><img
+                    src="../../../../assets/icons/footer/linkedin.png" alt="Edecy Linkedin" /></a>
+        </div>
+
+    </div>
+
+    <img class="bmwi" src="../../../../assets/images/bmwi_gefoerdert.png" />
+
+    <div class="footer-links" fxLayout="column">
+        <p fxLayout="column" fxLayoutGap="15px">
+            <a (click)="openPrivacy()">Datenschutzerklärung</a>
+            <a (click)="openImprint()">Impressum</a>
+            <a (click)="openTOS()">Nutzungsbedindungen</a>
+            <a (click)="openCookieSettings()">Cookieeinstellungen</a>
+        </p>
+
+        
+    </div>
+</div>

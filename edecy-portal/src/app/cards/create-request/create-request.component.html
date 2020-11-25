@@ -1,0 +1,387 @@
+<div fxHide.gt-sm id="currentPage" fxLayout="row" class="mat-typography">
+    <button mat-icon-button color="primary" (click)="stepBack()" id="arrowButton">
+        <mat-icon>arrow_back_ios</mat-icon>
+    </button>
+
+    <h1 *ngIf="currentStep < 5">
+        Anzeige erstellen
+    </h1>
+
+    <h1 *ngIf="currentStep === 5">
+        Vorschau
+    </h1>
+
+    <div id="endingspace">
+    </div>
+</div>
+
+<div #mainContainer class="mat-typography" id="cardHeader">
+    <div fxLayout="row">
+        <div fxHide.lt-md id="content-start">
+            <app-blog></app-blog>
+
+        </div>
+        <div id="content-center" fxShow.gt-sm>
+            <app-tab-navigation fxHide.lt-md></app-tab-navigation>
+            <div class="progress-bar" *ngIf="!editMode">
+                <div class="progress-inner" [style.width.%]="progress"></div>
+            </div>
+            <div class="form-container shadowed-short" *ngIf="currentStep !== 5">
+                <div *ngIf="currentStep === 1 || editMode">
+                    <p class="info-heading" fxHide.gt-sm>
+                        1/4 Wer sucht
+                    </p>
+                    <h1 *ngIf="!editMode">
+                        Guten Tag!
+                    </h1>
+                    <h1 *ngIf="editMode">
+                        Gesuch bearbeiten
+                    </h1>
+                    <p *ngIf="!editMode">
+                        Erstellen Sie hier Ihr individuelles Gesuch. Damit potenzielle Partner sich bei Ihnen melden
+                        können, benötigen wir zunächst Ihre Kontaktdaten.
+                    </p>
+                    <p class="description-text">Im Namen welcher Organisation erstellen Sie das Gesuch?</p>
+                    <form [formGroup]="step1">
+                        <mat-form-field>
+                            <input matInput placeholder="Name der Organisation" formControlName="organisation">
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input matInput placeholder="Straße & Hausnummer" formControlName="clientStreetNo">
+                        </mat-form-field>
+                        <div fxLayout="row" fxLayoutGap="12px">
+                            <mat-form-field fxFlex="30">
+                                <input matInput placeholder="PLZ" formControlName="clientPLZ">
+                            </mat-form-field>
+                            <mat-form-field fxFlex="70">
+                                <input matInput placeholder="Ort" formControlName="clientCity">
+                            </mat-form-field>
+                        </div>
+                        <p class="description-text">
+                            Sollen die Daten anonymisiert werden?
+                        </p>
+                        <mat-checkbox formControlName="hideOrganisation">Ja, Kontaktdaten verbergen.</mat-checkbox>
+                        <button mat-stroked-button color="primary" (click)="nextStep()" [disabled]="step1.invalid"
+                            class="firstButton" *ngIf="!editMode">
+                            weiter
+                        </button>
+
+                        <div fxLayout="column" fxLayoutAlign="start end" class="required-description">
+                            <p>*Pflichtfelder</p>
+                        </div>
+                    </form>
+                </div>
+                <div *ngIf="currentStep === 2 || editMode">
+                    <p class="info-heading" fxHide.gt-sm>
+                        2/4 Projektpartner
+                    </p>
+                    <h1>
+                        Legen Sie Ihre Projektspezifikationen fest.
+                    </h1>
+                    <p class="description-text">Welche Art von Projekt möchten Sie durchführen?*</p>
+                    <form [formGroup]="step2">
+                        <div class="type-buttons" fxLayout="row">
+                            <div *ngFor="let type of projectTypes"
+                                [ngClass]="{'active': step2.value.projectType === type}"
+                                (click)="changeProjectType(type)" fxLayout="column" fxLayoutAlign="center center">
+                                <p>{{ type }}</p>
+                            </div>
+                        </div>
+
+                        <p class="description-text"
+                            *ngIf="step2.value.projectType !== '' && step2.value.projectType !== 'gemeinsame Lehre' && step2.value.projectType !== 'Abschlussarbeit'">
+                            Welche Art von Partner wünschen Sie sich?*</p>
+
+                        <div fxLayout.lt-md="column" fxLayout.gt-sm="row" fxLayoutGap.gt-sm="15px">
+                            <div class="public-buttons" fxLayout.lt-md="row" fxLayout.gt-sm="column" fxLayoutGap="15px"
+                                fxFlex.lt-md="50"
+                                *ngIf="step2.value.projectType !== '' && step2.value.projectType !== 'gemeinsame Lehre' && step2.value.projectType !== 'Abschlussarbeit'">
+                                <div [ngClass]="{'active': step2.value.partnerType.indexOf('private') > -1}"
+                                    fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="15px"
+                                    (click)="togglePartnerType('private')">
+                                    <mat-icon svgIcon="domain" class="public-icon"></mat-icon>
+                                    <p>
+                                        Privat
+                                    </p>
+                                </div>
+                                <div [ngClass]="{'active': step2.value.partnerType.indexOf('public') > -1}"
+                                    fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="15px"
+                                    (click)="togglePartnerType('public')">
+                                    <mat-icon svgIcon="school" class="public-icon"></mat-icon>
+                                    <p>
+                                        Öffentlich
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="partner-subtypes" fxLayout="row" fxLayout.gt-sm="column" fxLayoutGap="15px"
+                                *ngIf="step2.value.partnerType !== '' && step2.value.projectType !== '' 
+                                    && step2.value.projectType !== 'gemeinsame Lehre' && step2.value.projectType !== 'Abschlussarbeit'">
+                                <div fxLayout.lt-md="column" fxLayout.gt-sm="row"
+                                    *ngIf="step2.value.partnerType.indexOf('private') > -1" fxLayoutGap="15px"
+                                    fxFlex.lt-md="50" class="subtype-column">
+                                    <div *ngFor="let type of companyTypes"
+                                        [ngClass]="{'active': step2.value.partnerCompanyType.indexOf(type) > - 1}"
+                                        (click)="toggleCompanyType(type)" fxLayout="column"
+                                        fxLayoutAlign="center center">
+                                        <p>{{ type }}</p>
+                                    </div>
+                                </div>
+                                <div fxLayout.lt-md="column" fxLayout.gt-sm="row"
+                                    *ngIf="step2.value.partnerType.indexOf('public') > -1" fxLayoutGap="15px"
+                                    fxFlex.lt-md="50" class="subtype-column public-subtypes"
+                                    [ngClass]="{'private-selected': step2.value.partnerType.indexOf('private') > -1}">
+                                    <div *ngFor="let type of instituteTypes"
+                                        [ngClass]="{'active': step2.value.partnerInstituteType.indexOf(type) > - 1}"
+                                        (click)="toggleInstituteType(type)" fxLayout="column"
+                                        fxLayoutAlign="center center">
+                                        <p>{{ type }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="space-between start" *ngIf="!editMode">
+                            <button mat-stroked-button color="primary" (click)="stepBack()">
+                                zurück
+                            </button> <button mat-stroked-button color="primary" (click)="nextStep()"
+                                [disabled]="step2.invalid">
+                                weiter
+                            </button>
+                        </div>
+                        <div fxLayout="column" fxLayoutAlign="start end" class="required-description">
+                            <p>*Pflichtfelder</p>
+                        </div>
+                    </form>
+                </div>
+                <div *ngIf="currentStep === 3 || editMode">
+                    <p class="info-heading" fxHide.gt-sm>
+                        3/4 Gesuchsdetails
+                    </p>
+                    <h1>
+                        Bitte beschreiben Sie Ihr Gesuch.
+                    </h1>
+                    <form [formGroup]="step3">
+                        <div fxLayout="row" class="image-input" style="margin-top: 20px">
+                            <input type="file" name="picture" id="pictureInput" class="inputfile"
+                                (change)="fileChangeEvent($event)" accept="image/x-png,image/jpeg" />
+                            <label for="pictureInput" fxLayout="column" fxLayoutAlign="center center"
+                                *ngIf="!showCropper" [ngClass]="{'imageUploaded': pictureUrl !== ''}" fxFlex.gt-sm="20">
+                                <div *ngIf="pictureUrl === ''; else previewPicture">
+                                    <mat-icon svgIcon="add-photo"></mat-icon>
+                                    <p>Bild hochladen</p>
+                                </div>
+                                <ng-template #previewPicture>
+                                    <img src="{{pictureUrl}}" />
+                                </ng-template>
+                            </label>
+
+                            <p *ngIf="!showCropper && pictureUrl === ''" fxFlex="50">
+                                Fügen Sie ein passendes Bild hinzu, verwendbare Formate: <br>
+                                .jpg, .png<br>
+                                <br>
+                                max. 10 MB<br>
+                            </p>
+
+                            <image-cropper *ngIf="showCropper" [imageChangedEvent]="imageChangedEvent"
+                                [maintainAspectRatio]="true" [aspectRatio]="3 / 1" [resizeToWidth]="960" format="png"
+                                (imageCropped)="imageCropped($event)" (imageLoaded)="imageLoaded()"
+                                (cropperReady)="cropperReady()" (loadImageFailed)="loadImageFailed()"
+                                [cropperStaticHeight]="300">
+                            </image-cropper>
+                        </div>
+
+                        <div *ngIf="showCropper" class="create-profile-view">
+                            <button mat-stroked-button (click)="uploadPicture()" color="primary" type="submit"
+                                class="image-save-button">
+                                Annehmen
+                            </button>
+                        </div>
+
+                        <p style="margin-top: 40px !important; margin-bottom: 0px !important;">Geben Sie Ihrem Gesuch einen passenden Titel:</p>
+                        <mat-form-field style="margin-top: 15px !important">
+                            <input matInput placeholder="Titel*" formControlName="title">
+                        </mat-form-field>
+
+                        <p class="description-text">In welche Fachrichtung lässt sich Ihr Gesuch einordnen?</p>
+                    </form>
+                    <mat-select [(ngModel)]="selectedSubject" (selectionChange)="showDisciplines()"
+                        placeholder="Wählen Sie Ihre Fachrichtung*">
+                        <mat-option *ngFor="let subject of specialties;" [value]="subject.title">
+                            {{ subject.title }}
+                        </mat-option>
+                    </mat-select>
+                    <br>
+                    <mat-select [(ngModel)]="selectedDiscipline" (selectionChange)="showSpecialties()"
+                        placeholder="Wählen Sie Ihre Disziplin">
+                        <mat-option *ngFor="let discipline of disciplineToShow;" [value]="discipline.index">
+                            {{ discipline.disciplineTitle }}
+                        </mat-option>
+                    </mat-select>
+                    <br>
+                    <mat-select [(ngModel)]="selectedSpecialty" (selectionChange)="selectSpecialty()"
+                        placeholder="Wählen Sie Ihre Spezialisierung">
+                        <mat-option *ngFor="let specialty of specialtiesToShow;" [value]="specialty">
+                            {{ specialty }}
+                        </mat-option>
+                    </mat-select>
+
+                    <form [formGroup]="step4">
+                        <mat-form-field>
+                            <mat-chip-list #chipList>
+                                <mat-chip *ngFor="let tag of tags; let i = index;" [selectable]="selectable"
+                                    [removable]="removable" (removed)="removeTag(tag)">
+                                    {{tag}}
+                                    <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                                </mat-chip>
+                                <input placeholder="Schlagworte" [matChipInputFor]="chipList"
+                                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                    [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="addTag($event)">
+                            </mat-chip-list>
+                        </mat-form-field>
+                        <p class="tag-info" *ngIf="tags.length > 2">
+                            Die ersten drei Schlagworte erhalten bei unserem Matching-System eine höhere Gewichtung.
+                        </p>
+                        <p class="description-text">Beschreiben Sie den Gegenstand Ihres Gesuchs.*</p>
+                        <div class="froala-description">
+                            <textarea [froalaEditor]="froalaOptions" formControlName="description"></textarea>
+                        </div>
+                        <p class="description-text">In welcher Phase befindet sich Ihr Projekt?*</p>
+                        <mat-select placeholder="Wählen Sie Ihre Projektphase" formControlName="projectStage">
+                            <mat-option *ngFor="let stage of projectStages" [value]="stage">
+                                {{ stage }}
+                            </mat-option>
+                        </mat-select>
+                    </form>
+
+                    <div fxLayout="row" fxLayoutAlign="space-between start" *ngIf="!editMode">
+                        <button mat-stroked-button color="primary" (click)="stepBack()">
+                            zurück
+                        </button>
+                        <button mat-stroked-button color="primary" (click)="nextStep()"
+                            [disabled]="step3.invalid || step4.invalid ">
+                            weiter
+                        </button>
+                    </div>
+                    <div fxLayout="column" fxLayoutAlign="start end" class="required-description">
+                        <p>*Pflichtfelder</p>
+                    </div>
+                </div>
+
+                <div *ngIf="currentStep === 4 || editMode" class="form-step4">
+                    <p class="info-heading" fxHide.gt-sm>
+                        4/4 Rahmenbedingungen
+                    </p>
+                    <h1 class="first-heading">
+                        Rahmenbedingungen
+                    </h1>
+                    <p>
+                        Hier können Sie Rahmenbedinungen festlegen:
+                    </p>
+                    <p class="description-text">Wären Sie bereit die Projektleitung zu übernehmen?</p>
+
+                    <form [formGroup]="step5">
+                        <mat-checkbox formControlName="projectLeadershipPossible">Ja
+                        </mat-checkbox>
+                        <h1>
+                            Projektstandort
+                        </h1>
+                        <p>Wo soll das Projekt durchgeführt werden?</p>
+                        <div fxLayout="row" fxLayoutGap="12px">
+                            <mat-form-field fxFlex="30">
+                                <input matInput placeholder="PLZ*" formControlName="projectPLZ">
+                            </mat-form-field>
+                            <mat-form-field fxFlex="70">
+                                <input matInput placeholder="Ort*" formControlName="projectCity">
+                            </mat-form-field>
+                        </div>
+
+                        <p>Der Projektstandort wird nur registrierten Benutzern angezeigt.
+                        </p>
+                        <mat-checkbox formControlName="hideProjectPlz">Auch für registrierte Nutzer
+                            verbergen.</mat-checkbox>
+
+                        <p class="description-text">In welchem Umkreis suchen Sie nach Partnern?*
+                        </p>
+
+                        <mat-radio-group formControlName="partnerRange" fxLayout="row"
+                            fxLayoutAlign="space-between start">
+                            <ng-container *ngFor="let range of partnerRanges">
+                                <mat-radio-button value="{{range}}">{{ range }}</mat-radio-button>
+                            </ng-container>
+
+                        </mat-radio-group>
+
+                        <h1>
+                            Fördermittel
+                        </h1>
+                        <p>Werden Fördermittel benötigt?*</p>
+                        <mat-radio-group formControlName="fundingNeeded" fxLayout="column" fxLayoutGap="10px">
+                            <mat-radio-button [value]="true">Fördermittel sind ein notwendiger Bestandteil der
+                                Projektfinanzierung.</mat-radio-button>
+                            <mat-radio-button [value]="false">Fördermittel sind gewünscht, das Projekt kann aber auch
+                                ohne
+                                Sie durchgeführt werden.</mat-radio-button>
+                        </mat-radio-group>
+
+                        <div fxLayout="row" fxLayoutAlign="space-between start" *ngIf="!editMode">
+                            <button mat-stroked-button color="primary" (click)="stepBack()">
+                                zurück
+                            </button>
+                            <button mat-stroked-button color="primary" (click)="goToPreview()"
+                                [disabled]="step5.invalid">
+                                weiter
+                            </button>
+                        </div>
+                        <div fxLayout="column" fxLayoutAlign="start end" class="required-description">
+                            <p>*Pflichtfelder</p>
+                        </div>
+                    </form>
+
+                </div>
+                <div *ngIf="editMode" class="preview-container edit-container">
+                    <div fxLayout="row" fxLayoutAlign="end end">
+                        <div fxLayout="column" fxLayoutAlign="start end" fxLayoutGap="15px">
+                            <button mat-raised-button (click)="updateCard('published')" class="publish-button"
+                                *ngIf="loadedCard.status === 'saved'">
+                                Gesuch veröffentlichen
+                            </button>
+                            <button mat-raised-button color="primary" (click)="updateCard()">
+                                speichern
+                            </button>
+                            <button mat-stroked-button color="primary" (click)="updateCard('saved')"
+                                *ngIf="loadedCard.status === 'published'">
+                                Veröffentlichung zurücknehmen
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="currentStep === 5" class="preview-container">
+                <app-details [cardToDisplay]="(selectedCard$ | async)" [preview]="showPreview"></app-details>
+                <div fxLayout="row" fxLayoutAlign="space-between end">
+                    <button mat-stroked-button color="primary" (click)="stepBack()">
+                        zurück
+                    </button>
+                    <div fxLayout="column" fxLayoutAlign="start end" fxLayoutGap="15px">
+                        <button mat-raised-button (click)="publishCard()" class="publish-button">
+                            Gesuch veröffentlichen
+                        </button>
+                        <button mat-stroked-button color="primary" (click)="saveCard()">
+                            Entwurf speichern
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div id="content-end" fxHide.lt-md>
+            <app-profile-overview></app-profile-overview>
+            <app-my-cards [embeddedMode]="true" *ngIf="(currentUser$ | async) !== null"></app-my-cards>
+        </div>
+    </div>
+    <div id="footer-container">
+        <button id="feedback-button" mat-button (click)="openFeedbackDialog()" matTooltip="Feedback" fxHide.lt-md>
+            <h2>Haben Sie Feedback für uns?</h2>
+        </button>
+    </div>
+</div>

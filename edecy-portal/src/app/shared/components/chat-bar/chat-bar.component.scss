@@ -1,0 +1,81 @@
+#chatTopBar {
+  background-color: var(--edecy-darkblue);
+  color: white;
+  height: 48px;
+  padding: 9px;
+
+  h2 {
+    margin-bottom: 0 !important;
+    color: white !important;
+    max-height: 30px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+#chatTopBar:hover {
+  cursor: pointer;
+}
+
+.profileImage {
+  width: 32px;
+  height: 32px;
+  margin-right: 10px;
+
+  img {
+    border-radius: 100%;
+    -moz-border-radius: 100%;
+    -webkit-border-radius: 100%;
+  }
+}
+
+#chatBar {
+  width: 350px;
+}
+
+#conversations {
+  max-height: calc(50vh - 48px);
+  overflow-y: scroll;
+  background-color: white;
+
+  .chatTitle {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .singleChat {
+    padding: 13px 4% 13px 8%;
+
+    .chatLogo {
+      border-radius: 100%;
+      -moz-border-radius: 100%;
+      -webkit-border-radius:  100%;
+    }
+
+    .chatDetails {
+      text-align: left;
+      padding-top: 5px;
+      margin-left: 5px;
+      width: calc(77% - 10px);
+      max-width: calc(77% - 10px);
+      border-bottom: 0.2px solid rgb(151,151,151);
+    }
+
+    .lastMessage {
+      color: #9b9b9b;
+      white-space: nowrap;
+      max-width: 100%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+  }
+}
+
+.partnerLogo {
+  .chatLogo:nth-of-type(n + 2) {
+    display: none;
+  }
+}

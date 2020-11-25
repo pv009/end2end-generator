@@ -1,0 +1,94 @@
+#cardHeaderImage {
+  max-height: 100px;
+}
+
+#cardHeaderImage img {
+  width: 100%;
+}
+
+.cardDetailsContainer {
+  position: relative;
+  padding-top: 50px;
+  padding-bottom: 100px !important;
+  padding-left: 0px;
+  padding-right: 0px;
+  max-height: calc(100vh - 55px);
+}
+
+.overlay-container {
+  width: 50%;
+  margin: auto;
+  height: 100%;
+  position: absolute;
+  top: 150px;
+  left: 25%;
+
+  .overlay {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 900;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.1), white);
+  }
+}
+
+#actionButtons button {
+  border-radius: 200px 200px 200px 200px;
+  -moz-border-radius: 200px 200px 200px 200px;
+  -webkit-border-radius: 200px 200px 200px 200px;
+  border: 1px solid rgba(1, 1, 1, 0.25);
+  text-align: center;
+  width: 40px;
+  height: 40px;
+  background-color: white;
+  position: fixed;
+  bottom: 20px;
+}
+
+#actionButtons mat-icon {
+  margin-left: 2px;
+  margin-bottom: 2px;
+}
+
+@media screen and (min-width: 960px) {
+  #desktopDetailsContainer {
+    position: relative !important;
+    height: 100%;
+
+    #returnButton {
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      background-color: white;
+      color: black;
+    }
+
+    mat-icon {
+      height: 30px;
+      width: 30px;
+    }
+  }
+
+  #actionButtons {
+    position: relative !important;
+
+    button {
+      position: relative !important;
+    }
+  }
+}
+
+@media screen and (max-width: 959px) {
+  .overlay-container {
+    width: 100%;
+    left: 0;
+
+    .overlay {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      z-index: 900;
+      background-image: linear-gradient(rgba(255, 255, 255, 0.1), white);
+    }
+  }
+}

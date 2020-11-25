@@ -1,0 +1,107 @@
+#tabButtons {
+  width: 100%;
+}
+
+.tabButton {
+  width: 50%;
+  font-weight: bold;
+  color: black;
+  height: 50px;
+  background-color: white;
+}
+
+.tabButton:hover {
+  cursor: pointer;
+}
+
+.tabActive {
+  color: var(--edecy-blue) !important;
+  border-top: 4px solid var(--edecy-blue);
+
+  h1 {
+    color: var(--edecy-blue) !important;
+  }
+}
+
+::ng-deep .mat-tab-label {
+  font-size: 15px !important;
+}
+
+@media (max-width: 959px) {
+  .tabActive {
+    border-bottom: 4px solid var(--edecy-blue);
+    border-top: none;
+  }
+
+  .filterOptions {
+    padding: 10px;
+
+    .results {
+      p {
+        color: var(--edecy-darkblue);
+      }
+    }
+
+    mat-chip {
+      color: black;
+      font-size: 15px;
+      font-weight: lighter;
+      background-color: #f4f4f8;
+      padding: 10px;
+      min-height: 35px;
+      border-radius: 5px 5px 5px 5px !important;
+      -moz-border-radius: 5px 5px 5px 5px !important;
+      -webkit-border-radius: 5px 5px 5px 5px !important;
+
+      mat-icon {
+        color: var(--edecy-blue);
+        background-color: none;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 960px) {
+  .tabButton {
+    background-color: white;
+    position: relative;
+    z-index: 100;
+  }
+
+  .filterOptions {
+    border: 0.2px solid rgba(151, 151, 151, 0.2);
+    border-top: none;
+    padding: 25px;
+
+    .results {
+      p {
+        color: var(--edecy-darkblue);
+      }
+    }
+
+    mat-chip {
+      color: black;
+      font-size: 15px;
+      font-weight: lighter;
+      background-color: #f4f4f8;
+      padding: 10px;
+      min-height: 35px;
+      border-radius: 5px 5px 5px 5px !important;
+      -moz-border-radius: 5px 5px 5px 5px !important;
+      -webkit-border-radius: 5px 5px 5px 5px !important;
+
+      mat-icon {
+        color: var(--edecy-blue);
+        background-color: none;
+      }
+    }
+  }
+
+  i {
+    color: red;
+  }
+}
+
+h1 {
+  margin: 0 !important;
+}

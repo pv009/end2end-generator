@@ -1,0 +1,491 @@
+<div #mainContainer class="mat-typography" id="cardHeader">
+
+    <div class="tab-nav">
+        <app-tab-navigation fxHide.lt-md></app-tab-navigation>
+    </div>
+
+    <div *ngIf="(selectedProfile$ | async)">
+        <app-currentpage [currentPage]="(selectedProfile$ | async)._source.institute_name" fxHide.gt-sm>
+        </app-currentpage>
+    </div>
+
+    <div class="overlay-container" *ngIf="(currentUser$ | async) === null && sectionShown === 'Gesuche'">
+        <div class="overlay">
+        </div>
+        <app-auth-overlay [overlayPlacedAt]="currentPage"></app-auth-overlay>
+    </div>
+
+    <div id="content-container" fxLayout="row">
+
+        <div id="content-start" fxHide.lt-md>
+            <div class="business-card shadowed-long" *ngIf="(selectedProfile$ | async)">
+                <div class="rate-flag" *ngIf="userRate !== ''"
+                    [ngClass]="{'blue': userRate === 'basic', 'red': userRate === 'premium', 'gold': userRate === 'premium-plus'}"
+                    fxLayout="column" fxLayoutAlign="center center">
+                    <p *ngIf="userRate === 'basic'">Basic</p>
+                    <p *ngIf="userRate === 'premium'">Premium</p>
+                    <p *ngIf="userRate === 'premium-plus'">Premium Plus</p>
+                </div>
+
+                <div fxLayout="column" fxLayoutAlign="center center">
+                    <div class="profilePic" *ngIf="(selectedProfile$ | async)._source.logo_url !== ''">
+                        <img src="{{(selectedProfile$ | async)._source.logo_url}}"
+                            alt="Logo der Organisation oder Einrichtung" />
+                    </div>
+                    <div class="profilePic" *ngIf="(selectedProfile$ | async)._source.status === 'external'">
+                        <img src="../../../../../assets/images/crawled_profile.png"
+                            alt="Logo der Organisation oder Einrichtung" class="dummypic" />
+                    </div>
+                </div>
+
+
+                <h3>{{ (selectedProfile$ | async)._source.institute_name }}</h3>
+                <h3 class="organization">{{ (selectedProfile$ | async)._source.organization }}</h3>
+                <div *ngIf="(selectedProfile$ | async)._source.status === 'external'" class="contact-container">
+                    <button mat-raised-button color="primary" (click)="contactProfile()">Kontakt
+                        aufnehmen</button>
+                </div>
+                <div class="specialtyImage">
+                    <mat-icon svgIcon="interdiz"
+                        *ngIf="(selectedProfile$ | async)._source.subject_areas.indexOf('Interdisziplinäres') > -1">
+                    </mat-icon>
+                    <mat-icon svgIcon="rechtswissenschaften"
+                        *ngIf="(selectedProfile$ | async)._source.subject_areas.indexOf('Rechtswissenschaften, Jurisprudenz') > -1">
+                    </mat-icon>
+                    <mat-icon svgIcon="wirtschaft"
+                        *ngIf="(selectedProfile$ | async)._source.subject_areas.indexOf('Wirtschaftswissenschaften') > -1">
+                    </mat-icon>
+                    <mat-icon svgIcon="naturwissenschaften"
+                        *ngIf="(selectedProfile$ | async)._source.subject_areas.indexOf('Naturwissenschaften') > -1">
+                    </mat-icon>
+                    <mat-icon svgIcon="informationsw-mathe"
+                        *ngIf="(selectedProfile$ | async)._source.subject_areas.indexOf('Informationswissenschaften und Mathematik') > -1">
+                    </mat-icon>
+                    <mat-icon svgIcon="medizintechnik"
+                        *ngIf="(selectedProfile$ | async)._source.subject_areas.indexOf('Medizintechnik') > -1">
+                    </mat-icon>
+                    <mat-icon svgIcon="ingenieur"
+                        *ngIf="(selectedProfile$ | async)._source.subject_areas.indexOf('Ingenieurswissenschaften') > -1">
+                    </mat-icon>
+                </div>
+                <div class="specialtyTitle">
+                    <h3 *ngIf="(selectedProfile$ | async)._source.subject_areas.indexOf('Interdisziplinäres') > -1">
+                        Interdisziplinäres</h3>
+                    <h3
+                        *ngIf="(selectedProfile$ | async)._source.subject_areas.indexOf('Rechtswissenschaften, Jurisprudenz') > -1">
+                        Rechtswissenschaften, Jurisprudenz</h3>
+                    <h3
+                        *ngIf="(selectedProfile$ | async)._source.subject_areas.indexOf('Wirtschaftswissenschaften') > -1">
+                        Wirtschaftswissenschaften</h3>
+                    <h3 *ngIf="(selectedProfile$ | async)._source.subject_areas.indexOf('Naturwissenschaften') > -1">
+                        Naturwissenschaften</h3>
+                    <h3
+                        *ngIf="(selectedProfile$ | async)._source.subject_areas.indexOf('Informationswissenschaften und Mathematik') > -1">
+                        Informationswissenschaften und Mathematik</h3>
+                    <h3 *ngIf="(selectedProfile$ | async)._source.subject_areas.indexOf('Medizintechnik') > -1">
+                        Medizintechnik
+                    </h3>
+                    <h3
+                        *ngIf="(selectedProfile$ | async)._source.subject_areas.indexOf('Ingenieurswissenschaften') > -1">
+                        Ingenieurswissenschaften</h3>
+                </div>
+                <div class="profileTagList">
+                    <mat-chip-list fxLaoyut="column">
+                        <ng-container *ngFor="let tag of (selectedProfile$ | async)._source.tags; let i=index">
+                            <mat-chip (click)="searchTag(tag)" *ngIf="i < 3">
+                                {{ tag }}
+                            </mat-chip>
+                        </ng-container>
+
+                    </mat-chip-list>
+                </div>
+
+                <div class="metaInfos" fxLayout="row" fxLayoutAlign="center start" fxLayoutGap="5px">
+                    <div
+                        *ngIf="(selectedProfile$ | async)._source.public === true || (selectedProfile$ | async)._source.status === 'external'">
+                        <mat-icon svgIcon="school"></mat-icon>
+                    </div>
+                    <div *ngIf="(selectedProfile$ | async)._source.public === false">
+                        <mat-icon svgIcon="domain"></mat-icon>
+                    </div>
+                    <div *ngIf="(selectedProfile$ | async)._source.orgSize !== ''" fxLayout="column"
+                        fxLayoutAlign="center center">
+                        <h3>{{ (selectedProfile$ | async)._source.orgSize }}</h3>
+                    </div>
+                </div>
+                <div class="profileType">
+                    <div *ngIf="(selectedProfile$ | async)._source.company_type !== ''" fxLayout="column"
+                        fxLayoutAlign="center center">
+                        <h3>{{ (selectedProfile$ | async)._source.company_type }}</h3>
+                    </div>
+                    <div *ngIf="(selectedProfile$ | async)._source.institute_type !== ''" fxLayout="column"
+                        fxLayoutAlign="center center">
+                        <h3>{{ (selectedProfile$ | async)._source.institute_type }}</h3>
+                    </div>
+                </div>
+
+                <div class="cardCounter">
+                    <div *ngIf="(selectedProfile$ | async)._source.source === 'edecy_mongodb' && (profileRequests$ | async).length > 0"
+                        fxLayout="row" fxLayoutAlign="center center">
+                        <mat-icon svgIcon="gesuch"></mat-icon>
+                        <h3>{{ (profileRequests$ | async).length }} Gesuch<span
+                                *ngIf="(profileRequests$ | async).length > 1">e</span></h3>
+                    </div>
+                </div>
+                <div class="profileCity">
+                    <h3 *ngIf="(selectedProfile$ | async)._source.city !== ''">Standort:
+                        {{ (selectedProfile$ | async)._source.city }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <div id="content-center">
+            <div class="business-card-mobile" fxLayout="column" fxLayoutAlign="center center" fxHide.gt-sm
+                *ngIf="(selectedProfile$ | async)">
+                <div class="profilePic" *ngIf="(selectedProfile$ | async)._source.logo_url !== ''">
+                    <img src="{{(selectedProfile$ | async)._source.logo_url}}"
+                        alt="Logo der Organisation oder Einrichtung" />
+                </div>
+                <div class="profilePic" *ngIf="(selectedProfile$ | async)._source.status === 'external'">
+                    <img src="../../../../../assets/images/crawled_profile.png"
+                        alt="Logo der Organisation oder Einrichtung" class="dummypic" />
+                </div>
+                <h3>{{ (selectedProfile$ | async)._source.institute_name }}</h3>
+                <h3 class="organization">{{ (selectedProfile$ | async)._source.organization }}</h3>
+            </div>
+            <div class="profile-container shadowed-short" fxLayout="column" *ngIf="selectedProfile$ | async">
+                <div class="top-bar">
+                    <button class="back-button" mat-icon-button color="primary" [routerLink]="['/cards/list']"
+                        fxHide.lt-md>
+                        <mat-icon>arrow_back_ios</mat-icon>
+                        <span>zurück</span>
+                    </button>
+                </div>
+
+                <div id="profile-navigation" fxLayout="row" fxLayoutAlign="start center" #profileNavigation>
+                    <a (click)="showSection('Allgemein')" [ngClass]="{'active': sectionShown === 'Allgemein'}"
+                        #allgemein>
+                        <h3>Allgemein</h3>
+                    </a>
+                    <a (click)="showSection('Gesuche')" [ngClass]="{'active': sectionShown === 'Gesuche'}"
+                        *ngIf="(profileRequests$ | async).length > 0 && (selectedProfile$ | async)._source.source === 'edecy_mongodb'"
+                        class="requests" fxHide.lt-md>
+                        <h3>{{ (profileRequests$ | async).length }} Gesuche</h3>
+                    </a>
+                    <a (click)="showSection('Gesuche')" [ngClass]="{'active': sectionShown === 'Gesuche'}"
+                        *ngIf="(profileRequests$ | async) && (selectedProfile$ | async)._source.source === 'edecy_mongodb'"
+                        class="requests" fxHide.gt-sm #gesuche>
+                        <h3 [style.width.px]="requestsNavLength">{{ (profileRequests$ | async).length }} Gesuche</h3>
+                    </a>
+                    <a (click)="showSection('Forschungsschwerpunkte')"
+                        [ngClass]="{'active': sectionShown === 'Forschungsschwerpunkte'}"
+                        *ngIf="(selectedProfile$ | async)._source.source === 'edecy_mongodb' && (selectedProfile$ | async)._source.research_focus.length > 0"
+                        #schwerpunkte>
+                        <h3>Forschungsschwerpunkte</h3>
+                    </a>
+                    <a (click)="showSection('Projektreferenzen')"
+                        [ngClass]="{'active': sectionShown === 'Projektreferenzen'}"
+                        *ngIf="(selectedProfile$ | async)._source.projects.length > 0" #projekte>
+                        <h3>Projektreferenzen</h3>
+                    </a>
+                    <a (click)="showSection('Publikationen')" [ngClass]="{'active': sectionShown === 'Publikationen'}"
+                        *ngIf="(selectedProfile$ | async)._source.publications.length > 0" #publikationen>
+                        <h3>Publikationen</h3>
+                    </a>
+                </div>
+
+                <div class="profile-content main-content" *ngIf="sectionShown === 'Allgemein'">
+                    <div class="basic-infos" fxLayout="row" fxLayoutGap="50px">
+                        <div class="basics-container">
+                            <h2>Über uns</h2>
+                            <div class="description">
+                                <div [froalaView]="(selectedProfile$ | async)._source.description"
+                                    class="profile-description-short" [style.-webkit-line-clamp]="linesShown"></div>
+
+                                <span (click)="showMoreText()" class="showMoreButton" *ngIf="shortDescription">mehr
+                                    anzeigen</span>
+                            </div>
+                        </div>
+                        <div fxLayout="column" fxLayoutAlign="center center">
+                            <div *ngIf="(selectedProfile$ | async)._source.logo_url !== ''" class="logo-container"
+                                fxHide.lt-md>
+                                <img (click)="openImage(profileLoaded._source.logo_url)"
+                                    src="{{ (selectedProfile$ | async)._source.logo_url }}" class="organisation-logo"
+                                    alt="Logo der Organisation oder Einrichtung" />
+                            </div>
+                            <div *ngIf="(selectedProfile$ | async)._source.status === 'external'" class="logo-container"
+                                fxHide.lt-md>
+                                <img src="../../../assets/images/crawled_profile.png" class="organisation-logo dummyPic"
+                                    alt="Logo der Organisation oder Einrichtung" />
+                            </div>
+                            <div *ngIf="(selectedProfile$ | async)._source.status === 'external'"
+                                class="contact-container">
+                                <button mat-raised-button color="primary" (click)="contactProfile()">Kontakt
+                                    aufnehmen</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="content-card shadowed-long border-round" fxLayout="column"
+                        *ngIf="(selectedProfile$ | async)._source.subject_areas.length > 0">
+                        <div class="icon-container border-round" fxLayout="column" fxLayoutAlign="center center"
+                            *ngIf="(selectedProfile$ | async)._source.source === 'edecy_mongodb'">
+                            <mat-icon svgIcon="interdizwhite"
+                                *ngIf="(selectedProfile$ | async)._source.subject_areas.indexOf('Interdisziplinäres') > -1">
+                            </mat-icon>
+                            <mat-icon svgIcon="rechtswissenschaftenwhite"
+                                *ngIf="(selectedProfile$ | async)._source.subject_areas.indexOf('Rechtswissenschaften, Jurisprudenz') > -1">
+                            </mat-icon>
+                            <mat-icon svgIcon="wirtschaftwhite"
+                                *ngIf="(selectedProfile$ | async)._source.subject_areas.indexOf('Wirtschaftswissenschaften') > -1">
+                            </mat-icon>
+                            <mat-icon svgIcon="naturwissenschaftenwhite"
+                                *ngIf="(selectedProfile$ | async)._source.subject_areas.indexOf('Naturwissenschaften') > -1">
+                            </mat-icon>
+                            <mat-icon svgIcon="informationsw-mathewhite"
+                                *ngIf="(selectedProfile$ | async)._source.subject_areas.indexOf('Informationswissenschaften und Mathematik') > -1">
+                            </mat-icon>
+                            <mat-icon svgIcon="medizintechnikwhite"
+                                *ngIf="(selectedProfile$ | async)._source.subject_areas.indexOf('Medizintechnik') > -1">
+                            </mat-icon>
+                            <mat-icon svgIcon="ingenieurwhite"
+                                *ngIf="(selectedProfile$ | async)._source.subject_areas.indexOf('Ingenieurswissenschaften') > -1">
+                            </mat-icon>
+                        </div>
+
+                        <h2>Fachgebiet</h2>
+
+                        <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="50px" fxLayoutGap.lt-md="0px"
+                            *ngIf="(selectedProfile$ | async)._source.source === 'edecy_mongodb'" class="wrapped">
+                            <div fxLayout="column" class="specialties single-property">
+                                <h3>Forschungsschwerpunkt</h3>
+                                <ng-container *ngFor="let subject of (selectedProfile$ | async)._source.subject_areas">
+                                    <h3 *ngIf="allSubjectsAvailable.indexOf(subject) > -1">{{ subject }}</h3>
+                                </ng-container>
+                            </div>
+                            <div fxLayout="column" class="specialties single-property"
+                                *ngIf="(selectedProfile$ | async)._source.source === 'edecy_mongodb' && (selectedProfile$ | async)._source.subject_areas.length > 1">
+                                <h3>Disziplin</h3>
+                                <ng-container
+                                    *ngFor="let discipline of (selectedProfile$ | async)._source.subject_areas">
+                                    <h3 *ngIf="allDisciplinesAvailable.indexOf(discipline) > -1">{{ discipline }}</h3>
+                                </ng-container>
+                            </div>
+                        </div>
+
+                        <div class="subject-areas"
+                            *ngIf="(selectedProfile$ | async)._source.source === 'edecy_mongodb' && (selectedProfile$ | async)._source.subject_areas.length > 2">
+                            <h3>Spezialisierung</h3>
+                            <div fxLayout="row">
+                                <ng-container
+                                    *ngFor="let area of (selectedProfile$ | async)._source.subject_areas; last as isLast">
+                                    <h3
+                                        *ngIf="(allDisciplinesAvailable.indexOf(area) < 0) && (allSubjectsAvailable.indexOf(area) < 0)">
+                                        {{ area }}<span *ngIf="!isLast">,</span></h3>
+                                </ng-container>
+                            </div>
+                        </div>
+
+                        <div class="tags" *ngIf="(selectedProfile$ | async)._source.tags.length > 0">
+                            <h3>Schlagworte</h3>
+                            <mat-chip-list>
+                                <div *ngFor="let tag of (selectedProfile$ | async)._source.tags; let i = index">
+                                    <mat-chip style="margin-right: 5px" *ngIf="i < 11" (click)="searchTag(tag)"
+                                        [ngClass]="{'darkblue': i < 3}">
+                                        {{ tag }}
+                                    </mat-chip>
+                                </div>
+                            </mat-chip-list>
+                        </div>
+                    </div>
+
+                    <div class="content-card shadowed-long border-round organisation-container" fxLayout="column">
+                        <div class="icon-container border-round" fxLayout="column" fxLayoutAlign="center center">
+                            <mat-icon svgIcon="domain" *ngIf="(selectedProfile$ | async)._source.public === false">
+                            </mat-icon>
+                            <mat-icon svgIcon="school"
+                                *ngIf="(selectedProfile$ | async)._source.status === 'external' || (selectedProfile$ | async)._source.public === true">
+                            </mat-icon>
+                            <h3 *ngIf="(selectedProfile$ | async)._source.public === false">
+                                Privat</h3>
+                            <h3
+                                *ngIf="(selectedProfile$ | async)._source.status === 'external' || (selectedProfile$ | async)._source.public === true">
+                                Öffentlich</h3>
+
+                        </div>
+                        <h2>Organisation</h2>
+                        <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="50px" fxLayoutGap.lt-md="0px"
+                            class="wrapped">
+                            <div fxLayout="column" class="single-property">
+                                <h3>Form</h3>
+                                <h3>
+                                    <span
+                                        *ngIf="(selectedProfile$ | async)._source.status === 'external' || (selectedProfile$ | async)._source.public === true">Öffentlich</span>
+                                    <span *ngIf="(selectedProfile$ | async)._source.public === false">Privat</span>
+                                    <span *ngIf="(selectedProfile$ | async)._source.company_type !== ''">,
+                                        {{ (selectedProfile$ | async)._source.company_type }}</span>
+                                    <span *ngIf="(selectedProfile$ | async)._source.institute_type !== ''">,
+                                        {{ (selectedProfile$ | async)._source.institute_type }}</span>
+                                </h3>
+                            </div>
+                            <div fxLayout="column" class="single-property"
+                                *ngIf="(selectedProfile$ | async)._source.zip_code !== '' || (selectedProfile$ | async)._source.city !== ''">
+                                <h3>Standort</h3>
+                                <h3>
+                                    <span *ngIf="(selectedProfile$ | async)._source.zip_code !== ''">
+                                        {{ (selectedProfile$ | async)._source.zip_code }}
+                                    </span>
+                                    <span *ngIf="(selectedProfile$ | async)._source.city !== ''">
+                                        {{ (selectedProfile$ | async)._source.city }}
+                                    </span>
+                                </h3>
+                            </div>
+                        </div>
+                        <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="50px" fxLayoutGap.lt-md="0px"
+                            *ngIf="(selectedProfile$ | async)._source.source === 'edecy_mongodb'" class="wrapped">
+                            <div fxLayout="column" class="single-property"
+                                *ngIf="(selectedProfile$ | async)._source.orgSize !== ''">
+                                <h3>Größe</h3>
+                                <h3>
+                                    {{ (selectedProfile$ | async)._source.orgSize }} Beschäftigte
+                                </h3>
+                            </div>
+                            <div fxLayout="column" class="single-property"
+                                *ngIf="(selectedProfile$ | async)._source.project_leadership_possible !== ''">
+                                <h3>Projektleitung</h3>
+                                <h3>
+                                    <span
+                                        *ngIf="(selectedProfile$ | async)._source.project_leadership_possible === true">
+                                        möglich
+                                    </span>
+                                    <span
+                                        *ngIf="(selectedProfile$ | async)._source.project_leadership_possible === false">
+                                        nicht möglich
+                                    </span>
+                                </h3>
+                            </div>
+                        </div>
+                        <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="50px" fxLayoutGap.lt-md="0px"
+                            *ngIf="(selectedProfile$ | async)._source.interest.length > 0" class="wrapped">
+                            <div fxLayout="column" class="single-property full-space">
+                                <h3>Interesse</h3>
+                                <div fxLayout="row" fxLayoutGap="5px" class="interests">
+                                    <ng-container *ngFor="let interest of (selectedProfile$ | async)._source.interest">
+                                        <h3 class="list-heading">{{ interest }},</h3>
+                                    </ng-container>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="content-card shadowed-long border-round projects-card" fxLayout="column"
+                        *ngIf="(profileRequests$ | async).length > 0 || (selectedProfile$ | async)._source.projects.length > 0">
+                        <div class="icon-container border-round big-icon" fxLayout="column"
+                            fxLayoutAlign="center center">
+                            <mat-icon svgIcon="projektbegleitungwhite"></mat-icon>
+                        </div>
+                        <div fxLayout.gt-sm="row" fxLayout.lt-md="column">
+                            <div class="project-items" fxLayout="column">
+                                <h2>Projekte</h2>
+                                <p>
+                                    {{ (profileRequests$ | async).length + (selectedProfile$ | async)._source.projects.length }}
+                                </p>
+                            </div>
+                            <div class="project-items" fxLayout="column"
+                                *ngIf="(selectedProfile$ | async)._source.source === 'edecy_mongodb'">
+                                <h2>Offen</h2>
+                                <p>{{ (profileRequests$ | async).length }}</p>
+                                <a *ngIf="(profileRequests$ | async).length > 0"
+                                    (click)="showSection('Gesuche')">Gesuche anzeigen</a>
+                            </div>
+                            <div class="project-items" fxLayout="column"
+                                *ngIf="(selectedProfile$ | async)._source.projects.length > 0">
+                                <h2>Abgeschlossen</h2>
+                                <p>{{ (selectedProfile$ | async)._source.projects.length }}</p>
+                                <a (click)=" showSection('Projektreferenzen')">alle ansehen</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="content-card shadowed-long border-round publications-card" fxLayout="column"
+                        *ngIf="(selectedProfile$ | async)._source.publications.length > 0">
+                        <div class="icon-container border-round big-icon" fxLayout="column"
+                            fxLayoutAlign="center center">
+                            <mat-icon svgIcon="publikationen"></mat-icon>
+                        </div>
+                        <a (click)="showSection('Publikationen')">alle ansehen</a>
+                        <h2>Publikationen</h2>
+                        <p *ngFor="let publication of (selectedProfile$ | async)._source.publications"
+                            class="single-publication">
+                            {{ publication.title }} <mat-icon svgIcon="arrowright"
+                                (click)="openPublication(publication)"></mat-icon>
+                        </p>
+                    </div>
+
+                </div>
+
+                <div class="profile-content research-content" *ngIf="sectionShown === 'Gesuche'">
+                    <ng-container *ngFor="let item of (profileRequests$ | async); let i = index">
+                        <app-profile-card [cardToDisplay]="item" class="singleCardContainer">
+                        </app-profile-card>
+                    </ng-container>
+                </div>
+
+                <div class="profile-content research-content" *ngIf="sectionShown === 'Forschungsschwerpunkte'">
+                    <div class="content-card shadowed-short border-round" fxLayout="column"
+                        *ngFor="let focus of (selectedProfile$ | async)._source.research_focus">
+                        <div class="open-button" fxLayout="column" fxLayoutAlign="center center"
+                            *ngIf="focus.description !== ''">
+                            <mat-icon *ngIf="focusOpen === focus" (click)="closeFocus()">keyboard_arrow_up</mat-icon>
+                            <mat-icon *ngIf="focusOpen !== focus" (click)="openFocus(focus)">keyboard_arrow_down
+                            </mat-icon>
+                        </div>
+                        <h2 [ngClass]="{'border-bottom': focusOpen === focus}">{{ focus.title }}</h2>
+                        <div [froalaView]="focus.description" *ngIf="focusOpen === focus"></div>
+                    </div>
+                </div>
+
+                <div class="profile-content research-content" *ngIf="sectionShown === 'Publikationen'">
+                    <div class="content-card shadowed-short border-round" fxLayout="column"
+                        *ngFor="let publication of (selectedProfile$ | async)._source.publications">
+                        <div class="open-button" fxLayout="column" fxLayoutAlign="center center">
+                            <mat-icon *ngIf="publicationOpen === publication" (click)="closePublication()">
+                                keyboard_arrow_up</mat-icon>
+                            <mat-icon *ngIf="publicationOpen !== publication" (click)="openPublication(publication)">
+                                keyboard_arrow_down
+                            </mat-icon>
+                        </div>
+                        <h2 [ngClass]="{'border-bottom': publicationOpen === publication}">{{ publication.title }}</h2>
+                        <div [froalaView]="publication.description" *ngIf="publicationOpen === publication"></div>
+                    </div>
+                </div>
+
+                <div class="profile-content research-content" *ngIf="sectionShown === 'Projektreferenzen'">
+                    <div class="content-card shadowed-short border-round" fxLayout="column"
+                        *ngFor="let project of (selectedProfile$ | async)._source.projects">
+                        <div class="open-button" fxLayout="column" fxLayoutAlign="center center">
+                            <mat-icon *ngIf="projectOpen === project" (click)="closeProject()">keyboard_arrow_up
+                            </mat-icon>
+                            <mat-icon *ngIf="projectOpen !== project" (click)="openProject(project)">keyboard_arrow_down
+                            </mat-icon>
+                        </div>
+                        <ng-container
+                            *ngIf="(selectedProfile$ | async)._source.source === 'edecy_mongodb'; else crawledProjects">
+                            <h2 [ngClass]="{'border-bottom': projectOpen === project}">{{ project.title }}</h2>
+                            <div [froalaView]="project.description" *ngIf="projectOpen === project"></div>
+                        </ng-container>
+                        <ng-template #crawledProjects>
+                            <h2 [ngClass]="{'border-bottom': projectOpen === project}">{{ project.project_name }}</h2>
+                            <p *ngIf="projectOpen === project">{{ project.project_description }}</p>
+                        </ng-template>
+                    </div>
+                </div>
+            </div>
+            <button class="feedback-button" mat-button (click)="openFeedbackDialog()" fxHide.lt-md>
+                <h2>Haben Sie Feedback für uns?</h2>
+            </button>
+        </div>
+    </div>
+    <div id="footer-container">
+    </div>
+</div>

@@ -1,0 +1,230 @@
+<div #mainContainer class="mat-typography" id="cardHeader">
+    <div id="content-container" fxLayout.gt-sm="row">
+        <div fxHide.lt-md id="content-start" *ngIf="!preview">
+            <div class="business-card shadowed-long" *ngIf="(selectedProfile$ | async)">
+                <div class="profilePic" *ngIf="(selectedProfile$ | async).logoURL !== ''">
+                    <img src="{{(selectedProfile$ | async).logoURL}}" alt="Logo der Organisation oder Einrichtung" />
+                </div>
+                <div class="profilePic" *ngIf="(selectedProfile$ | async).logoURL === ''">
+                    <img src="../../../../../assets/images/crawled_profile.png"
+                        alt="Logo der Organisation oder Einrichtung" class="dummypic" />
+                </div>
+
+                <h3>{{ (selectedProfile$ | async).title }}</h3>
+                <h3 class="organization">{{ (selectedProfile$ | async).organisation }}</h3>
+                <div class="specialtyImage">
+                    <mat-icon svgIcon="interdiz" *ngIf="(selectedProfile$ | async).specialty1 === 'Interdisziplinäres'">
+                    </mat-icon>
+                    <mat-icon svgIcon="rechtswissenschaften"
+                        *ngIf="(selectedProfile$ | async).specialty1 === 'Rechtswissenschaften, Jurisprudenz'">
+                    </mat-icon>
+                    <mat-icon svgIcon="wirtschaft"
+                        *ngIf="(selectedProfile$ | async).specialty1 === 'Wirtschaftswissenschaften'">
+                    </mat-icon>
+                    <mat-icon svgIcon="naturwissenschaften"
+                        *ngIf="(selectedProfile$ | async).specialty1 === 'Naturwissenschaften'">
+                    </mat-icon>
+                    <mat-icon svgIcon="informationsw-mathe"
+                        *ngIf="(selectedProfile$ | async).specialty1 === 'Informationswissenschaften und Mathematik'">
+                    </mat-icon>
+                    <mat-icon svgIcon="medizintechnik"
+                        *ngIf="(selectedProfile$ | async).specialty1 === 'Medizintechnik'">
+                    </mat-icon>
+                    <mat-icon svgIcon="ingenieur"
+                        *ngIf="(selectedProfile$ | async).specialty1 === 'Ingenieurswissenschaften'">
+                    </mat-icon>
+                </div>
+                <div class="specialtyTitle">
+                    <h3 *ngIf="(selectedProfile$ | async).specialty1 === 'Interdisziplinäres'">
+                        Interdisziplinäres</h3>
+                    <h3 *ngIf="(selectedProfile$ | async).specialty1 === 'Rechtswissenschaften, Jurisprudenz'">
+                        Rechtswissenschaften, Jurisprudenz</h3>
+                    <h3 *ngIf="(selectedProfile$ | async).specialty1 === 'Wirtschaftswissenschaften'">
+                        Wirtschaftswissenschaften</h3>
+                    <h3 *ngIf="(selectedProfile$ | async).specialty1 === 'Naturwissenschaften'">
+                        Naturwissenschaften</h3>
+                    <h3 *ngIf="(selectedProfile$ | async).specialty1 === 'Informationswissenschaften und Mathematik'">
+                        Informationswissenschaften und Mathematik</h3>
+                    <h3 *ngIf="(selectedProfile$ | async).specialty1 === 'Medizintechnik'">
+                        Medizintechnik
+                    </h3>
+                    <h3 *ngIf="(selectedProfile$ | async).specialty1 === 'Ingenieurswissenschaften'">
+                        Ingenieurswissenschaften</h3>
+                </div>
+                <div class="profileTagList">
+                    <mat-chip-list fxLaoyut="column">
+                        <ng-container *ngFor="let tag of (selectedProfile$ | async).tags; let i=index">
+                            <mat-chip *ngIf="i < 3">
+                                {{ tag }}
+                            </mat-chip>
+                        </ng-container>
+
+                    </mat-chip-list>
+                </div>
+
+                <div class="metaInfos" fxLayout="row" fxLayoutAlign="center start" fxLayoutGap="5px">
+                    <div *ngIf="(selectedProfile$ | async).public === true">
+                        <mat-icon svgIcon="school"></mat-icon>
+                    </div>
+                    <div *ngIf="(selectedProfile$ | async).public === false">
+                        <mat-icon svgIcon="domain"></mat-icon>
+                    </div>
+                    <div *ngIf="(selectedProfile$ | async).orgSize !== ''" fxLayout="column"
+                        fxLayoutAlign="center center">
+                        <h3>{{ (selectedProfile$ | async).orgSize }}</h3>
+                    </div>
+                </div>
+                <div class="profileType">
+                    <div *ngIf="(selectedProfile$ | async).companyType !== ''" fxLayout="column"
+                        fxLayoutAlign="center center">
+                        <h3>{{ (selectedProfile$ | async).companyType }}</h3>
+                    </div>
+                    <div *ngIf="(selectedProfile$ | async).instituteType !== ''" fxLayout="column"
+                        fxLayoutAlign="center center">
+                        <h3>{{ (selectedProfile$ | async).instituteType }}</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="content-center" [ngClass]="{'preview-mode': preview === true}">
+            <app-tab-navigation *ngIf="!preview"></app-tab-navigation>
+            <div class="business-card-mobile" fxLayout="column" fxLayoutAlign="center center" fxHide.gt-sm
+                *ngIf="(selectedProfile$ | async)">
+                <div class="profilePic" *ngIf="(selectedProfile$ | async).logoURL !== ''">
+                    <img src="{{(selectedProfile$ | async).logoURL}}" alt="Logo der Organisation oder Einrichtung" />
+                </div>
+                <div class="profilePic" *ngIf="(selectedProfile$ | async).logoURL === ''">
+                    <img src="../../../../../assets/images/crawled_profile.png"
+                        alt="Logo der Organisation oder Einrichtung" class="dummypic" />
+                </div>
+                <h3>{{ (selectedProfile$ | async).title }}</h3>
+                <h3 class="organization">{{ (selectedProfile$ | async).organisation }}</h3>
+            </div>
+            <div class="details-container shadowed-short">
+                <button class="back-button" mat-icon-button color="primary" [routerLink]="['/cards/list']" fxHide.lt-md
+                    *ngIf="!preview">
+                    <mat-icon>arrow_back_ios</mat-icon>
+                    <span>zurück</span>
+                </button>
+
+                <div class="card-details shadowed-long border-round">
+                    <div class="card-image" *ngIf="cardToDisplay.pictureURL !== ''; else dummyPic">
+                        <img src="{{ cardToDisplay.pictureURL }}" />
+                    </div>
+                    <ng-template #dummyPic>
+                        <div class="card-image">
+                            <img src="../../../assets/images/card_nopicture.jpg" />
+                        </div>
+                    </ng-template>
+
+                    <div class="text-details" fxLayout="row" fxLayout.lt-md="column">
+                        <div class="detail-infos">
+                            <div class="infos-title">
+                                <div class="text-infos" fxLayout="row" fxLayoutAlign="start start">
+                                    <h2>{{ cardToDisplay.title }}</h2>
+                                    <div class="icon-container border-round" fxLayout="column"
+                                        fxLayoutAlign="center center">
+                                        <mat-icon svgIcon="interdizwhite"
+                                            *ngIf="cardToDisplay.specialty1 === 'Interdisziplinäres'">
+                                        </mat-icon>
+                                        <mat-icon svgIcon="rechtswissenschaftenwhite"
+                                            *ngIf="cardToDisplay.specialty1 === 'Rechtswissenschaften, Jurisprudenz'">
+                                        </mat-icon>
+                                        <mat-icon svgIcon="wirtschaftwhite"
+                                            *ngIf="cardToDisplay.specialty1 === 'Wirtschaftswissenschaften'">
+                                        </mat-icon>
+                                        <mat-icon svgIcon="naturwissenschaftenwhite"
+                                            *ngIf="cardToDisplay.specialty1 === 'Naturwissenschaften'">
+                                        </mat-icon>
+                                        <mat-icon svgIcon="informationsw-mathewhite"
+                                            *ngIf="cardToDisplay.specialty1 === 'Informationswissenschaften und Mathematik'">
+                                        </mat-icon>
+                                        <mat-icon svgIcon="medizintechnikwhite"
+                                            *ngIf="cardToDisplay.specialty1 === 'Medizintechnik'">
+                                        </mat-icon>
+                                        <mat-icon svgIcon="ingenieurwhite"
+                                            *ngIf="cardToDisplay.specialty1 === 'Ingenieurswissenschaften'">
+                                        </mat-icon>
+                                    </div>
+                                </div>
+
+                                <div class="searching-for" *ngIf="cardToDisplay.projectType !== '' ||
+                                cardToDisplay.partnerCompanyType.length > 0 ||
+                                cardToDisplay.partnerInstituteType.length > 0">
+                                    <h3>Gesucht wird:</h3>
+                                    <mat-chip-list fxLayout="row">
+                                        <mat-chip style="margin-right: 5px" class="darkblue"
+                                            *ngIf="cardToDisplay.projectType !== ''">
+                                            {{ cardToDisplay.projectType }}
+                                        </mat-chip>
+                                        <mat-chip *ngFor="let companyType of cardToDisplay.partnerCompanyType"
+                                            style="margin-right: 5px" class="darkblue">
+                                            {{ companyType }}
+                                        </mat-chip>
+                                        <mat-chip *ngFor="let instituteType of cardToDisplay.partnerInstituteType"
+                                            style="margin-right: 5px" class="darkblue">
+                                            {{ instituteType }}
+                                        </mat-chip>
+                                    </mat-chip-list>
+                                </div>
+
+                            </div>
+                            <div class="descriptions">
+                                <h2>Gesuch</h2>
+                                <div [froalaView]="cardToDisplay.description"></div>
+                            </div>
+                        </div>
+                        <div class="meta-infos" fxFlex="35" fxFlex.lt-md="100">
+                            <div class="partner-infos">
+                                <h2 *ngIf="cardToDisplay.showOrganisation || cardToDisplay.showUserName">
+                                    Ansprechpartner
+                                </h2>
+                                <h3 *ngIf="cardToDisplay.showOrganisation">{{ cardToDisplay.organisation }}</h3>
+                                <h3 *ngIf="cardToDisplay.showUserName">{{ cardToDisplay.userFirstName }}
+                                    {{ cardToDisplay.userLastName }}</h3>
+                                <button mat-raised-button color="primary" (click)="startChat()"
+                                    *ngIf="cardToDisplay.uid !== (user$ | async).id">Kontakt
+                                    aufnehmen</button>
+                            </div>
+                            <div class="specialties" fxLayout="column">
+                                <h3 class="subheading">Forschungsschwerpunkt</h3>
+                                <h3 *ngIf="cardToDisplay.specialty1 !== ''">{{ cardToDisplay.specialty1 }}</h3>
+                                <h3 class="subheading">Disziplin</h3>
+                                <h3 *ngIf="cardToDisplay.specialty2 !== ''">{{ cardToDisplay.specialty2 }}</h3>
+                                <h3 class="subheading">Spezialisierung</h3>
+                                <h3 *ngIf="cardToDisplay.specialty3 !== ''">{{ cardToDisplay.specialty3 }}</h3>
+                            </div>
+                            <div class="tags">
+                                <h3>Schlagworte:</h3>
+                                <mat-chip-list fxLayout="row">
+                                    <ng-container *ngFor="let tag of cardToDisplay.tags; let i = index">
+                                        <mat-chip style="margin-right: 5px" [ngClass]="{'lightblue': i > 2}">
+                                            {{ tag }}
+                                        </mat-chip>
+                                    </ng-container>
+                                </mat-chip-list>
+                            </div>
+                            <h3 *ngIf="cardToDisplay.projectCity !== ''">Projektstandort:</h3>
+                            <h3 *ngIf="cardToDisplay.projectCity !== ''" style="margin-bottom: 30px">
+                                {{ cardToDisplay.projectCity }}</h3>
+                            <h3 *ngIf="cardToDisplay.partnerRange !== ''">Gewünschter Standort des Partners:</h3>
+                            <h3 *ngIf="cardToDisplay.partnerRange !== ''">{{ cardToDisplay.partnerRange }}</h3>
+
+                        </div>
+                    </div>
+                </div>
+
+                <button class="back-button" mat-icon-button color="primary" [routerLink]="['/cards/list']" fxHide.lt-md
+                    *ngIf="!preview">
+                    <mat-icon>arrow_back_ios</mat-icon>
+                    <span>zurück</span>
+                </button>
+            </div>
+        </div>
+        <div id="content-end" fxHide.lt-md *ngIf="!preview">
+            <app-profile-overview></app-profile-overview>
+            <app-my-cards [embeddedMode]="true" [detailView]="true" *ngIf="(currentUser$ | async) !== null">
+            </app-my-cards>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,100 @@
+<div class="mat-typography shadowed-short" id="singleBar"[style.width.px]="currentWidth" *ngIf="router.url.indexOf('chat') < 0">
+    <div fxLayout="row" fxLayoutAlign="space-between center" id="chatTopBar" (click)="toggleChat()" [style.margin-top.px]="topBarMargin">
+        <div fxLayout="row" style="margin-top: 9px">
+            <div class="profileImage">
+                <div *ngFor="let logo of (chatLogos$ | async)">
+                    <img *ngIf="logo.projectId === openedChat.projectId && logo.logoURL !== ''" class="chatLogo shadowed-short"
+                        width="100%" height="100%" src="{{ logo.logoURL }}" alt="Profilbild des Chatpartners" />
+                    <img *ngIf="logo.projectId === openedChat.projectId && logo.logoURL === ''" class="chatLogo shadowed-short"
+                        width="100%" height="100%" src="../../../../../assets/icons/chatLogo.png"  alt="Profilbild des Chatpartners" />
+
+                </div>
+            </div>
+
+            <h2 [style.width.px]="currentWidth - 90">{{ openedChat.subject }}</h2>
+        </div>
+        <mat-icon (click)="closeChat()">
+            close
+        </mat-icon>
+
+    </div>
+
+    <div id="chatContainer" *ngIf="opened" fxLayout="column">
+        <div #messageDiv id="messages" fxLayout="column">
+            <div *ngIf="(activeChat$ | async); else loadingMessages">
+                <div *ngFor="let message of (activeChat$ | async).messages; let i = index">
+
+                    <div *ngIf="(activeChat$ | async).messages.length > 1 && i === 0 " class="messageDate">
+                        {{ message.date }}
+                    </div>
+                    <div *ngIf="(activeChat$ | async).messages.length > 1 && i > 0" class="messageDate">
+                        <div class="date" *ngIf="message.date !== (activeChat$ | async).messages[i - 1].date">
+                            {{ message.date }}
+                        </div>
+                    </div>
+                    <div *ngIf="(activeChat$ | async).messages.length === 1" class="messageDate">
+                        {{ message.date }}
+                    </div>
+
+
+                    <div *ngIf="message.authorId === (currentUser$ | async).id; else chatleft"
+                        class="chatMessage chatRight" fxLayout="column">
+                        <span class="messageAuthor"
+                            *ngIf="(activeChat$ | async).partner1.uid === (currentUser$ | async).id; else otherPartner">
+                            <span class="messageTime"> {{ message.time }} · </span>
+                            {{ (activeChat$ | async).partner1.firstName }}
+                            {{ (activeChat$ | async).partner1.lastName }}
+                        </span>
+                        <ng-template #otherPartner>
+                            <span class="messageAuthor">
+                                <span class="messageTime"> {{ message.time }} · </span>
+                                {{ (activeChat$ | async).partner2.firstName }}
+                                {{ (activeChat$ | async).partner2.lastName }}
+                            </span>
+                        </ng-template>
+                        <div class="messageContent" [froalaView]="message.message">}</div>
+                    </div>
+
+                    <ng-template #chatleft>
+                        <div class="chatMessage chatLeft" fxLayout="column">
+                            <span class="messageAuthor"
+                                *ngIf="(activeChat$ | async).partner1.uid === (currentUser$ | async).id; else otherPartnerLeft">
+                                {{ (activeChat$ | async).partner2.firstName }}
+                                {{ (activeChat$ | async).partner2.lastName }}
+                                <span class="messageTime"> · {{ message.time }}</span>
+                            </span>
+                            <ng-template #otherPartnerLeft>
+                                <span class="messageAuthor">
+                                    {{ (activeChat$ | async).partner1.firstName }}
+                                    {{ (activeChat$ | async).partner1.lastName }}
+                                    <span class="messageTime"> · {{ message.time }}</span>
+                                </span>
+                            </ng-template>
+                            <div class="messageContent" [froalaView]="message.message">}</div>
+                        </div>
+                    </ng-template>
+                </div>
+            </div>
+
+            <ng-template #loadingMessages>
+                <mat-spinner></mat-spinner>
+            </ng-template>
+
+        </div>
+
+        <div id="newMessage" fxFlex="20">
+            <form [formGroup]="messageForm" (ngSubmit)="sendMessage()" fxLayout="row" fxLayoutAlign="start center">
+                <mat-form-field appearance="fill">
+                    <textarea matInput rows="5" fxFlex="90" formControlName="message"
+                        placeholder="Ihre Nachricht..."></textarea>
+                </mat-form-field>
+
+                <button mat-icon-button type="submit" fxFlex="10" color="secondary"
+                    [disabled]="messageForm.invalid || messageForm.value.message == ''">
+                    <mat-icon>send</mat-icon>
+                </button>
+            </form>
+        </div>
+    </div>
+
+</div>

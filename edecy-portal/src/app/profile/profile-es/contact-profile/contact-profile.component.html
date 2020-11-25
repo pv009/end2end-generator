@@ -1,0 +1,33 @@
+<app-currentpage [currentPage]="currentPage" *ngIf="router.url.indexOf('contact') > -1"></app-currentpage>
+
+<mat-dialog-content fxHide.lt-md>
+    <button id="close-button" mat-icon-button mat-dialog-close>
+        <mat-icon>close</mat-icon>
+    </button>
+</mat-dialog-content>
+<mat-dialog-content>
+    <div class="mat-typography" [ngClass]="{'app-container' : router.url.indexOf('contact') > -1}">
+        <form [formGroup]="contactForm" (ngSubmit)="submitMessage()">
+            <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="15px">
+                <mat-form-field>
+                    <input matInput placeholder="Ihr Name" formControlName="sender">
+                </mat-form-field>
+            </div>
+            <mat-form-field>
+                <input matInput placeholder="E-Mail*" formControlName="email">
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput placeholder="Betreff" formControlName="subject">
+            </mat-form-field>
+
+            <mat-form-field class="lastField">
+                <textarea matInput placeholder="Ihre Nachricht*" formControlName="message" rows="10"></textarea>
+            </mat-form-field>
+
+            <button mat-stroked-button color="primary" type="submit" class="authButton"
+                [disabled]="contactForm.invalid">
+                Senden
+            </button>
+        </form>
+    </div>
+</mat-dialog-content>

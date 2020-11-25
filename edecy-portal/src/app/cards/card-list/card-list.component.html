@@ -1,0 +1,124 @@
+<div #mainContainer class="mat-typography" id="cardHeader">
+  <div id="content-container" fxLayout="row">
+    <div id="content-start" fxHide.lt-md>
+      <app-blog></app-blog>
+      <div id="filter-container">
+        <app-profile-filter *ngIf="(tabShown$ | async) === 'profile'"></app-profile-filter>
+        <app-card-filter *ngIf="(tabShown$ | async) !== 'profile'"></app-card-filter>
+      </div>
+    </div>
+    <div id="content-center">
+      <div #searchBar>
+        <div id="navigation-container">
+          <app-tab-navigation></app-tab-navigation>
+        </div>
+
+        <form class="listHeader" [formGroup]="searchForm" (ngSubmit)="submitSearch()" fxHide.gt-sm>
+          <div fxLayout="row">
+            <mat-form-field appearance="outline" fxFlex="80" *ngIf="(tabShown$ | async) !== 'profile'">
+              <input matInput placeholder="Los geht's!" formControlName="keyword">
+              <mat-label>Suche</mat-label>
+              <mat-icon matPrefix>search</mat-icon>
+              <mat-icon *ngIf="searchForm.value.keyword" matSuffix (click)="clearSearch()">cancel</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" fxFlex="90" *ngIf="(tabShown$ | async) === 'profile'">
+              <input matInput placeholder="Los geht's!" formControlName="keyword">
+              <mat-label>Suche</mat-label>
+              <mat-icon matPrefix>search</mat-icon>
+              <mat-icon *ngIf="searchForm.value.keyword" matSuffix (click)="clearSearch()">cancel</mat-icon>
+            </mat-form-field>
+
+            <div fxLayout="row" fxLayoutAlign="center" fxFlex="20">
+              <mat-icon class="tuneIcon" (click)="toggleFilter()">tune</mat-icon>
+            </div>
+          </div>
+
+
+
+          <div *ngIf="(data$ | async)">
+            <p class="searchError" *ngIf="(data$ | async)?.length < 1 && searched === true">Ihre Suche ergab
+              leider keine Treffer.
+            </p>
+
+            <button mat-flat-button color="primary" *ngIf="filterActive" (click)="resetFilter()"
+              id="resetFilterButton">Filter
+              zurücksetzen
+            </button>
+          </div>
+        </form>
+
+        <div id="profileDivider" *ngIf="(tabShown$ | async) === 'profile'" fxHide.gt-sm>
+
+        </div>
+      </div>
+
+      <div class="overlay-container">
+        <div class="overlay" *ngIf="(tabShown$ | async) === 'request' && (currentUser$ | async) === null">
+        </div>
+        <app-auth-overlay *ngIf="(tabShown$ | async) === 'request' && (currentUser$ | async) === null"></app-auth-overlay>
+        <div class="morePartnersInfo" fxLayout.lt-md="column" fxLayout.gt-sm="row"
+          *ngIf="(showFilter$ | async) === false && (showFilterProfile$ | async) === false">
+          <p fxFlex.gt-sm="70" fxLayout="column" fxLayoutAlign="center start">Nicht gefunden was Sie suchen? Unser
+            Netzwerk schließt viele Kontakte ein, die wir aus
+            Datenschutzrechtlichen Gründen nicht einfach online stellen können - da ist bestimmt auch was passendes für
+            Sie dabei. Kontaktieren Sie uns!</p>
+
+          <a href="mailto:support@edecy.de" fxLayout="column" fxLayoutAlign="center center">
+            <button mat-stroked-button color="primary" class="authButton">Kontaktieren Sie uns</button>
+          </a>
+        </div>
+
+        <app-profile-list [data]="profileDataES$ | async" *ngIf="(tabShown$ | async) === 'profile'">
+        </app-profile-list>
+
+        <div id="card-list-container">
+          <app-project-list [data]="data$ | async" [cardType]="cardType" (filterSelected)="showFeedback($event)"
+            *ngIf="(tabShown$ | async) === 'request'">
+          </app-project-list>
+        </div>
+      </div>
+
+
+
+    </div>
+    <div id="content-end" fxHide.lt-md>
+      <div id="profile-container">
+        <app-profile-overview *ngIf="(currentUser$ | async) !== null"></app-profile-overview>
+        <app-my-cards [embeddedMode]="true" *ngIf="(currentUser$ | async) !== null"></app-my-cards>
+      </div>
+      <div id="authButtons" fxLayout="column" *ngIf="(currentUser$ | async) === null" class="shadowed-short edecy-card">
+        <h2>Treten Sie mit Forschungspartnern in Kontakt</h2>
+        <h3>Registrieren Sie sich jetzt bei Edecy.</h3>
+        <button mat-raised-button color="primary" [routerLink]="['/prices']">Unsere Angebote
+        </button>
+        <h3>Sie sind bereits registriert?</h3>
+        <button mat-raised-button color="primary" (click)="openLogin()">Anmelden
+        </button>
+      </div>
+      <div class="beratungRight" fxLayout="column" fxLayoutAlign="center start" *ngIf="(currentUser$ | async) === null">
+        <h2>Weitere Fragen? <br>- Wir beraten Sie gerne!
+        </h2>
+        <a href="https://www.edecy.de/beratung" target="_blank">
+          <button mat-raised-button color="primary">Jetzt unverbindliches<br> Beratungsgespräch
+            buchen!</button>
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="footer-container">
+    <mat-expansion-panel class="mat-elevation-z0" id="expansionPanel" [expanded]="!feedbackClosed"
+      (opened)="feedbackClosed = false" *ngIf="showFeedbackPanel" fxHide.gt-sm>
+      <mat-expansion-panel-header>
+        <h2>Haben Sie Feedback für uns?</h2>
+      </mat-expansion-panel-header>
+      <app-feedback (sentFeedback)="closePanel()"></app-feedback>
+    </mat-expansion-panel>
+    <button id="feedback-button" mat-button (click)="openFeedbackDialog()" fxHide.lt-md>
+      <h2>Haben Sie Feedback für uns?</h2>
+    </button>
+  </div>
+
+</div>
