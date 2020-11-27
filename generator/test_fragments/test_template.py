@@ -3,7 +3,8 @@ from .basic_config import BasicConfig
 config_data = {
     "viewHeight": "1920",
     "viewWidth": "1080",
-    "viewZoom": "1"
+    "viewZoom": "1",
+    "startURL": "http://localhost:4200"
 }
 
 basic_config = BasicConfig(config_data)

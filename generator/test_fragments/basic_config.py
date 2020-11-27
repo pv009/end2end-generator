@@ -12,6 +12,7 @@ class BasicConfig:
         self.viewWidth = data['viewWidth']
         self.viewHeight = data['viewHeight']
         self.viewZoom = data['viewZoom']
+        self.startURL = data['startURL']
 
     def write_imports(self):
         basicConfig['imports'] = [
@@ -21,7 +22,9 @@ class BasicConfig:
     def global_test_variables(self):
         basicConfig['test_variables'] = [
             'let browser;\n',
-            'let page;\n'
+            'let page;\n',
+            'const startURL = ' + self.startURL + ";\n"
+            'let currentURL: string;'
         ]
 
     def write_before_each(self):
@@ -32,6 +35,7 @@ class BasicConfig:
                        "width: " + self.viewWidth + ",\n",
                        "height: " + self.viewHeight + ",\n",
                        "deviceScaleFactor: " + self.viewZoom + ",\n",
+                       "currentURL = " + self.startURL + ";\n"
                        "});\n",
                        "});\n"]
         for line in before_each:

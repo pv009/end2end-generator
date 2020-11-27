@@ -53,33 +53,71 @@ class ComponentInteraction:
             self.wait_for(selector),
             "} catch (error) {\n",
             "console.error('snackbar didn't appear', error);\n",
-            "assert.equal(false, true);\n",
+            self.fail_test(),
             "}\n"
         ]
+        return commands
 
     def page_switch(self, old_url, new_url):
+        commands = [
+            "if (page.url() !== currentURL) {\n",
+            "console.log('URL switched to' + page.url() + ');\n",
+            "currentURL = page.url();\n",
+            "} else {\n",
+            "console.error('page url didn't switch');\n",
+            self.fail_test(),
+            "}\n"
+        ]
+        return commands
 
 
-
-    def select_dropdown_value(self, dropdown_id, value):
+    def select_dropdown_value(self, dropdown_name, value):
+        selector = "'mat-select[formcontrolname=" + dropdown_name + "]'"
+        return "await page.select(" + selector + ", '" + value + "');\n"
 
     def click_link_by_id(self, link_id):
+        selector = "#" + link_id
+        command = "await page.click('" + selector + "');"
+        return command + "\n"
 
-    def click_link_by_class(self, class_names):
+
+    def click_link_by_class(self, class_name, index):
+        selector = "a." + class_name
+        command = "await page.click('" + selector + "')[" + index + "];"
+        return command + "\n"
 
     def count_element_quantity(self, class_name):
+        selector = "." + class_name
+        command = "await page.$$('" + selector + "')).length;"
+        return command + "\n"
 
-    def check_element_html_value(self, class_name):
+    def check_element_html_value(self, class_name, index):
+        selector = "." + class_name
+        commands = [
+            "page.$eval('" + selector + "', (element: any) => {\n",
+            "return element.innerHTML;\n",
+            "});\n"
+        ]
+        return commands
 
     def check_element_html_value_by_id(self, element_id):
+        selector = "#" + element_id
+        commands = [
+            "page.$eval('" + selector + "', (element: any) => {\n",
+            "return element.innerHTML;\n",
+            "});\n"
+        ]
+        return commands
 
-    def check_elements_availability(self, class_names):
+    # def check_elements_availability(self, class_names): TODO ??
+
 
     def type_tags(self, tags):
 
     def find_element_by_html(self, html_value):
 
-    def lightbox_opened(self, class_name):
+    def lightbox_opened(self, element_id):
+        return self.check_element_existence("mat-dialog", element_id)
 
     def wait_timer(self, timeout):
         commands = [
@@ -91,3 +129,6 @@ class ComponentInteraction:
     def wait_for(self, selector):
         return "await page.waitFor(" + selector + ");\n"
 
+
+    def fail_test(selfs):
+        return "assert.equal(false, true);\n",
