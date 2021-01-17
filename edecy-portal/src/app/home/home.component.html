@@ -1,7 +1,0 @@
-<div id="mainContainer">
-  <app-navbar [opened]="opened" (openSideNav)="onToggleSideNav($event)"></app-navbar>
-
-  <app-side-navigation [opened]=opened (toggleSideNav)="onToggleSideNav($event)">
-    <router-outlet (activate)="onActivate($event)"></router-outlet>
-  </app-side-navigation>
-</div>
