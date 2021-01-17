@@ -52,7 +52,7 @@
         </div>
 
         <mat-dialog-actions>
-          <button *ngIf="!desktopDialog" mat-stroked-button color="primary" type="submit" class="authButton"
+          <button *ngIf="!desktopDialog" mat-stroked-button color="primary" type="submit" class="authButton submit-button"
             [disabled]="registrationStep1.invalid">
             Weiter
           </button>
@@ -82,7 +82,7 @@
         </mat-form-field>
 
         <mat-dialog-actions>
-          <button *ngIf="!desktopDialog" mat-stroked-button color="primary" type="submit" class="authButton"
+          <button *ngIf="!desktopDialog" mat-stroked-button color="primary" type="submit" class="authButton submit-button"
             [disabled]="registrationStep2.invalid">
             Weiter
           </button>
@@ -115,7 +115,7 @@
         <p>Geben Sie hier die Organisation ein, die in Ihrem Profil angezeigt werden soll.</p>
 
         <mat-dialog-actions>
-          <button *ngIf="!desktopDialog" mat-stroked-button color="primary" type="submit" class="authButton"
+          <button *ngIf="!desktopDialog" mat-stroked-button color="primary" type="submit" class="authButton submit-button"
             [disabled]="registrationStep3.invalid">
             Weiter
           </button>
@@ -198,7 +198,7 @@
         </span>
 
         <mat-dialog-actions>
-          <button mat-stroked-button color="primary" type="submit" class="authButton" (click)="registerOnDesktop()"
+          <button mat-stroked-button color="primary" type="submit" class="authButton submit-button" (click)="registerOnDesktop()"
             [disabled]="registrationStep1.invalid || registrationStep2.invalid || registrationStep3.invalid || registrationStep4.invalid || !acceptedPrivacy"
             style="margin-top: 20px">
             Los geht's

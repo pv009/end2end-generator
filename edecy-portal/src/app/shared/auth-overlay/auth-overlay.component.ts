@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
 import { User } from 'parse';
@@ -37,12 +37,8 @@ export class AuthOverlayComponent implements OnInit {
 
   private buildLoginForm() {
     this.loginForm = this.fb.group({
-      email: ['', {
-        validators: [Validators.required, Validators.email]
-      }],
-      password: ['', {
-        validators: [Validators.required]
-      }]
+      email: '',
+      password: ''
     });
   }
 

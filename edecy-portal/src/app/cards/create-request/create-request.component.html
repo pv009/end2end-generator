@@ -62,7 +62,7 @@
                         </p>
                         <mat-checkbox formControlName="hideOrganisation">Ja, Kontaktdaten verbergen.</mat-checkbox>
                         <button mat-stroked-button color="primary" (click)="nextStep()" [disabled]="step1.invalid"
-                            class="firstButton" *ngIf="!editMode">
+                            class="firstButton submit-button" *ngIf="!editMode">
                             weiter
                         </button>
 
@@ -144,7 +144,7 @@
                             <button mat-stroked-button color="primary" (click)="stepBack()">
                                 zurück
                             </button> <button mat-stroked-button color="primary" (click)="nextStep()"
-                                [disabled]="step2.invalid">
+                                [disabled]="step2.invalid" class="submit-button">
                                 weiter
                             </button>
                         </div>
@@ -258,7 +258,7 @@
                             zurück
                         </button>
                         <button mat-stroked-button color="primary" (click)="nextStep()"
-                            [disabled]="step3.invalid || step4.invalid ">
+                            [disabled]="step3.invalid || step4.invalid" class="submit-button">
                             weiter
                         </button>
                     </div>
@@ -328,7 +328,7 @@
                                 zurück
                             </button>
                             <button mat-stroked-button color="primary" (click)="goToPreview()"
-                                [disabled]="step5.invalid">
+                                [disabled]="step5.invalid" class="submit-button">
                                 weiter
                             </button>
                         </div>

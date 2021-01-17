@@ -62,7 +62,7 @@ export let contexts: Array<Context> = [
         acceptanceCriteria: [
             'Der Nutzer kann ein Einzelgesuch ausklappen, um alle Daten zu sehen',
             'Der Nutzer kann Filter einstellen',
-            'Es werden pro Seite 30 Ergebnisse gezeigt',
+            'Es werden pro Seite mind. 5 Ergebnisse gezeigt',
             'Ein Ergebnis enthält mindestens den Titel',
             'Der Nutzer kann ein Ergebnis anklicken und kommt auf die Detailseite',
             'Der Nutzer erhält ein Suchformular',
@@ -115,7 +115,7 @@ export let contexts: Array<Context> = [
         subContext: 'Übersicht',
         acceptanceCriteria: [
             'Der Nutzer kann Filter einstellen',
-            'Es werden pro Seite 30 Ergebnisse gezeigt',
+            'Es werden pro Seite mind. 5 Ergebnisse gezeigt',
             'Ein Ergebnis enthält mindestens den Titel',
             'Der Nutzer kann ein Ergebnis anklicken und kommt auf die Detailseite',
             'Der Nutzer erhält ein Suchformular',
@@ -127,7 +127,7 @@ export let contexts: Array<Context> = [
         subContext: 'Detailansicht',
         acceptanceCriteria: [
             'Der Nutzer kann mit dem Profil Kontakt aufnehmen',
-            'Der Nutzer sieht folgende Daten des Gesuchs in der Detailansicht…',
+            'Der Nutzer sieht folgende Daten des Profils in der Detailansicht…',
             'Der Nutzer kann zurück zur Übersicht springen'
         ]
     },

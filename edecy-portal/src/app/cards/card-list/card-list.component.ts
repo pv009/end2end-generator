@@ -2,7 +2,7 @@ import { BreakpointObserver } from '@angular/cdk/layout';
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
 import { User } from 'parse';
 import { Observable, Subject } from 'rxjs';
@@ -79,7 +79,8 @@ export class CardListComponent implements OnInit, OnDestroy, AfterViewInit {
     private renderer: Renderer2,
     private dialog: MatDialog,
     private breakpointObserver: BreakpointObserver,
-    private matomoHelper: MatomoHelperService
+    private matomoHelper: MatomoHelperService,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit() {
@@ -87,6 +88,9 @@ export class CardListComponent implements OnInit, OnDestroy, AfterViewInit {
     this.profileDataES$ = this.profilesES$;
     this.data$ = this.requests$;
     this.buildSearchForm();
+    if (this.route.children.toString().includes('card')) {
+      this.store.dispatch(new fromCards.ShowTab('request'));
+    }
 
     if (this.breakpointObserver.isMatched('(min-width: 960px)')) {
       this.desktopAccess = true;

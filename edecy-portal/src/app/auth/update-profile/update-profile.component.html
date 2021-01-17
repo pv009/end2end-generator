@@ -46,7 +46,7 @@
             Logo hochladen
         </button>
 
-        <form [formGroup]="userDataForm" (ngSubmit)="updateProfile()">
+        <form [formGroup]="userDataForm" class="userDataForm" (ngSubmit)="updateProfile()">
             <h2>Zugangsdaten</h2>
             <mat-form-field>
                 <input matInput placeholder="E-Mail" formControlName="email">
@@ -91,7 +91,7 @@
                 <input matInput placeholder="Stadt" formControlName="orgCity">
             </mat-form-field>
 
-            <button mat-stroked-button color="primary" type="submit" class="authButton"
+            <button mat-stroked-button color="primary" type="submit" class="authButton submit-button"
                 [disabled]="userDataForm.invalid">
                 speichern
             </button>

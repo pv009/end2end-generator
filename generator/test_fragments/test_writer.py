@@ -9,8 +9,6 @@ class TestWriter:
 
     def writeTest(self, title):
         test = ("it('" + title + "', async (done: DoneFn) => {\n"
-                "await page.goto('http://localhost:4200');\n"
-                "await page.screenshot({ path: 'example.png' });\n"
                 "browser.close().then(done());\n"
                 "});\n")
         written_tests.append(test)

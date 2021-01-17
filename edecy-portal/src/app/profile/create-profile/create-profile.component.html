@@ -98,7 +98,7 @@
                         nur registrierten Nutzern anzeigen</mat-slide-toggle>
 
                     <button mat-raised-button color="primary" (click)="nextStep()" [disabled]="step1.invalid"
-                        class="firstButton" *ngIf="!userHasProfile">
+                        class="firstButton submit-button" *ngIf="!userHasProfile">
                         weiter
                     </button>
                 </form>
@@ -225,7 +225,7 @@
                         <button mat-raised-button color="primary" (click)="lastStep()" *ngIf="!userHasProfile">
                             zurück
                         </button> <button mat-raised-button color="primary" (click)="nextStep()"
-                            [disabled]="step2.invalid" *ngIf="!userHasProfile">
+                            [disabled]="step2.invalid" *ngIf="!userHasProfile" class="submit-button">
                             weiter
                         </button>
                     </div>
@@ -312,7 +312,7 @@
                             zurück
                         </button>
                         <button mat-raised-button class="finish-button" (click)="saveProfile()" style="margin-top: 40px"
-                            [disabled]="step3.invalid">
+                            [disabled]="step3.invalid" class="submit-button">
                             weiter
                         </button>
                     </div>

@@ -48,7 +48,7 @@
                 <div id="requestsTab" *ngIf="tabShown === 'request'">
                     <div class="listHeader">
                         <div class="searchBar">
-                            <form [formGroup]="searchForm" (ngSubmit)="submitSearch()" fxHide.gt-sm>
+                            <form [formGroup]="searchForm" class="searchForm" (ngSubmit)="submitSearch()" fxHide.gt-sm>
                                 <mat-form-field appearance="outline">
                                     <input matInput placeholder="Ihre Anzeigen durchsuchen" formControlName="keyword">
                                     <mat-icon matPrefix>search</mat-icon>

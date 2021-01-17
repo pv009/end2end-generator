@@ -36,9 +36,7 @@ class DatabaseConnector:
 
     def update_one(self, id, doc):
         query = {"_id": ObjectId(id)}
-        print(doc)
         data = doc
-        print(data)
         new_values = {
             "$set": {
                 "mainContext": data['mainContext'],

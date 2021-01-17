@@ -46,11 +46,7 @@ export class SingleCardComponent implements OnInit {
   }
 
   openCard() {
-    this.currentUser$.pipe(take(1)).subscribe(user => {
-      if (user) {
-        this.router.navigate(['/cards/' + this.cardToDisplay.objectId]);
-      }
-    });
+    this.router.navigate(['/cards/' + this.cardToDisplay.objectId]);
   }
 
   editCard() {

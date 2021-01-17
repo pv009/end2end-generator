@@ -38,7 +38,7 @@
     </div>
 
     <div id="searchbar-desktop" fxFlex="50">
-      <form [formGroup]="searchForm" (ngSubmit)="submitSearch()">
+      <form [formGroup]="searchForm" (ngSubmit)="submitSearch()" class="search-form">
         <div fxLayout="row">
           <mat-form-field appearance="outline">
             <input matInput placeholder="Los geht's!" formControlName="keyword">

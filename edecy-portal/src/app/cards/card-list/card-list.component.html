@@ -13,7 +13,7 @@
           <app-tab-navigation></app-tab-navigation>
         </div>
 
-        <form class="listHeader" [formGroup]="searchForm" (ngSubmit)="submitSearch()" fxHide.gt-sm>
+        <form class="listHeader" [formGroup]="searchForm" class="seachForm" (ngSubmit)="submitSearch()" fxHide.gt-sm>
           <div fxLayout="row">
             <mat-form-field appearance="outline" fxFlex="80" *ngIf="(tabShown$ | async) !== 'profile'">
               <input matInput placeholder="Los geht's!" formControlName="keyword">
@@ -42,7 +42,7 @@
             </p>
 
             <button mat-flat-button color="primary" *ngIf="filterActive" (click)="resetFilter()"
-              id="resetFilterButton">Filter
+              id="resetFilterButton" class="submit-button">Filter
               zurücksetzen
             </button>
           </div>
@@ -54,9 +54,7 @@
       </div>
 
       <div class="overlay-container">
-        <div class="overlay" *ngIf="(tabShown$ | async) === 'request' && (currentUser$ | async) === null">
-        </div>
-        <app-auth-overlay *ngIf="(tabShown$ | async) === 'request' && (currentUser$ | async) === null"></app-auth-overlay>
+        
         <div class="morePartnersInfo" fxLayout.lt-md="column" fxLayout.gt-sm="row"
           *ngIf="(showFilter$ | async) === false && (showFilterProfile$ | async) === false">
           <p fxFlex.gt-sm="70" fxLayout="column" fxLayoutAlign="center start">Nicht gefunden was Sie suchen? Unser

@@ -22,7 +22,13 @@ export const routes: Routes = [
             },
             {
                 path: 'list',
-                component: CardListComponent
+                component: CardListComponent,
+                children: [
+                    {
+                        path: 'cards',
+                        component: CardListComponent
+                    }
+                ]
             },
             {
                 path: 'my-cards',

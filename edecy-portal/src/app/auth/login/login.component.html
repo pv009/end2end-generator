@@ -10,7 +10,7 @@
     <div>
       <h1 *ngIf="!verifyPage">Melden Sie sich bei Edecy an!</h1>
       <h1 *ngIf="verifyPage">Ihre E-Mail-Adresse wurde bestätigt. Sie können sich nun anmelden.</h1>
-      <form [formGroup]="loginForm" (ngSubmit)="loginUser()">
+      <form [formGroup]="loginForm" (ngSubmit)="loginUser()" class="loginForm">
         <mat-form-field>
           <input matInput placeholder="E-Mail" formControlName="email" required>
           <mat-error>Bitte geben Sie Ihre E-Mail-Adresse ein.</mat-error>
@@ -27,7 +27,7 @@
           <p class="searchError">Falscher Nutzername oder falsches Passwort. Bitte probieren Sie es erneut.</p>
         </div>
 
-        <button mat-stroked-button color="primary" type="submit" class="authButton" [disabled]="loginForm.invalid">
+        <button mat-stroked-button color="primary" type="submit" class="authButton submit-button" [disabled]="loginForm.invalid">
           Anmelden
         </button>
       </form>

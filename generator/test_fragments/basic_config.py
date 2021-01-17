@@ -12,18 +12,21 @@ class BasicConfig:
         self.viewWidth = data['viewWidth']
         self.viewHeight = data['viewHeight']
         self.viewZoom = data['viewZoom']
-        self.startURL = data['startURL']
+        self.startURL = "http://localhost:4200/" + data['startURL']
+        self.urlEnd = data['startURL']
 
     def write_imports(self):
         basicConfig['imports'] = [
-            'import * as puppeteer from \'puppeteer\';\n'
+            "import * as puppeteer from \'puppeteer\';\n",
+            "import * as assert from 'assert';",
+            "\n"
         ]
 
     def global_test_variables(self):
         basicConfig['test_variables'] = [
             'let browser;\n',
             'let page;\n',
-            'const startURL = ' + self.startURL + ";\n"
+            "const startURL = '" + self.startURL + "';\n"
             'let currentURL: string;'
         ]
 
@@ -35,11 +38,17 @@ class BasicConfig:
                        "width: " + self.viewWidth + ",\n",
                        "height: " + self.viewHeight + ",\n",
                        "deviceScaleFactor: " + self.viewZoom + ",\n",
-                       "currentURL = " + self.startURL + ";\n"
                        "});\n",
-                       "});\n"]
+                       "currentURL = '" + self.startURL + "';\n",
+                       "await page.goto('" + self.startURL + "');\n",
+                       "await page.waitForSelector('.acceptButton:nth-of-type(2)');\n",
+                       "await page.click('.acceptButton:nth-of-type(2)');\n",
+                       "});\n"
+                       ]
+
         for line in before_each:
             basicConfig['before_each'].append(line)
+
 
     def set_global_config(self):
         self.write_imports()
